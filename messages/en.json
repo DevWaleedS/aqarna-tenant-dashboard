@@ -1,0 +1,950 @@
+{
+	"app-setting": {
+		"title": "App Setting",
+		"subtitle": "Customize your application settings",
+		"theme-color": "Theme Color",
+		"theme-mode": "Theme Mode",
+		"light-mode": "Light Mode",
+		"dark-mode": "Dark Mode",
+		"system-mode": "System Mode",
+
+		"page-direction": "Page Direction",
+		"theme-layout": "Theme Layout",
+		"hydrogen": "hydrogen",
+		"helium": "helium",
+		"boron": "boron"
+	},
+	"language": {
+		"select-label": "Language",
+		"english": "English",
+		"arabic": "Arabic"
+	},
+	"auth": {
+		"sign-in": {
+			"title": "Sign In to your Account ",
+			"subtitle": "Welcome back! Please enter your details",
+			"email-placeholder": "Email",
+			"password-placeholder": "Password",
+			"remember-me-label": "Remember Me",
+			"forgot-password-link": "Forgot Password?",
+			"sign-in-button": "Sign In",
+			"sign-in-button-loading-text": "Signing in...",
+			"no-account-text": "Don&apos;t have an account?",
+			"sign-up-text": "Sign Up",
+			"logged-in-successfully": "User logged in successfully."
+		},
+		"sign-up": {
+			"title": "Sign up to your Account",
+			"subtitle": "Welcome back! Please enter your details.",
+			"user-name-placeholder": "Username",
+			"email-placeholder": "Email",
+			"password-placeholder": "Password",
+			"terms-label": "By creating an account means you agree to the Terms & Conditions and our Privacy Policy",
+			"sign-up-button": "Sign Up",
+			"sign-up-button-loading-text": "Signing up...",
+			"already-have-account-text": "Already have an account?",
+			"sign-in-text": "Sign In"
+		},
+		"forgot-password": {
+			"title": "Forgot Password",
+			"subtitle": "Enter the email address associated with your account and we will send you a link to reset your password.",
+			"email-placeholder": "Email",
+			"send-recovery-email-button-text": "Send Recovery Email",
+			"have-account-text": "Forget it. Send me back to",
+			"send-recovery-email-button-loading-text": "Sending...",
+			"back-to-sign-in-link": "Sign In"
+		},
+		"create-new-password": {
+			"title": "Create New Password",
+			"subtitle": "Enter your password to unlock the screen!",
+			"new-password-placeholder": "New Password",
+			"confirm-password-placeholder": "Confirm Password",
+			"reset-password-button-text": "Reset Password",
+			"reset-password-button-loading-text": "Resetting...",
+			"not-now-return-text": "Not now? Return",
+			"back-to-sign-in-link": "Sign In"
+		}
+	},
+	"profile-dropdown": {
+		"my-profile-link": "My Profile",
+		"settings-link": "Settings",
+		"logout-link": "Logout",
+		"logging_out": "Logging out...",
+		"logged_out_successfully": "You logged out successfully."
+	},
+
+	"notifications": {
+		"title": "Notifications",
+		"mark-all-as-read-button": "Mark all as read",
+		"view-all-button": "See all Messages",
+		"no-notifications-yet": "No notifications yet",
+		"search_placeholder": "Search notifications...",
+		"filter_by_status": "Filter by Status",
+		"no_notifications": "No notifications to display",
+		"bulk_actions": {
+			"selected": "selected",
+			"mark_as_read": "Mark as Read",
+			"delete": "Delete Selected"
+		},
+		"table": {
+			"notification": "Notification",
+			"type": "Type",
+			"date": "Date",
+			"status": "Status",
+			"actions": "Actions"
+		},
+		"status": {
+			"read": "Read",
+			"unread": "Unread"
+		},
+		"type": {
+			"new_tenant_application": "New Application",
+			"payment_received": "Payment Received",
+			"subscription_expired": "Subscription Expired",
+			"system_update": "System Update"
+		},
+		"actions": {
+			"mark_as_read": "Mark as Read",
+			"delete": "Delete"
+		},
+		"details": {
+			"title": "Notification Details",
+			"type": "Type",
+			"date": "Date",
+			"applicant": "Applicant",
+			"email": "Email"
+		}
+	},
+	"pagination": {
+		"previous": "Previous",
+		"next": "Next",
+		"showing": "Showing",
+		"to": "to",
+		"of": "of",
+		"items": "items"
+	},
+	"confirmation-dialog": {
+		"title": "Are you sure?",
+		"message": "Do you really want to delete this item? This process cannot be undone.",
+		"terminate-message": "Do you really want to terminate this item? This process cannot be undone.",
+
+		"message_multiple": "You have selected {count} items, Do you really want to delete these items? This process cannot be undone.",
+		"message_multiple_terminate": "You have selected {count} items, Do you really want to terminate these items? This process cannot be undone.",
+		"cancel-button-text": "Cancel",
+		"confirm-button-text": "Yes, Delete it!",
+		"confirm-terminate-button-text": "Yes, Terminate it!"
+	},
+
+	"loading-text": {
+		"loading-text": "Loading..."
+	},
+
+	"date_picker": {
+		"label": "Pick a date"
+	},
+
+	"filter-by": {
+		"Today": "Today",
+		"Weekly": "Weekly",
+		"Monthly": "Monthly",
+		"Yearly": "Yearly",
+
+		"per day": "Per Day",
+		"per week": "Per Week",
+		"per month": "Per Month",
+		"per year": "Per Year",
+
+		"all": "All",
+
+		"Approved": "Approved",
+		"Rejected": "Rejected",
+
+		"Read": "Read",
+		"Unread": "Unread",
+		"Confirmed": "Confirmed",
+		"Pending": "Pending",
+		"Failed": "Failed",
+		"Cancelled": "Cancelled",
+
+		"draft": "Draft",
+		"active": "Active",
+		"expired": "Expired",
+		"terminated": "Terminated",
+		"suspended": "Suspended",
+		"pending": "Pending",
+
+		"inactive": "Inactive",
+		"blacklisted": "Blacklisted"
+	},
+
+	"input-phone-number": {
+		"no-countries-found": "No countries found",
+		"please-enter-a-valid": "Please enter a valid",
+		"search-countries": "Search countries...",
+		"phone-number": "phone number",
+
+		"countries": {
+			"Egypt": "Egypt",
+			"Saudi Arabia": "Saudi Arabia",
+			"United Arab Emirates": "United Arab Emirates",
+			"Jordan": "Jordan",
+			"Lebanon": "Lebanon",
+			"Iraq": "Iraq",
+			"Syria": "Syria",
+			"Yemen": "Yemen",
+			"Kuwait": "Kuwait",
+			"Oman": "Oman",
+			"Qatar": "Qatar",
+			"Bahrain": "Bahrain",
+			"Palestine": "Palestine",
+			"Morocco": "Morocco",
+			"Algeria": "Algeria",
+			"Tunisia": "Tunisia",
+			"Libya": "Libya",
+			"Sudan": "Sudan",
+			"Somalia": "Somalia",
+			"Djibouti": "Djibouti",
+			"Mauritania": "Mauritania",
+			"Comoros": "Comoros"
+		}
+	},
+
+	"central": {
+		"sidebar": {
+			"home": "Home",
+			"packages": "Packages",
+			"transactions": "Transactions",
+			"users": "Users",
+			"roles-permissions": "Roles & Permissions",
+			"tenants-management": "Tenants Management",
+			"tenants": "Tenants",
+			"tenant-applications": "Tenant Applications",
+			"setting": "Setting",
+			"notification": "Notification"
+		},
+
+		"home": {
+			"title": "Home page",
+			"subtitle": "Central Dashboard Home Page",
+			"stat-card": {
+				"total-users": "Total Users",
+				"total-packages": "Total Packages",
+				"total-tenants": "Total Tenants",
+				"total-transactions": "Total Transactions",
+				"total-subscription": "Total Subscription",
+				"users-last-30-days": "Users in the last 30 days",
+				"packages-last-30-days": "Packages in the last 30 days",
+				"tenants-last-30-days": "Tenants in the last 30 days",
+				"transactions-last-30-days": "Transactions in the last 30 days",
+				"subscription-last-30-days": "Subscription in the last 30 days"
+			},
+
+			"transactions-statistic": {
+				"title": "Transactions Statistic"
+			},
+			"subscriber-statistic": {
+				"title": "Total Subscribers"
+			},
+			"users-overview": {
+				"title": "Users Overview",
+				"new": "New",
+				"total": "Total",
+				"active": "Active"
+			},
+			"tabs-with-table-card": {
+				"latest-tenants": {
+					"title": "Latest Tenants"
+				},
+				"latest-transactions": {
+					"title": "Latest Transactions"
+				}
+			}
+		},
+
+		"packages": {
+			"title": "Packages",
+			"subtitle": "Manage Subscription Packages",
+			"add_new_package": "Add New Package",
+			"edit_package": "Edit Package",
+			"no_packages": "No packages available",
+			"monthly_prices": "monthly",
+			"yearly_prices": "yearly",
+			"monthly_prices_symbol": "/month",
+			"yearly_prices_symbol": "/year",
+			"max_properties": "Max Properties",
+			"max_units": "Max Units",
+			"features": "Features",
+			"add-new-package-form": {
+				"package-name-input-label": "Package Name",
+				"package-name-placeholder": "Enter package name",
+				"description-input-label": "Description",
+				"description-placeholder": "Enter package description",
+				"max_properties-input-label": "Maximum Properties",
+				"max_properties-placeholder": "Enter maximum properties",
+				"max_units-input-label": "Maximum Units",
+				"max_units-placeholder": "Enter maximum units",
+				"yearly_price-input-label": "Yearly Price",
+				"yearly_price-placeholder": "Enter yearly price",
+				"monthly_price-input-label": "Monthly Price",
+				"monthly_price-placeholder": "Enter monthly price",
+				"features-input-label": "Features",
+				"features-placeholder": "Add features (press Enter to add)",
+				"create-package-button": "Create Package",
+				"edit-package-button": "Update Package",
+				"cancel-button-text": "Cancel",
+				"creating-package": "Creating...",
+				"updating-package": "Updating..."
+			}
+		},
+
+		"transactions": {
+			"title": "Transactions",
+			"filter-by-status": "Filter by Status",
+			"search-placeholder": "Search transactions...",
+			"transaction-history-table": {
+				"tenant_application": "Tenant Application",
+				"package": "Package",
+				"price": "Price",
+				"payment_gateway": "Payment Gateway",
+				"payment_method": "Payment Method",
+				"date": "Date",
+				"status": "Status",
+				"actions": "Actions",
+				"no_transactions": "No transactions available",
+				"confirm_transaction": "Confirm Transaction"
+			},
+			"transaction_details": {
+				"title": "Transaction Details",
+				"transaction_id": "Transaction ID",
+				"loading-transaction": "Loading transaction...",
+				"status": "Status",
+				"error_loading_transaction": "Error loading transaction details",
+				"transaction_not_found": "Transaction not found",
+				"applicant_info": "Applicant Information",
+				"name": "Name",
+				"email": "Email",
+				"type": "Type",
+				"subdomain": "Subdomain",
+				"domain": "Domain",
+				"package_info": "Package Information",
+				"package_name": "Package Name",
+				"description": "Description",
+				"max_properties": "Max Properties",
+				"max_units": "Max Units",
+				"payment_info": "Payment Information",
+				"amount": "Amount",
+				"payment_gateway": "Payment Gateway",
+				"payment_method": "Payment Method",
+				"paid_at": "Paid At",
+				"confirmed_at": "Confirmed At",
+				"confirmed_by": "Confirmed By",
+				"notes": "Notes",
+
+				"confirm_transaction": "Confirm Transaction",
+				"confirming": "Confirming...",
+				"cancel-button-text": "Cancel"
+			}
+		},
+
+		"payment": {
+			"title": "Payment",
+
+			"submit-payment": {
+				"title": "Submit payment",
+				"no-token-message": "No token found",
+				"no-token-help-text": "Please try logging in again or refresh the page",
+				"transaction-info": "Transaction info",
+				"loading-payment": "Loading payment...",
+
+				"payment_method": {
+					"label": "Payment Method",
+					"placeholder": "Select payment method",
+					"cash": "Cash",
+					"cheque": "Cheque",
+					"bank_transfer": "Bank Transfer"
+				},
+				"cheque_number-label": "Cheque Number",
+				"cheque_number-input-placeholder": "Enter cheque number",
+				"cheque_image-label": "Cheque Image",
+				"cheque_image-help-text": "Upload cheque image (max 2MB)",
+				"transfer_reference-label": "Transfer Reference Number",
+				"transfer_reference-input-placeholder": "Enter transfer reference number",
+				"transfer_receipt-label": "Transfer Receipt",
+				"transfer_receipt-help-text": "Upload transfer receipt (max 2MB)",
+				"cancel-button-text": "Cancel",
+				"submit-button-text": "Submit Payment",
+				"submitting-loader-text": "Submitting..."
+			}
+		},
+
+		"setting": {
+			"title": "Settings",
+			"subtitle": "Manage system settings and configurations",
+			"loading": "Loading settings...",
+			"no-settings-available": "No settings available for this area",
+			"save": "Save",
+			"saving": "Saving...",
+			"cancel": "Cancel",
+			"no-changes": "No changes to save",
+			"update-success": "Setting updated successfully!",
+			"update-error": "Failed to update setting",
+			"select-placeholder": "Select an option",
+			"areas": {
+				"mail": "Mail Configuration",
+				"language": "Language",
+				"currency": "Currency",
+				"vat": "VAT",
+				"recaptcha": "reCAPTCHA",
+				"pusher": "Pusher",
+				"social_media": "Social Media",
+				"general": "General",
+				"seo": "SEO"
+			}
+		},
+
+		"users": {
+			"title": "Users management",
+			"search-placeholder": "Search by name, email, role...",
+			"show-users": "Show users",
+			"add-user-button-text": "Add new user",
+
+			"no-users-found-matching-your-search": "No users found matching your search",
+			"no-users-available": "No users available",
+
+			"user-card": {
+				"edit-button-text": "Edit",
+				"delete-button-text": "Delete",
+				"view-profile-button-text": "View Profile",
+				"role-name": "Roles"
+			},
+
+			"add-new-user-page": {
+				"title": "Add new user",
+				"loading-profile": "Loading profile...",
+				"personal-info": {
+					"title": "Personal Info",
+					"full-name": "Full Name",
+					"email": "Email",
+					"role-name": "Roles"
+				},
+
+				"profile-image": "Profile Image",
+				"full-name-label": "Full Name",
+				"full-name-input-placeholder": "Enter Full Name",
+				"email-label": "Email",
+				"email-input-placeholder": "Enter Email Address",
+				"role-name-label": "User Roles",
+				"role-input-placeholder": "Select the user roles",
+				"new-password-labe": "New Password",
+				"new-password-input-placeholder": "Enter New Password",
+				"confirmed-password-label": "Confirmed Password",
+				"confirmed-password-input-placeholder": "Enter Confirmed Password",
+				"save-button-text": "Save",
+				"save-button-loading-text": "Saving...",
+				"cancel-button-text": "Cancel",
+
+				"edit-profile": "Edit Profile",
+				"profile-info": "Profile Info",
+				"update-profile": "Update profile"
+			}
+		},
+		"roles-and-permissions": {
+			"roles-page-title": "Manage Roles",
+			"add-new-role-button": "Add new Role",
+			"search-placeholder": "Search by Role name, Guard name...",
+			"no_roles_available": "No roles available",
+			"no_roles_found_matching_your_search": "No roles found matching your search",
+			"roles-table": {
+				"role_name": "Role name",
+				"guard_name": "Guard name",
+				"permissions_count": "Permissions count",
+				"date": "Date",
+				"actions": "Actions",
+				"edit_role": "Edit Role"
+			},
+			"add-new-role-page": {
+				"role-name-label": "Role name",
+				"role-name-input-placeholder": "Enter role name",
+
+				"permissions-label": "Select Permissions",
+				"permissions-input-placeholder": "Select permissions then tab Enter ",
+				"save-button-text": "Save",
+				"save-button-loading-text": "Saving...",
+				"cancel-button-text": "Cancel"
+			}
+		},
+
+		"tenants-management": {
+			"tenants-page-title": "Manage Tenants",
+			"add-new-tenant-button": "Add new tenant",
+			"search-placeholder": "Search by tenant name, phone number, owner name...",
+
+			"tenants-table": {
+				"tenant_name": "Tenant name",
+				"address": "Address",
+				"subdomain": "Subdomain",
+				"owner_name": "Owner name",
+				"owner_phone": "Owner phone",
+				"date": "Date",
+				"actions": "Actions",
+				"edit_tenant": "Edit tenant",
+				"loading-tenants": "Loading tenants...",
+				"no-tenants-available": "No tenants available",
+				"create-first-tenant": "Create your first tenant to get started"
+			},
+			"add-new-tenant-page": {
+				"copy": "Copy",
+				"copied": "Copied!",
+				"subdomain-copied-toast-message": "Subdomain copied to clipboard!",
+				"application-not-found-message": "Tenant not found",
+
+				"type-label": "Tenant Type",
+				"type-input-placeholder": "Select tenant type",
+				"type-options": {
+					"business": "business",
+					"individual": "individual"
+				},
+
+				"tenant": {
+					"title": "Tenant Information",
+					"name-label": "Tenant Name",
+					"name-input-placeholder": "Enter the tenant name",
+					"subdomain-label": "Subdomain",
+					"subdomain-input-placeholder": "Example : subdomain.aqarna-dev.com",
+					"address-label": "Address",
+					"cr_no-label": "Commercial Registration Number",
+					"cr_no-input-placeholder": "Enter the commercial registration number",
+					"tin-label": "Tax Identification Number",
+					"tin-input-placeholder": "Enter the tax identification number",
+					"address-input-placeholder": "Enter the address",
+					"phone-label": "Tenant Phone Number",
+					"phone-input-placeholder": "Enter the tenant phone number"
+				},
+
+				"owner": {
+					"title": "Owner Information",
+					"name-label": "Owner Name",
+					"name-input-placeholder": "Enter the owner name",
+					"email-label": "Owner Email Address",
+					"email-input-placeholder": "Enter the owner email address",
+					"phone-label": "Owner Phone Number",
+					"phone-input-placeholder": "Enter the owner phone number"
+				},
+
+				"subscription": {
+					"title": "Subscription Information",
+					"package-label": "Select Package",
+					"package-input-placeholder": "Select your package",
+					"package-cycle-label": "Package Cycle",
+					"package-cycle-placeholder": "Select package cycle",
+					"package-period-label": "Package Period (Months)",
+					"package-period-input-placeholder": "Enter package period",
+					"period-label": "Subscription Period",
+					"period-input-placeholder": "Select subscription period",
+					"month": "month",
+					"months": "months",
+					"cycle-options": {
+						"monthly": "monthly",
+						"yearly": "yearly"
+					}
+				},
+
+				"message-label": "Message",
+				"message-input-placeholder": "Enter your message (optional)",
+
+				"save-button-text": "Save",
+				"save-button-loading-text": "Saving...",
+				"cancel-button-text": "Cancel"
+			},
+			"tenants-applications": {
+				"title": "Tenant Applications",
+				"subtitle": "Manage all tenant applications",
+				"add-new-tenant-application": "Add new tenant application",
+				"search-placeholder": "Search by tenant name, owner email, owner name...",
+				"filter-by-status": "Filter by Status",
+
+				"table": {
+					"type": "Type",
+					"tenant_name": "Tenant name",
+					"subscription_package_id": "Package",
+					"subscription_cycle": "Subscription cycle",
+					"subdomain": "Subdomain",
+					"owner_name": "Owner name",
+					"owner_email": "Owner email",
+					"date": "Date",
+					"status": "Status",
+					"actions": "Actions",
+					"approve_tenant": "Approve tenant application",
+					"approving_tenant": "Approving...",
+					"rejecting_tenant": "Rejecting...",
+					"reject_tenant": "Reject tenant application",
+					"no_applications_found_matching_search": "No applications found matching your search",
+					"no_applications_available": "No applications available"
+				},
+				"add-new-tenant-application-page": {
+					"copy": "Copy",
+					"copied": "Copied!",
+					"subdomain-copied-toast-message": "Subdomain copied to clipboard!",
+					"application-not-found-message": "Application not found",
+
+					"tenant": {
+						"title": "Tenant Information",
+						"type-label": "Tenant Type",
+						"type-input-placeholder": "Enter the tenant type",
+						"name-label": "Tenant Name",
+						"name-input-placeholder": "Enter the tenant name",
+						"subdomain-label": "Subdomain",
+						"subdomain-input-placeholder": "Example : subdomain.aqarna-dev.com",
+						"address-label": "Address",
+						"cr_no-label": "Commercial Registration Number",
+						"cr_no-input-placeholder": "Enter the commercial registration number",
+						"tin-label": "Tax Identification Number",
+						"tin-input-placeholder": "Enter the tax identification number",
+						"address-input-placeholder": "Enter the address",
+						"phone-label": "Tenant Phone Number",
+						"phone-input-placeholder": "Enter the tenant phone number"
+					},
+
+					"owner": {
+						"title": "Owner Information",
+						"name-label": "Owner Name",
+						"name-input-placeholder": "Enter the owner name",
+						"email-label": "Owner Email Address",
+						"email-input-placeholder": "Enter the owner email address",
+						"phone-label": "Owner Phone Number",
+						"phone-input-placeholder": "Enter the owner phone number"
+					},
+
+					"subscription": {
+						"title": "Subscription Information",
+						"package-label": "Select Package",
+						"package-input-placeholder": "Select your package",
+						"package-cycle-label": "Package Cycle",
+						"package-cycle-placeholder": "Select package cycle",
+						"period-label": "Subscription Period",
+						"period-input-placeholder": "Select subscription period",
+						"month": "month",
+						"months": "months",
+						"cycle-options": {
+							"monthly": "monthly",
+							"yearly": "yearly"
+						}
+					},
+					"message-label": "Message",
+					"message-input-placeholder": "Enter your message to the applicant",
+					"status-label": "Status",
+					"reviewed-by-label": "Reviewed By",
+					"type-label": "Select Application Type",
+					"type-input-placeholder": "Select application type",
+					"type-options": {
+						"business": "business",
+						"individual": "individual"
+					},
+
+					"save-button-text": "Save",
+					"save-button-loading-text": "Saving...",
+					"cancel-button-text": "Cancel",
+					"close-button-text": "Close"
+				},
+				"show-current-tenant-application": {
+					"title": "Review Tenant Application",
+					"accept-button-text": "Accept Application",
+
+					"approve-application-message": "Are you sure you want to approve this application?",
+					"reject-application-message": "Are you sure you want to reject this application?",
+
+					"accept-button-loading-text": "Accepting...",
+					"reject-button-text": "Reject",
+					"reject-button-loading-text": "Rejecting..."
+				}
+			}
+		}
+	},
+
+	"tenant": {
+		"sidebar": {
+			"home": "Home",
+			"contracts": "Contracts",
+			"customers": "Customers",
+			"maintenance-tickets": "Maintenance Tickets",
+			"meter-management": "Meter Management",
+			"meters": "Meters",
+			"meter-readings": "Meter Readings",
+			"properties": "Properties",
+			"subscription": "Subscription",
+			"units": "Units",
+			"transactions": "Transactions",
+			"users": "Users",
+			"roles-permissions": "Roles & Permissions",
+			"setting": "Setting",
+			"notification": "Notification"
+		},
+		"contracts": {
+			"title": "Contracts",
+			"subtitle": "Manage your contracts",
+			"create-new-contract": "Create New Contract",
+			"search-placeholder": "Search by contract number or customer...",
+			"filter-by-status": "Filter by status",
+			"no_contracts_available": "No contracts available",
+			"no_contracts_found_matching_search": "No contracts found matching your search",
+
+			"bulk_actions": {
+				"selected": "selected",
+				"terminate-selected": "Terminate Selected"
+			},
+
+			"table": {
+				"contract_number": "Contract No.",
+				"customer_name": "Customer",
+				"grace_period_days": "Grace Period",
+				"termination_penalty_type": "Penalty Type",
+				"start_date": "Start Date",
+				"end_date": "End Date",
+				"rent_amount": "Rent Amount",
+				"status": "Status",
+				"actions": "Actions"
+			},
+
+			"create-new-contract-page": {
+				"customer-label": "Customer",
+				"customer-placeholder": "Select a customer",
+				"status-label": "Status",
+				"status-placeholder": "Select status",
+				"status-options": {
+					"draft": "Draft",
+					"active": "Active",
+					"expired": "Expired",
+					"terminated": "Terminated",
+					"suspended": "Suspended",
+					"pending": "Pending"
+				},
+				"start-date-label": "Start Date",
+				"grace-period-label": "Grace Period (Days)",
+				"grace-period-placeholder": "e.g. 15",
+				"duration-label": "Duration",
+				"duration-placeholder": "e.g. 1",
+				"duration-unit-label": "Duration Unit",
+				"duration-unit-placeholder": "Select unit duration",
+				"duration-units": {
+					"month": "Month",
+					"year": "Year"
+				},
+				"billing-frequency-label": "Billing Frequency",
+				"billing-frequency-placeholder": "Select frequency",
+				"billing-frequency-options": {
+					"monthly": "Monthly",
+					"quarterly": "Quarterly",
+					"semi_annual": "Semi-Annual",
+					"annual": "Annual",
+					"custom": "Custom"
+				},
+				"custom-billing-months-label": "Custom Billing Months",
+				"custom-billing-months-placeholder": "e.g. 2",
+				"security-deposit-label": "Security Deposit",
+				"security-deposit-placeholder": "e.g. 50000",
+				"termination-penalty-type-label": "Termination Penalty Type",
+				"termination-penalty-type-placeholder": "Select type (optional)",
+				"termination-penalty-type-none": "None",
+				"termination-penalty-options": {
+					"fixed_amount": "Fixed Amount",
+					"months_rent": "Months Rent"
+				},
+				"termination-penalty-value-label": "Penalty Value",
+				"termination-penalty-value-placeholder": "e.g. 2",
+				"units-label": "Units",
+				"units-placeholder": "Select units",
+				"units-required": "Please select at least one unit",
+				"notes-label": "Notes",
+				"notes-placeholder": "Additional notes (optional)",
+				"cancel-button-text": "Cancel",
+				"save-button-text": "Save Contract",
+				"save-button-loading-text": "Saving...",
+				"subdomain-copied-toast-message": "Copied to clipboard"
+			},
+
+			"show-current-contract-page": {
+				"title": "Contract Details",
+				"no_contract_available": "Contract not found",
+				"contract-number-label": "Contract Number",
+				"status-label": "Status",
+				"customer-section-title": "Customer Information",
+				"customer-name-label": "Customer Name",
+				"customer-email-label": "Email",
+				"customer-phone-label": "Phone",
+				"contract-details-section-title": "Contract Details",
+				"start-date-label": "Start Date",
+				"end-date-label": "End Date",
+				"duration-label": "Duration",
+				"grace-period-label": "Grace Period",
+				"days": "days",
+				"billing-frequency-label": "Billing Frequency",
+				"financial-section-title": "Financial Details",
+				"rent-amount-label": "Rent Amount",
+				"security-deposit-label": "Security Deposit",
+				"termination-penalty-type-label": "Termination Penalty Type",
+				"termination-penalty-value-label": "Termination Penalty Value",
+				"units-section-title": "Units",
+
+				"notes-label": "Notes",
+				"terminate-button-text": "Terminate",
+				"terminating-button-text": "Terminating...",
+				"close-button-text": "Close"
+			}
+		},
+
+		"customers": {
+			"title": "Customers",
+			"subtitle": "Manage your customers",
+			"create-new-customer": "Add New Customer",
+			"search-placeholder": "Search by name, email or phone...",
+			"filter-by-status": "Filter by status",
+			"no_customers_available": "No customers available",
+			"no_customers_found_matching_search": "No customers match your search",
+
+			"bulk_actions": {
+				"selected": "selected",
+				"delete-selected": "Delete Selected"
+			},
+
+			"table": {
+				"name": "Name",
+				"email": "Email",
+				"phone": "Phone",
+				"type": "Type",
+				"status": "Status",
+				"kyc_status": "KYC",
+				"rating": "Rating",
+				"created_at": "Joined",
+				"actions": "Actions"
+			},
+
+			"status": {
+				"active": "Active",
+				"inactive": "Inactive",
+				"blacklisted": "Blacklisted"
+			},
+
+			"kyc_status": {
+				"verified": "Verified",
+				"pending": "Pending",
+				"rejected": "Rejected",
+				"not_submitted": "Not Submitted"
+			},
+
+			"type": {
+				"individual": "Individual",
+				"business": "Business"
+			},
+
+			"create-new-customer-page": {
+				"type-label": "Customer Type",
+				"type-placeholder": "Select type",
+				"type-options": {
+					"individual": "Individual",
+					"business": "Business"
+				},
+
+				"basic-info-section": "Basic Information",
+				"name-label": "Full Name",
+				"name-placeholder": "Enter full name",
+				"email-label": "Email Address",
+				"email-placeholder": "Enter email address",
+				"lang-label": "Preferred Language",
+				"lang-placeholder": "Select language",
+				"lang-options": {
+					"ar": "Arabic",
+					"en": "English"
+				},
+
+				"contact-section": "Contact Details",
+				"phone-label": "Phone Number",
+				"phone-placeholder": "Enter phone number",
+				"secondary-phone-label": "Secondary Phone",
+				"secondary-phone-placeholder": "Enter secondary phone (optional)",
+				"address-label": "Address",
+				"address-placeholder": "Enter address (optional)",
+
+				"id-section": "Identification",
+				"nid-label": "National ID Number",
+				"nid-placeholder": "Enter national ID",
+				"cr-label": "CR Number",
+				"cr-placeholder": "Enter CR number",
+				"tin-label": "TIN",
+				"tin-placeholder": "Enter TIN",
+
+				"emergency-contacts-section": "Emergency Contacts",
+				"add-emergency-contact": "Add Emergency Contact",
+				"emergency-contact-name-label": "Name",
+				"emergency-contact-name-placeholder": "Contact name",
+				"emergency-contact-phone-label": "Phone",
+				"emergency-contact-phone-placeholder": "Contact phone",
+				"emergency-contact-relation-label": "Relation",
+				"emergency-contact-relation-placeholder": "e.g. spouse, parent",
+				"remove": "Remove",
+
+				"vehicles-section": "Vehicles",
+				"add-vehicle": "Add Vehicle",
+				"vehicle-make-label": "Make",
+				"vehicle-make-placeholder": "e.g. Toyota",
+				"vehicle-model-label": "Model",
+				"vehicle-model-placeholder": "e.g. Camry",
+				"vehicle-year-label": "Year",
+				"vehicle-year-placeholder": "e.g. 2023",
+				"vehicle-color-label": "Color",
+				"vehicle-color-placeholder": "e.g. White",
+				"vehicle-plate-label": "Plate Number",
+				"vehicle-plate-placeholder": "e.g. ABC-1234",
+
+				"pets-section": "Pets",
+				"add-pet": "Add Pet",
+				"pet-type-label": "Type",
+				"pet-type-placeholder": "e.g. cat, dog",
+				"pet-name-label": "Name",
+				"pet-name-placeholder": "Pet name",
+				"pet-breed-label": "Breed",
+				"pet-breed-placeholder": "Breed (optional)",
+
+				"notes-label": "Notes",
+				"notes-placeholder": "Additional notes (optional)",
+
+				"cancel-button-text": "Cancel",
+				"save-button-text": "Save Customer",
+				"save-button-loading-text": "Saving..."
+			},
+
+			"show-current-customer-page": {
+				"title": "Customer Details",
+				"no_customer_available": "Customer not found",
+				"basic-info-section": "Basic Information",
+				"name-label": "Full Name",
+				"email-label": "Email",
+				"type-label": "Type",
+				"lang-label": "Language",
+				"status-label": "Status",
+				"kyc-label": "KYC Status",
+				"rating-label": "Rating",
+				"contact-section": "Contact Details",
+				"phone-label": "Phone",
+				"secondary-phone-label": "Secondary Phone",
+				"address-label": "Address",
+				"id-section": "Identification",
+				"nid-label": "National ID",
+				"cr-label": "CR Number",
+				"tin-label": "TIN",
+				"emergency-contacts-section": "Emergency Contacts",
+				"vehicles-section": "Vehicles",
+				"pets-section": "Pets",
+				"notes-label": "Notes",
+				"joined-label": "Joined",
+				"terminate-button-text": "Blacklist",
+				"activate-button-text": "Activate",
+				"activating-button-text": "Activating...",
+				"blacklisting-button-text": "Blacklisting...",
+				"edit-title": "Edit Customer",
+				"close-button-text": "Close",
+				"delete-button-text": "Delete",
+				"deleting-button-text": "Deleting..."
+			}
+		}
+	}
+}

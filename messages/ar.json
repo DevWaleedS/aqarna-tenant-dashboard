@@ -1,0 +1,675 @@
+{
+	"app-setting": {
+		"title": "إعدادات التطبيق",
+		"subtitle": "تخصيص إعدادات التطبيق الخاص بك",
+		"theme-color": "لون السمة",
+		"theme-mode": "وضع السمة",
+		"light-mode": "الوضع الفاتح",
+		"dark-mode": "الوضع الداكن",
+		"system-mode": "وضع النظام",
+
+		"page-direction": "اتجاه الصفحة",
+		"theme-layout": "تخطيط السمة",
+		"hydrogen": "هيدروجين",
+		"helium": "هيليوم",
+		"boron": "بورون"
+	},
+	"language": {
+		"select-label": "اللغة",
+		"english": "الإنجليزية",
+		"arabic": "العربية"
+	},
+	"auth": {
+		"sign-in": {
+			"title": "تسجيل الدخول إلى حسابك",
+			"subtitle": "مرحباً بعودتك! الرجاء إدخال التفاصيل الخاصة بك",
+			"email-placeholder": "البريد الإلكتروني",
+			"password-placeholder": "كلمة المرور",
+			"remember-me-label": "تذكرني",
+			"forgot-password-link": "هل نسيت كلمة المرور؟",
+			"sign-in-button": "تسجيل الدخول",
+			"sign-in-button-loading-text": "جاري تسجيل الدخول...",
+			"no-account-text": "ليس لديك حساب؟",
+			"sign-up-text": "إنشاء حساب",
+			"logged-in-successfully": "تم تسجيل دخول المستخدم بنجاح."
+		},
+		"sign-up": {
+			"title": "إنشاء حساب جديد",
+			"subtitle": "مرحباً بك! الرجاء إدخال التفاصيل الخاصة بك.",
+			"user-name-placeholder": "اسم المستخدم",
+			"email-placeholder": "البريد الإلكتروني",
+			"password-placeholder": "كلمة المرور",
+			"terms-label": "بإنشاء حساب فإنك توافق على الشروط والأحكام وسياسة الخصوصية الخاصة بنا",
+			"sign-up-button": "إنشاء حساب",
+			"sign-up-button-loading-text": "جاري إنشاء الحساب...",
+			"already-have-account-text": "هل لديك حساب بالفعل؟",
+			"sign-in-text": "تسجيل الدخول"
+		},
+		"forgot-password": {
+			"title": "نسيت كلمة المرور",
+			"subtitle": "أدخل عنوان البريد الإلكتروني المرتبط بحسابك وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
+			"email-placeholder": "البريد الإلكتروني",
+			"send-recovery-email-button-text": "إرسال بريد الاسترداد",
+			"have-account-text": "انسَ الأمر. أعدني إلى",
+			"send-recovery-email-button-loading-text": "جاري الإرسال...",
+			"back-to-sign-in-link": "تسجيل الدخول"
+		},
+		"create-new-password": {
+			"title": "إنشاء كلمة مرور جديدة",
+			"subtitle": "أدخل كلمة المرور الخاصة بك لفتح الشاشة!",
+			"new-password-placeholder": "كلمة المرور الجديدة",
+			"confirm-password-placeholder": "تأكيد كلمة المرور",
+			"reset-password-button-text": "إعادة تعيين كلمة المرور",
+			"reset-password-button-loading-text": "جاري إعادة التعيين...",
+			"not-now-return-text": "ليس الآن؟ العودة إلى",
+			"back-to-sign-in-link": "تسجيل الدخول"
+		}
+	},
+	"profile-dropdown": {
+		"my-profile-link": "ملفي الشخصي",
+		"settings-link": "الإعدادات",
+		"logout-link": "تسجيل الخروج",
+		"logging_out": "جاري تسجيل الخروج...",
+		"logged_out_successfully": "تم تسجيل خروجك بنجاح."
+	},
+
+	"notifications": {
+		"title": "الإشعارات",
+		"mark-all-as-read-button": "وضع علامة مقروء على الكل",
+		"view-all-button": "عرض جميع الرسائل",
+		"no-notifications-yet": "لا توجد إشعارات بعد",
+		"search_placeholder": "البحث في الإشعارات...",
+		"filter_by_status": "تصفية حسب الحالة",
+		"no_notifications": "لا توجد إشعارات للعرض",
+		"bulk_actions": {
+			"selected": "محدد",
+			"mark_as_read": "وضع علامة كمقروء",
+			"delete": "حذف المحدد"
+		},
+		"table": {
+			"notification": "الإشعار",
+			"type": "النوع",
+			"date": "التاريخ",
+			"status": "الحالة",
+			"actions": "الإجراءات"
+		},
+		"status": {
+			"read": "مقروء",
+			"unread": "غير مقروء"
+		},
+		"type": {
+			"new_tenant_application": "طلب جديد",
+			"payment_received": "تم استلام الدفع",
+			"subscription_expired": "انتهت صلاحية الاشتراك",
+			"system_update": "تحديث النظام"
+		},
+		"actions": {
+			"mark_as_read": "وضع علامة كمقروء",
+			"delete": "حذف"
+		},
+		"details": {
+			"title": "تفاصيل الإشعار",
+			"type": "النوع",
+			"date": "التاريخ",
+			"applicant": "المتقدم",
+			"email": "البريد الإلكتروني"
+		}
+	},
+	"pagination": {
+		"previous": "السابق",
+		"next": "التالي",
+		"showing": "عرض",
+		"to": "إلى",
+		"of": "من",
+		"items": "عنصر"
+	},
+	"confirmation-dialog": {
+		"title": "هل أنت متأكد؟",
+		"message": "هل تريد حقاً حذف هذا العنصر؟ لا يمكن التراجع عن هذه العملية.",
+		"message_multiple": "لقد قمت بتحديد {count} من العناصر.",
+		"cancel-button-text": "إلغاء",
+		"confirm-button-text": "نعم، احذفه!"
+	},
+
+	"loading-text": {
+		"loading-text": "جاري التحميل..."
+	},
+
+	"date_picker": {
+		"label": "اختر تاريخاً"
+	},
+
+	"filter-by": {
+		"Today": "اليوم",
+		"Weekly": "أسبوعياً",
+		"Monthly": "شهرياً",
+		"Yearly": "سنوياً",
+
+		"per day": "في اليوم",
+		"per week": "في الأسبوع",
+		"per month": "في الشهر",
+		"per year": "في السنة",
+
+		"all": "الكل",
+
+		"Approved": "مقبول",
+		"Rejected": "مرفوض",
+
+		"Read": "مقروء",
+		"Unread": "غير مقروء",
+		"Confirmed": "مؤكد",
+		"Pending": "قيد الانتظار",
+		"Failed": "فشل",
+		"Cancelled": "ملغى"
+	},
+
+	"input-phone-number": {
+		"no-countries-found": "لم يتم العثور على دول",
+		"please-enter-a-valid": "الرجاء إدخال",
+		"search-countries": "البحث عن الدول...",
+		"phone-number": "رقم هاتف صالح",
+
+		"countries": {
+			"Egypt": "مصر",
+			"Saudi Arabia": "المملكة العربية السعودية",
+			"United Arab Emirates": "الإمارات العربية المتحدة",
+			"Jordan": "الأردن",
+			"Lebanon": "لبنان",
+			"Iraq": "العراق",
+			"Syria": "سوريا",
+			"Yemen": "اليمن",
+			"Kuwait": "الكويت",
+			"Oman": "عمان",
+			"Qatar": "قطر",
+			"Bahrain": "البحرين",
+			"Palestine": "فلسطين",
+			"Morocco": "المغرب",
+			"Algeria": "الجزائر",
+			"Tunisia": "تونس",
+			"Libya": "ليبيا",
+			"Sudan": "السودان",
+			"Somalia": "الصومال",
+			"Djibouti": "جيبوتي",
+			"Mauritania": "موريتانيا",
+			"Comoros": "جزر القمر"
+		}
+	},
+
+	"central": {
+		"sidebar": {
+			"home": "الرئيسية",
+			"packages": "الباقات",
+			"transactions": "المعاملات",
+			"users": "المستخدمون",
+			"roles-permissions": "الأدوار والصلاحيات",
+			"tenants-management": "إدارة المستأجرين",
+			"tenants": "المستأجرون",
+			"tenant-applications": "طلبات المستأجرين",
+			"authentication": "المصادقة",
+			"sign-in": "تسجيل الدخول",
+			"sign-up": "إنشاء حساب",
+			"forgot-password": "نسيت كلمة المرور",
+			"setting": "الإعدادات",
+			"company": "الشركة",
+			"notification": "الإشعارات",
+			"notification-alert": "تنبيه الإشعارات"
+		},
+
+		"home": {
+			"title": "الصفحة الرئيسية",
+			"subtitle": "لوحة التحكم الرئيسية المركزية",
+			"stat-card": {
+				"total-users": "إجمالي المستخدمين",
+				"total-packages": "إجمالي الباقات",
+				"total-tenants": "إجمالي المستأجرين",
+				"total-transactions": "إجمالي المعاملات",
+				"total-subscription": "إجمالي الاشتراكات",
+				"users-last-30-days": "المستخدمون في آخر 30 يوماً",
+				"packages-last-30-days": "الباقات في آخر 30 يوماً",
+				"tenants-last-30-days": "المستأجرون في آخر 30 يوماً",
+				"transactions-last-30-days": "المعاملات في آخر 30 يوماً",
+				"subscription-last-30-days": "الاشتراكات في آخر 30 يوماً"
+			},
+
+			"transactions-statistic": {
+				"title": "إحصائيات المعاملات"
+			},
+			"subscriber-statistic": {
+				"title": "إجمالي المشتركين"
+			},
+			"users-overview": {
+				"title": "نظرة عامة على المستخدمين",
+				"new": "جديد",
+				"total": "الإجمالي",
+				"active": "نشط"
+			},
+			"tabs-with-table-card": {
+				"latest-tenants": {
+					"title": "أحدث المستأجرين"
+				},
+				"latest-transactions": {
+					"title": "أحدث المعاملات"
+				}
+			}
+		},
+
+		"packages": {
+			"title": "الباقات",
+			"subtitle": "إدارة باقات الاشتراك",
+			"add_new_package": "إضافة باقة جديدة",
+			"edit_package": "تعديل الباقة",
+			"no_packages": "لا توجد باقات متاحة",
+			"monthly_prices": "شهرياً",
+			"yearly_prices": "سنوياً",
+			"monthly_prices_symbol": "/شهر",
+			"yearly_prices_symbol": "/سنة",
+			"max_properties": "الحد الأقصى للعقارات",
+			"max_units": "الحد الأقصى للوحدات",
+			"features": "المميزات",
+			"add-new-package-form": {
+				"package-name-input-label": "اسم الباقة",
+				"package-name-placeholder": "أدخل اسم الباقة",
+				"description-input-label": "الوصف",
+				"description-placeholder": "أدخل وصف الباقة",
+				"max_properties-input-label": "الحد الأقصى للعقارات",
+				"max_properties-placeholder": "أدخل الحد الأقصى للعقارات",
+				"max_units-input-label": "الحد الأقصى للوحدات",
+				"max_units-placeholder": "أدخل الحد الأقصى للوحدات",
+				"yearly_price-input-label": "السعر السنوي",
+				"yearly_price-placeholder": "أدخل السعر السنوي",
+				"monthly_price-input-label": "السعر الشهري",
+				"monthly_price-placeholder": "أدخل السعر الشهري",
+				"features-input-label": "المميزات",
+				"features-placeholder": "أضف المميزات (اضغط Enter للإضافة)",
+				"create-package-button": "إنشاء باقة",
+				"edit-package-button": "تحديث الباقة",
+				"cancel-button-text": "إلغاء",
+				"creating-package": "جاري الإنشاء...",
+				"updating-package": "جاري التحديث..."
+			}
+		},
+
+		"transactions": {
+			"title": "المعاملات",
+			"filter-by-status": "تصفية حسب الحالة",
+			"search-placeholder": "البحث في المعاملات...",
+			"transaction-history-table": {
+				"tenant_application": "طلب المستأجر",
+				"package": "الباقة",
+				"price": "السعر",
+				"payment_gateway": "بوابة الدفع",
+				"payment_method": "طريقة الدفع",
+				"date": "التاريخ",
+				"status": "الحالة",
+				"actions": "الإجراءات",
+				"no_transactions": "لا توجد معاملات متاحة",
+				"confirm_transaction": "تأكيد المعاملة"
+			},
+			"transaction_details": {
+				"title": "تفاصيل المعاملة",
+				"transaction_id": "رقم المعاملة",
+				"loading-transaction": "جاري تحميل بيانات المعاملة...",
+				"status": "الحالة",
+				"error_loading_transaction": "خطأ في تحميل تفاصيل المعاملة",
+				"transaction_not_found": "لم يتم العثور على المعاملة",
+				"applicant_info": "معلومات المتقدم",
+				"name": "الاسم",
+				"email": "البريد الإلكتروني",
+				"type": "النوع",
+				"subdomain": "الدومين الفرعي",
+				"domain": "الدومين",
+				"package_info": "معلومات الباقة",
+				"package_name": "اسم الباقة",
+				"description": "الوصف",
+				"max_properties": "الحد الأقصى للعقارات",
+				"max_units": "الحد الأقصى للوحدات",
+				"payment_info": "معلومات الدفع",
+				"amount": "المبلغ",
+				"payment_gateway": "بوابة الدفع",
+				"payment_method": "طريقة الدفع",
+				"paid_at": "تاريخ الدفع",
+				"confirmed_at": "تاريخ التأكيد",
+				"confirmed_by": "تم التأكيد بواسطة",
+				"notes": "ملاحظات",
+
+				"confirm_transaction": "تأكيد المعاملة",
+				"confirming": "جاري التأكيد...",
+				"cancel-button-text": "إلغاء"
+			}
+		},
+
+		"payment": {
+			"title": "الدفع",
+
+			"submit-payment": {
+				"title": "إرسال الدفع",
+				"no-token-message": "لم يتم العثور على رمز",
+				"no-token-help-text": "يرجى محاولة تسجيل الدخول مرة أخرى أو تحديث الصفحة",
+				"transaction-info": "بيانات المعاملة",
+				"loading-payment": "جاري تحميل بيانات المعاملة...",
+
+				"payment_method": {
+					"label": "طريقة الدفع",
+					"placeholder": "اختر طريقة الدفع",
+					"cash": "نقدًا",
+					"cheque": "شيك",
+					"bank_transfer": "تحويل بنكي"
+				},
+				"cheque_number-label": "رقم الشيك",
+				"cheque_number-input-placeholder": "أدخل رقم الشيك",
+				"cheque_image-label": "صورة الشيك",
+				"cheque_image-help-text": "قم بتحميل صورة الشيك (بحد أقصى 2 ميجابايت)",
+				"transfer_reference-label": "رقم مرجع التحويل",
+				"transfer_reference-input-placeholder": "أدخل رقم مرجع التحويل",
+				"transfer_receipt-label": "إيصال التحويل",
+				"transfer_receipt-help-text": "قم بتحميل إيصال التحويل (بحد أقصى 2 ميجابايت)",
+				"cancel-button-text": "إلغاء",
+				"submit-button-text": "إرسال الدفع",
+				"submitting-loader-text": "جارٍ الإرسال..."
+			}
+		},
+
+		"setting": {
+			"title": "الإعدادات",
+			"subtitle": "إدارة إعدادات وتكوينات النظام",
+			"loading": "جاري تحميل الإعدادات...",
+			"no-settings-available": "لا توجد إعدادات متاحة لهذا المجال",
+			"save": "حفظ",
+			"saving": "جاري الحفظ...",
+			"cancel": "إلغاء",
+			"no-changes": "لا توجد تغييرات للحفظ",
+			"update-success": "تم تحديث الإعداد بنجاح!",
+			"update-error": "فشل تحديث الإعداد",
+			"slect-placeholder": "قم بالاختيار من فضلك",
+			"areas": {
+				"mail": "تكوين البريد الإلكتروني",
+				"language": "اللغة",
+				"currency": "العملة",
+				"vat": "ضريبة القيمة المضافة",
+				"recaptcha": "reCAPTCHA",
+				"pusher": "Pusher",
+				"social_media": "وسائل التواصل الاجتماعي",
+				"general": "عام",
+				"seo": "تحسين محرك البحث"
+			}
+		},
+
+		"users": {
+			"title": "إدارة المستخدمين",
+			"search-placeholder": "البحث بالاسم، البريد الإلكتروني، الدور...",
+			"show-users": "عرض المستخدمين",
+			"add-user-button-text": "إضافة مستخدم جديد",
+
+			"no-users-found-matching-your-search": "لم يتم العثور على مستخدمين مطابقين لبحثك",
+			"no-users-available": "لا يوجد مستخدمون متاحون",
+
+			"user-card": {
+				"edit-button-text": "تعديل",
+				"delete-button-text": "حذف",
+				"view-profile-button-text": "عرض الملف الشخصي",
+				"role-name": "الأدوار"
+			},
+
+			"add-new-user-page": {
+				"title": "إضافة مستخدم جديد",
+				"loading-profile": "جاري تحميل الملف الشخصي...",
+				"personal-info": {
+					"title": "المعلومات الشخصية",
+					"full-name": "الاسم الكامل",
+					"email": "البريد الإلكتروني",
+					"role-name": "الأدوار"
+				},
+
+				"profile-image": "صورة الملف الشخصي",
+				"full-name-label": "الاسم الكامل",
+				"full-name-input-placeholder": "أدخل الاسم الكامل",
+				"email-label": "البريد الإلكتروني",
+				"email-input-placeholder": "أدخل عنوان البريد الإلكتروني",
+				"role-name-label": "أدوار المستخدم",
+				"role-input-placeholder": "اختر أدوار المستخدم",
+				"new-password-labe": "كلمة المرور الجديدة",
+				"new-password-input-placeholder": "أدخل كلمة المرور الجديدة",
+				"confirmed-password-label": "تأكيد كلمة المرور",
+				"confirmed-password-input-placeholder": "أدخل تأكيد كلمة المرور",
+				"save-button-text": "حفظ",
+				"save-button-loading-text": "جاري الحفظ...",
+				"cancel-button-text": "إلغاء",
+
+				"edit-profile": "تعديل الملف الشخصي",
+				"profile-info": "معلومات الملف الشخصي",
+				"update-profile": "تحديث الملف الشخصي"
+			}
+		},
+		"roles-and-permissions": {
+			"roles-page-title": "إدارة الأدوار",
+			"add-new-role-button": "إضافة دور جديد",
+			"search-placeholder": "البحث باسم الدور، اسم الحارس...",
+			"no_roles_available": "لا توجد أدوار متاحة",
+			"no_roles_found_matching_your_search": "لم يتم العثور على أدوار مطابقة لبحثك",
+			"roles-table": {
+				"role_name": "اسم الدور",
+				"guard_name": "اسم الحارس",
+				"permissions_count": "عدد الصلاحيات",
+				"date": "التاريخ",
+				"actions": "الإجراءات",
+				"edit_role": "تعديل الدور"
+			},
+			"add-new-role-page": {
+				"role-name-label": "اسم الدور",
+				"role-name-input-placeholder": "أدخل اسم الدور",
+
+				"permissions-label": "اختر الصلاحيات",
+				"permissions-input-placeholder": "اختر الصلاحيات ثم اضغط Enter",
+				"save-button-text": "حفظ",
+				"save-button-loading-text": "جاري الحفظ...",
+				"cancel-button-text": "إلغاء"
+			}
+		},
+
+		"tenants-management": {
+			"tenants-page-title": "إدارة المستأجرين",
+			"add-new-tenant-button": "إضافة مستأجر جديد",
+			"search-placeholder": "البحث باسم المستأجر، رقم الهاتف، اسم المالك...",
+
+			"tenants-table": {
+				"tenant_name": "اسم المستأجر",
+				"address": "العنوان",
+				"subdomain": "الدومين الفرعي",
+				"owner_name": "اسم المالك",
+				"owner_phone": "هاتف المالك",
+				"date": "التاريخ",
+				"actions": "الإجراءات",
+				"edit_tenant": "تعديل المستأجر",
+				"loading-tenants": "جاري تحميل المستأجرين...",
+				"no-tenants-available": "لا يوجد مستأجرون متاحون",
+				"create-first-tenant": "أنشئ أول مستأجر للبدء"
+			},
+			"add-new-tenant-page": {
+				"copy": "نسخ",
+				"copied": "تم النسخ!",
+				"subdomain-copied-toast-message": "تم نسخ الدومين الفرعي إلى الحافظة!",
+				"application-not-found-message": "لم يتم العثور على المستأجر",
+
+				"type-label": "نوع المستأجر",
+				"type-input-placeholder": "اختر نوع المستأجر",
+				"type-options": {
+					"business": "تجاري",
+					"individual": "فردي"
+				},
+
+				"tenant": {
+					"title": "معلومات المستأجر",
+					"name-label": "اسم المستأجر",
+					"name-input-placeholder": "أدخل اسم المستأجر",
+					"subdomain-label": "الدومين الفرعي",
+					"subdomain-input-placeholder": "مثال : subdomain.aqarna-dev.com",
+					"address-label": "العنوان",
+					"cr_no-label": "رقم السجل التجاري",
+					"cr_no-input-placeholder": "أدخل رقم السجل التجاري",
+					"tin-label": "الرقم الضريبي",
+					"tin-input-placeholder": "أدخل الرقم الضريبي",
+					"address-input-placeholder": "أدخل العنوان",
+					"phone-label": "رقم هاتف المستأجر",
+					"phone-input-placeholder": "أدخل رقم هاتف المستأجر"
+				},
+
+				"owner": {
+					"title": "معلومات المالك",
+					"name-label": "اسم المالك",
+					"name-input-placeholder": "أدخل اسم المالك",
+					"email-label": "البريد الإلكتروني للمالك",
+					"email-input-placeholder": "أدخل البريد الإلكتروني للمالك",
+					"phone-label": "رقم هاتف المالك",
+					"phone-input-placeholder": "أدخل رقم هاتف المالك"
+				},
+
+				"subscription": {
+					"title": "معلومات الاشتراك",
+					"package-label": "اختر الباقة",
+					"package-input-placeholder": "اختر باقتك",
+					"package-cycle-label": "دورة الباقة",
+					"package-cycle-placeholder": "اختر دورة الباقة",
+					"package-period-label": "فترة الباقة (بالأشهر)",
+					"package-period-input-placeholder": "أدخل فترة الباقة",
+					"period-label": "فترة الاشتراك",
+					"period-input-placeholder": "اختر فترة الاشتراك",
+					"month": "شهر",
+					"months": "أشهر",
+					"cycle-options": {
+						"monthly": "شهري",
+						"yearly": "سنوي"
+					}
+				},
+
+				"message-label": "الرسالة",
+				"message-input-placeholder": "أدخل رسالتك (اختياري)",
+
+				"save-button-text": "حفظ",
+				"save-button-loading-text": "جاري الحفظ...",
+				"cancel-button-text": "إلغاء"
+			},
+			"tenants-applications": {
+				"title": "طلبات المستأجرين",
+				"subtitle": "إدارة جميع طلبات المستأجرين",
+				"add-new-tenant-application": "إضافة طلب مستأجر جديد",
+				"search-placeholder": "البحث باسم المستأجر، البريد الإلكتروني للمالك، اسم المالك...",
+				"filter-by-status": "تصفية حسب الحالة",
+
+				"table": {
+					"type": "النوع",
+					"tenant_name": "اسم المستأجر",
+					"subscription_package_id": "الباقة",
+					"subscription_cycle": "دورة الاشتراك",
+					"subdomain": "الدومين الفرعي",
+					"owner_name": "اسم المالك",
+					"owner_email": "البريد الإلكتروني للمالك",
+					"date": "التاريخ",
+					"status": "الحالة",
+					"actions": "الإجراءات",
+					"approve_tenant": "الموافقة على طلب المستأجر",
+					"approving_tenant": "جاري الموافقة...",
+					"rejecting_tenant": "جاري الرفض...",
+					"reject_tenant": "رفض طلب المستأجر",
+					"no_applications_found_matching_search": "لم يتم العثور على طلبات مطابقة لبحثك",
+					"no_applications_available": "لا توجد طلبات متاحة"
+				},
+				"add-new-tenant-application-page": {
+					"copy": "نسخ",
+					"copied": "تم النسخ!",
+					"subdomain-copied-toast-message": "تم نسخ الدومين الفرعي إلى الحافظة!",
+					"application-not-found-message": "لم يتم العثور على الطلب",
+
+					"tenant": {
+						"title": "معلومات المستأجر",
+						"type-label": "نوع المستأجر",
+						"type-input-placeholder": "أدخل نوع المستأجر",
+						"name-label": "اسم المستأجر",
+						"name-input-placeholder": "أدخل اسم المستأجر",
+						"subdomain-label": "الدومين الفرعي",
+						"subdomain-input-placeholder": "مثال : subdomain.aqarna-dev.com",
+						"address-label": "العنوان",
+						"cr_no-label": "رقم السجل التجاري",
+						"cr_no-input-placeholder": "أدخل رقم السجل التجاري",
+						"tin-label": "الرقم الضريبي",
+						"tin-input-placeholder": "أدخل الرقم الضريبي",
+						"address-input-placeholder": "أدخل العنوان",
+						"phone-label": "رقم هاتف المستأجر",
+						"phone-input-placeholder": "أدخل رقم هاتف المستأجر"
+					},
+
+					"owner": {
+						"title": "معلومات المالك",
+						"name-label": "اسم المالك",
+						"name-input-placeholder": "أدخل اسم المالك",
+						"email-label": "البريد الإلكتروني للمالك",
+						"email-input-placeholder": "أدخل البريد الإلكتروني للمالك",
+						"phone-label": "رقم هاتف المالك",
+						"phone-input-placeholder": "أدخل رقم هاتف المالك"
+					},
+
+					"subscription": {
+						"title": "معلومات الاشتراك",
+						"package-label": "اختر الباقة",
+						"package-input-placeholder": "اختر باقتك",
+						"package-cycle-label": "دورة الباقة",
+						"package-cycle-placeholder": "اختر دورة الباقة",
+						"period-label": "فترة الاشتراك",
+						"period-input-placeholder": "اختر فترة الاشتراك",
+						"month": "شهر",
+						"months": "أشهر",
+						"cycle-options": {
+							"monthly": "شهري",
+							"yearly": "سنوي"
+						}
+					},
+					"message-label": "الرسالة",
+					"message-input-placeholder": "أدخل رسالتك للمتقدم",
+					"status-label": "الحالة",
+					"reviewed-by-label": "تمت المراجعة بواسطة",
+					"type-label": "اختر نوع الطلب",
+					"type-input-placeholder": "اختر نوع الطلب",
+					"type-options": {
+						"business": "تجاري",
+						"individual": "فردي"
+					},
+
+					"save-button-text": "حفظ",
+					"save-button-loading-text": "جاري الحفظ...",
+					"cancel-button-text": "إلغاء",
+					"close-button-text": "إغلاق"
+				},
+				"show-current-tenant-application": {
+					"title": "مراجعة طلب المستأجر",
+					"accept-button-text": "قبول الطلب",
+
+					"approve-application-message": "هل أنت متأكد من الموافقة على هذا الطلب؟",
+					"reject-application-message": "هل أنت متأكد من رفض هذا الطلب؟",
+
+					"accept-button-loading-text": "جاري القبول...",
+					"reject-button-text": "رفض",
+					"reject-button-loading-text": "جاري الرفض..."
+				}
+			}
+		}
+	},
+
+	"tenant": {
+		"sidebar": {
+			"home": "الرئيسية",
+			"contracts": "العقود",
+			"customers": "العملاء",
+			"maintenance-tickets": "طلبات الصيانة",
+			"meter-management": "إدارة العدادات",
+			"meters": "العدادات",
+			"meter-readings": "قراءات العدادات",
+			"properties": "العقارات",
+			"subscription": "الاشتراك",
+			"units": "الوحدات",
+			"transactions": "المعاملات",
+			"users": "المستخدمون",
+			"roles-permissions": "الأدوار والصلاحيات",
+			"setting": "الإعدادات",
+			"notification": "الإشعارات"
+		}
+	}
+}

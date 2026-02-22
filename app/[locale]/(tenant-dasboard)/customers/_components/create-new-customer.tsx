@@ -1,0 +1,576 @@
+"use client";
+import React, { useRef } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { createCustomerSchema, createCustomerType } from "@/lib/zod";
+import { useTranslations } from "next-intl";
+import { Separator } from "@/components/ui/separator";
+import { DialogClose } from "@/components/ui/dialog";
+import { Loader2, Plus, Trash2 } from "lucide-react";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useCustomers } from "@/hooks/queries/tenants/useCustomers";
+import InputPhoneCountryInput from "@/components/shared/InputPhoneCountryInput";
+
+const CreateNewCustomer = () => {
+	const t = useTranslations("tenant.customers.create-new-customer-page");
+	const closeButtonRef = useRef<HTMLButtonElement>(null);
+	const { createCustomer, isCreating } = useCustomers();
+
+	const {
+		control,
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+		watch,
+		setValue,
+	} = useForm<createCustomerType>({
+		resolver: zodResolver(createCustomerSchema),
+		defaultValues: {
+			type: undefined,
+			emergency_contact: [],
+			vehicles: [],
+			pets: [],
+			dial_code: "",
+			secondary_dial_code: "",
+		},
+	});
+
+	const selectedType = watch("type");
+
+	// ── Dynamic arrays ────────────────────────────────────────────────────────
+	const {
+		fields: emergencyFields,
+		append: appendEmergency,
+		remove: removeEmergency,
+	} = useFieldArray({ control, name: "emergency_contact" });
+
+	const {
+		fields: vehicleFields,
+		append: appendVehicle,
+		remove: removeVehicle,
+	} = useFieldArray({ control, name: "vehicles" });
+
+	const {
+		fields: petFields,
+		append: appendPet,
+		remove: removePet,
+	} = useFieldArray({ control, name: "pets" });
+
+	const onSubmit = async (data: createCustomerType) => {
+		try {
+			await createCustomer(data, {
+				onSuccess: () => {
+					reset();
+					closeButtonRef.current?.click();
+				},
+			});
+		} catch (error) {
+			console.error("Error creating customer:", error);
+		}
+	};
+
+	return (
+		<form onSubmit={handleSubmit(onSubmit)}>
+			<DialogClose ref={closeButtonRef} className='hidden' />
+
+			<div className='grid grid-cols-12 gap-5 pb-6'>
+				{/* ── Type ── */}
+				<div className='col-span-12'>
+					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+						{t("type-label")}
+						<span className='text-red-600'>*</span>
+					</Label>
+					<Controller
+						name='type'
+						control={control}
+						render={({ field }) => (
+							<Select value={field.value} onValueChange={field.onChange}>
+								<SelectTrigger className='h-12! px-4 w-full'>
+									<SelectValue placeholder={t("type-placeholder")} />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectItem value='individual'>
+											{t("type-options.individual")}
+										</SelectItem>
+										<SelectItem value='business'>
+											{t("type-options.business")}
+										</SelectItem>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						)}
+					/>
+					{errors.type && (
+						<p className='text-red-500 text-sm mt-1'>{errors.type.message}</p>
+					)}
+				</div>
+
+				{/* ════ Basic Information ════ */}
+				<div className='col-span-12'>
+					<h6 className='text-base font-semibold text-neutral-700 dark:text-neutral-200 mb-1'>
+						{t("basic-info-section")}
+					</h6>
+					<Separator className='w-auto' />
+				</div>
+
+				{/* Name */}
+				<div className='md:col-span-6 col-span-12'>
+					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+						{t("name-label")}
+						<span className='text-red-600'>*</span>
+					</Label>
+					<Input
+						className='h-12 px-4'
+						placeholder={t("name-placeholder")}
+						{...register("name")}
+					/>
+					{errors.name && (
+						<p className='text-red-500 text-sm mt-1'>{errors.name.message}</p>
+					)}
+				</div>
+
+				{/* Email */}
+				<div className='md:col-span-6 col-span-12'>
+					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+						{t("email-label")}
+						<span className='text-red-600'>*</span>
+					</Label>
+					<Input
+						type='email'
+						className='h-12 px-4'
+						placeholder={t("email-placeholder")}
+						{...register("email")}
+					/>
+					{errors.email && (
+						<p className='text-red-500 text-sm mt-1'>{errors.email.message}</p>
+					)}
+				</div>
+
+				{/* ════ Identification ════ */}
+				<div className='col-span-12 mt-2'>
+					<h6 className='text-base font-semibold text-neutral-700 dark:text-neutral-200 mb-1'>
+						{t("id-section")}
+					</h6>
+					<Separator className='w-auto' />
+				</div>
+
+				{/* Individual: NID */}
+				{selectedType === "individual" && (
+					<div className='md:col-span-6 col-span-12'>
+						<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+							{t("nid-label")}
+							<span className='text-red-600'>*</span>
+						</Label>
+						<Input
+							className='h-12 px-4'
+							placeholder={t("nid-placeholder")}
+							{...register("nid_no")}
+						/>
+						{errors.nid_no && (
+							<p className='text-red-500 text-sm mt-1'>
+								{errors.nid_no.message}
+							</p>
+						)}
+					</div>
+				)}
+
+				{/* Business: CR + TIN */}
+				{selectedType === "business" && (
+					<>
+						<div className='md:col-span-6 col-span-12'>
+							<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+								{t("cr-label")}
+								<span className='text-red-600'>*</span>
+							</Label>
+							<Input
+								className='h-12 px-4'
+								placeholder={t("cr-placeholder")}
+								{...register("cr_no")}
+							/>
+							{errors.cr_no && (
+								<p className='text-red-500 text-sm mt-1'>
+									{errors.cr_no.message}
+								</p>
+							)}
+						</div>
+						<div className='md:col-span-6 col-span-12'>
+							<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+								{t("tin-label")}
+								<span className='text-red-600'>*</span>
+							</Label>
+							<Input
+								className='h-12 px-4'
+								placeholder={t("tin-placeholder")}
+								{...register("tin")}
+							/>
+							{errors.tin && (
+								<p className='text-red-500 text-sm mt-1'>
+									{errors.tin.message}
+								</p>
+							)}
+						</div>
+					</>
+				)}
+
+				{/* ════ Contact Details ════ */}
+				<div className='col-span-12 mt-2'>
+					<h6 className='text-base font-semibold text-neutral-700 dark:text-neutral-200 mb-1'>
+						{t("contact-section")}
+					</h6>
+					<Separator className='w-auto' />
+				</div>
+
+				{/* Primary Phone */}
+				<div className='md:col-span-6 col-span-12'>
+					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+						{t("phone-label")}
+						<span className='text-red-600'>*</span>
+					</Label>
+					<Controller
+						name='phone'
+						control={control}
+						render={({ field }) => (
+							<InputPhoneCountryInput
+								value={field.value}
+								placeholder={t("phone-placeholder")}
+								onPhoneChange={(phone: string, dialCode: string) => {
+									setValue("phone", phone);
+									setValue("dial_code", dialCode);
+								}}
+							/>
+						)}
+					/>
+					{errors.phone && (
+						<p className='text-red-500 text-sm mt-1'>{errors.phone.message}</p>
+					)}
+					{errors.dial_code && (
+						<p className='text-red-500 text-sm mt-1'>
+							{errors.dial_code.message}
+						</p>
+					)}
+				</div>
+
+				{/* Secondary Phone */}
+				<div className='md:col-span-6 col-span-12'>
+					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+						{t("secondary-phone-label")}
+					</Label>
+					<Controller
+						name='secondary_phone'
+						control={control}
+						render={({ field }) => (
+							<InputPhoneCountryInput
+								value={field.value}
+								placeholder={t("secondary-phone-placeholder")}
+								onPhoneChange={(phone: string, dialCode: string) => {
+									setValue("secondary_phone", phone);
+									setValue("secondary_dial_code", dialCode);
+								}}
+							/>
+						)}
+					/>
+				</div>
+
+				{/* Address */}
+				<div className='col-span-12'>
+					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+						{t("address-label")}
+					</Label>
+					<Textarea
+						className='h-20 px-4 py-2 resize-none'
+						placeholder={t("address-placeholder")}
+						{...register("address")}
+					/>
+				</div>
+
+				{/* ════ Emergency Contacts ════ */}
+				<div className='col-span-12 mt-2'>
+					<div className='flex items-center justify-between mb-1'>
+						<h6 className='text-base font-semibold text-neutral-700 dark:text-neutral-200'>
+							{t("emergency-contacts-section")}
+						</h6>
+						<Button
+							type='button'
+							size='sm'
+							variant='outline'
+							onClick={() =>
+								appendEmergency({ name: "", phone: "", relation: "" })
+							}
+							className='h-8 text-xs gap-1'>
+							<Plus className='w-3 h-3' />
+							{t("add-emergency-contact")}
+						</Button>
+					</div>
+					<Separator className='w-auto' />
+				</div>
+
+				{emergencyFields.map((field, index) => (
+					<div
+						key={field.id}
+						className='col-span-12 grid grid-cols-12 gap-3 p-3 border border-neutral-200 dark:border-slate-600 rounded-lg'>
+						<div className='md:col-span-4 col-span-12'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("emergency-contact-name-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("emergency-contact-name-placeholder")}
+								{...register(`emergency_contact.${index}.name`)}
+							/>
+						</div>
+						<div className='md:col-span-4 col-span-12'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("emergency-contact-phone-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("emergency-contact-phone-placeholder")}
+								{...register(`emergency_contact.${index}.phone`)}
+							/>
+						</div>
+						<div className='md:col-span-3 col-span-10'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("emergency-contact-relation-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("emergency-contact-relation-placeholder")}
+								{...register(`emergency_contact.${index}.relation`)}
+							/>
+						</div>
+						<div className='md:col-span-1 col-span-2 flex items-end'>
+							<Button
+								type='button'
+								size='icon'
+								variant='ghost'
+								onClick={() => removeEmergency(index)}
+								className='h-10 w-10 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'>
+								<Trash2 className='w-4 h-4' />
+							</Button>
+						</div>
+					</div>
+				))}
+
+				{/* ════ Vehicles ════ */}
+				<div className='col-span-12 mt-2'>
+					<div className='flex items-center justify-between mb-1'>
+						<h6 className='text-base font-semibold text-neutral-700 dark:text-neutral-200'>
+							{t("vehicles-section")}
+						</h6>
+						<Button
+							type='button'
+							size='sm'
+							variant='outline'
+							onClick={() =>
+								appendVehicle({
+									make: "",
+									model: "",
+									model_year: new Date().getFullYear(),
+									color: "",
+									plate_number: "",
+								})
+							}
+							className='h-8 text-xs gap-1'>
+							<Plus className='w-3 h-3' />
+							{t("add-vehicle")}
+						</Button>
+					</div>
+					<Separator className='w-auto' />
+				</div>
+
+				{vehicleFields.map((field, index) => (
+					<div
+						key={field.id}
+						className='col-span-12 grid grid-cols-12 gap-3 p-3 border border-neutral-200 dark:border-slate-600 rounded-lg'>
+						<div className='md:col-span-3 col-span-6'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("vehicle-make-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("vehicle-make-placeholder")}
+								{...register(`vehicles.${index}.make`)}
+							/>
+						</div>
+						<div className='md:col-span-3 col-span-6'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("vehicle-model-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("vehicle-model-placeholder")}
+								{...register(`vehicles.${index}.model`)}
+							/>
+						</div>
+						<div className='md:col-span-2 col-span-4'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("vehicle-year-label")}
+							</Label>
+							<Input
+								type='number'
+								className='h-10 px-3'
+								placeholder={t("vehicle-year-placeholder")}
+								{...register(`vehicles.${index}.model_year`, {
+									valueAsNumber: true,
+								})}
+							/>
+						</div>
+						<div className='md:col-span-2 col-span-4'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("vehicle-color-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("vehicle-color-placeholder")}
+								{...register(`vehicles.${index}.color`)}
+							/>
+						</div>
+						<div className='md:col-span-2 col-span-3'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("vehicle-plate-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("vehicle-plate-placeholder")}
+								{...register(`vehicles.${index}.plate_number`)}
+							/>
+						</div>
+						<div className='col-span-1 flex items-end'>
+							<Button
+								type='button'
+								size='icon'
+								variant='ghost'
+								onClick={() => removeVehicle(index)}
+								className='h-10 w-10 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'>
+								<Trash2 className='w-4 h-4' />
+							</Button>
+						</div>
+					</div>
+				))}
+
+				{/* ════ Pets ════ */}
+				<div className='col-span-12 mt-2'>
+					<div className='flex items-center justify-between mb-1'>
+						<h6 className='text-base font-semibold text-neutral-700 dark:text-neutral-200'>
+							{t("pets-section")}
+						</h6>
+						<Button
+							type='button'
+							size='sm'
+							variant='outline'
+							onClick={() => appendPet({ type: "", name: "", breed: "" })}
+							className='h-8 text-xs gap-1'>
+							<Plus className='w-3 h-3' />
+							{t("add-pet")}
+						</Button>
+					</div>
+					<Separator className='w-auto' />
+				</div>
+
+				{petFields.map((field, index) => (
+					<div
+						key={field.id}
+						className='col-span-12 grid grid-cols-12 gap-3 p-3 border border-neutral-200 dark:border-slate-600 rounded-lg'>
+						<div className='md:col-span-4 col-span-12'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("pet-type-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("pet-type-placeholder")}
+								{...register(`pets.${index}.type`)}
+							/>
+						</div>
+						<div className='md:col-span-4 col-span-12'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("pet-name-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("pet-name-placeholder")}
+								{...register(`pets.${index}.name`)}
+							/>
+						</div>
+						<div className='md:col-span-3 col-span-10'>
+							<Label className='text-sm font-medium text-neutral-600 dark:text-neutral-300 mb-1 block'>
+								{t("pet-breed-label")}
+							</Label>
+							<Input
+								className='h-10 px-3'
+								placeholder={t("pet-breed-placeholder")}
+								{...register(`pets.${index}.breed`)}
+							/>
+						</div>
+						<div className='md:col-span-1 col-span-2 flex items-end'>
+							<Button
+								type='button'
+								size='icon'
+								variant='ghost'
+								onClick={() => removePet(index)}
+								className='h-10 w-10 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'>
+								<Trash2 className='w-4 h-4' />
+							</Button>
+						</div>
+					</div>
+				))}
+
+				{/* ════ Notes ════ */}
+				<div className='col-span-full mt-2'>
+					<Separator className='w-auto mb-4' />
+					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+						{t("notes-label")}
+					</Label>
+					<Textarea
+						className='h-20 px-4 py-2 resize-none'
+						placeholder={t("notes-placeholder")}
+						{...register("notes")}
+					/>
+
+					{errors.notes && (
+						<p className='text-red-500 text-sm mt-1'>{errors.notes.message}</p>
+					)}
+				</div>
+			</div>
+
+			<Separator className='w-auto my-4' />
+
+			<div className='flex items-center justify-center gap-3'>
+				<DialogClose asChild>
+					<Button
+						type='button'
+						className='h-12 border border-red-600 bg-transparent hover:bg-red-600/20 text-red-600 text-base px-14 py-2.75 rounded-lg'>
+						{t("cancel-button-text")}
+					</Button>
+				</DialogClose>
+				<Button
+					type='submit'
+					disabled={isCreating}
+					className='h-12 text-base px-14 py-3 rounded-lg'>
+					{isCreating ? (
+						<>
+							<Loader2 className='animate-spin h-4.5 w-4.5 mr-2 rtl:mr-0 rtl:ml-2' />
+							{t("save-button-loading-text")}
+						</>
+					) : (
+						t("save-button-text")
+					)}
+				</Button>
+			</div>
+		</form>
+	);
+};
+
+export default CreateNewCustomer;

@@ -1,0 +1,54 @@
+"use client";
+
+import ForgotPasswordComponent from "@/components/auth/forgot-password";
+import ThemeLogo from "@/components/shared/theme-logo";
+import AuthImage from "@/public/assets/images/auth/forgot-pass-img.png";
+import { StaticImg } from "@/types/static-image";
+import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+
+const forgotPassImage: StaticImg = {
+	image: AuthImage,
+};
+
+const ForgotPassword = () => {
+	const t = useTranslations("auth.forgot-password");
+
+	return (
+		<section className='bg-white dark:bg-slate-900 flex flex-wrap min-h-screen'>
+			{/* Left Image */}
+			<div className='lg:w-1/2 hidden lg:block'>
+				<div className='flex items-center justify-center h-screen flex-col'>
+					<Image
+						src={forgotPassImage.image}
+						alt='Auth Illustration'
+						className='object-cover w-full h-full'
+					/>
+				</div>
+			</div>
+
+			{/* Right Form */}
+			<div className='lg:w-1/2 w-full py-8 px-6 flex flex-col justify-center'>
+				<div className='lg:max-w-116 w-full mx-auto'>
+					{/* Logo and heading */}
+					<div>
+						<div className='mb-2.5 inline-block max-w-72.5'>
+							<ThemeLogo />
+						</div>
+
+						<h4 className='font-semibold mb-3'>{t("title")}</h4>
+						<p className='mb-8 text-neutral-500 dark:text-neutral-300 text-lg'>
+							{t("subtitle")}
+						</p>
+					</div>
+
+					{/* Login Form */}
+					<ForgotPasswordComponent />
+				</div>
+			</div>
+		</section>
+	);
+};
+
+export default ForgotPassword;
