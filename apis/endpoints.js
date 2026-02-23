@@ -25,10 +25,7 @@ function handleRequestError(error, resourceName, id) {
 // recover account API
 export const recoverAccountAPI = async (email) => {
 	try {
-		const response = await AxiosAPI.post(
-			`/central/auth/forgot-password`,
-			email,
-		);
+		const response = await AxiosAPI.post(`/auth/forgot-password`, email);
 		return response.data;
 	} catch (error) {
 		throw error;
@@ -38,7 +35,7 @@ export const recoverAccountAPI = async (email) => {
 // reset password API
 export const resetPasswordAPI = async (data) => {
 	try {
-		const response = await AxiosAPI.post(`/central/auth/reset-password`, data);
+		const response = await AxiosAPI.post(`/auth/reset-password`, data);
 		return response.data;
 	} catch (error) {
 		return handleRequestError(error, "Rest password api", null);
@@ -48,7 +45,7 @@ export const resetPasswordAPI = async (data) => {
 // sign out API
 export const LogoutAPI = async () => {
 	try {
-		const response = await AxiosAuth.post("/central/auth/logout");
+		const response = await AxiosAuth.post("/auth/logout");
 		return response.data;
 	} catch (error) {
 		return handleRequestError(error, "Logout", null);
@@ -58,7 +55,7 @@ export const LogoutAPI = async () => {
 // Get dashboard overview
 export const getDashboardOverviewAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/dashboard/overview`);
+		const { data } = await AxiosAuth.get(`/dashboard/overview`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getDashboardOverviewAPI", null);
@@ -68,7 +65,7 @@ export const getDashboardOverviewAPI = async () => {
 // Get user current info
 export const getCurrentUserAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/auth/me`);
+		const { data } = await AxiosAuth.get(`/auth/me`);
 
 		return data;
 	} catch (error) {
@@ -80,7 +77,7 @@ export const getCurrentUserAPI = async () => {
 // Get all settings
 export const getSettingsAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/settings`);
+		const { data } = await AxiosAuth.get(`/settings`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getSettingsAPI", null);
@@ -119,7 +116,7 @@ export const updateSettingAPI = async (settingKey, value) => {
 			}
 
 			const { data } = await AxiosAuth.post(
-				`/central/settings/${settingKey}`,
+				`/settings/${settingKey}`,
 				formData,
 				{
 					headers: {
@@ -130,7 +127,7 @@ export const updateSettingAPI = async (settingKey, value) => {
 			return data;
 		}
 
-		const { data } = await AxiosAuth.post(`/central/settings/${settingKey}`, {
+		const { data } = await AxiosAuth.post(`/settings/${settingKey}`, {
 			value,
 		});
 		return data;
@@ -142,7 +139,7 @@ export const updateSettingAPI = async (settingKey, value) => {
 // set Languages API
 export const setLanguagesAPI = async (locale) => {
 	try {
-		const { data } = await AxiosAuth.post(`/central/lang/${locale}`);
+		const { data } = await AxiosAuth.post(`/lang/${locale}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "setLanguagesAPI", null);
@@ -152,7 +149,7 @@ export const setLanguagesAPI = async (locale) => {
 // Get all notifications
 export const getNotificationsAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/notifications`);
+		const { data } = await AxiosAuth.get(`/notifications`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getNotificationsAPI", null);
@@ -162,9 +159,7 @@ export const getNotificationsAPI = async () => {
 // Mark all notifications as read
 export const markAllNotificationsAsReadAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(
-			`/central/notifications/mark-all-as-read`,
-		);
+		const { data } = await AxiosAuth.get(`/notifications/mark-all-as-read`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "markAllNotificationsAsReadAPI", null);
@@ -175,7 +170,7 @@ export const markAllNotificationsAsReadAPI = async () => {
 export const markNotificationAsReadAPI = async (notificationId) => {
 	try {
 		const { data } = await AxiosAuth.post(
-			`/central/notifications/${notificationId}/mark-as-read`,
+			`/notifications/${notificationId}/mark-as-read`,
 		);
 		return data;
 	} catch (error) {
@@ -186,9 +181,7 @@ export const markNotificationAsReadAPI = async (notificationId) => {
 // Delete notification
 export const deleteNotificationAPI = async (notificationId) => {
 	try {
-		const { data } = await AxiosAuth.delete(
-			`/central/notifications/${notificationId}`,
-		);
+		const { data } = await AxiosAuth.delete(`/notifications/${notificationId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "deleteNotificationAPI", null);
@@ -198,7 +191,7 @@ export const deleteNotificationAPI = async (notificationId) => {
 // Get all packages
 export const getPackagesAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/packages`);
+		const { data } = await AxiosAuth.get(`/packages`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getPackagesAPI", null);
@@ -208,7 +201,7 @@ export const getPackagesAPI = async () => {
 // Get single package
 export const getPackageAPI = async (packageId) => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/packages/${packageId}`);
+		const { data } = await AxiosAuth.get(`/packages/${packageId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getPackageAPI", null);
@@ -218,7 +211,7 @@ export const getPackageAPI = async (packageId) => {
 // Create package
 export const createPackageAPI = async (packageData) => {
 	try {
-		const { data } = await AxiosAuth.post(`/central/packages`, packageData);
+		const { data } = await AxiosAuth.post(`/packages`, packageData);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "createPackageAPI", null);
@@ -228,10 +221,7 @@ export const createPackageAPI = async (packageData) => {
 // Update package
 export const updatePackageAPI = async (packageId, packageData) => {
 	try {
-		const { data } = await AxiosAuth.put(
-			`/central/packages/${packageId}`,
-			packageData,
-		);
+		const { data } = await AxiosAuth.put(`/packages/${packageId}`, packageData);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "updatePackageAPI", null);
@@ -241,7 +231,7 @@ export const updatePackageAPI = async (packageId, packageData) => {
 // Delete package
 export const deletePackageAPI = async (packageId) => {
 	try {
-		const { data } = await AxiosAuth.delete(`/central/packages/${packageId}`);
+		const { data } = await AxiosAuth.delete(`/packages/${packageId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "deletePackageAPI", null);
@@ -253,7 +243,7 @@ export const deletePackageAPI = async (packageId) => {
 // Get all transactions
 export const getTransactionsAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/transactions`);
+		const { data } = await AxiosAuth.get(`/transactions`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getTransactionsAPI", null);
@@ -263,9 +253,7 @@ export const getTransactionsAPI = async () => {
 // Get single transaction
 export const getTransactionAPI = async (transactionId) => {
 	try {
-		const { data } = await AxiosAuth.get(
-			`/central/transactions/${transactionId}`,
-		);
+		const { data } = await AxiosAuth.get(`/transactions/${transactionId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getTransactionAPI", null);
@@ -276,7 +264,7 @@ export const getTransactionAPI = async (transactionId) => {
 export const confirmTransactionAPI = async (transactionId) => {
 	try {
 		const { data } = await AxiosAuth.post(
-			`/central/transactions/${transactionId}/confirm`,
+			`/transactions/${transactionId}/confirm`,
 		);
 		return data;
 	} catch (error) {
@@ -289,7 +277,7 @@ export const confirmTransactionAPI = async (transactionId) => {
 // Get all users
 export const getUsersAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/users`);
+		const { data } = await AxiosAuth.get(`/users`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getUsersAPI", null);
@@ -299,7 +287,7 @@ export const getUsersAPI = async () => {
 // Get single user
 export const getUserAPI = async (userId) => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/users/${userId}`);
+		const { data } = await AxiosAuth.get(`/users/${userId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getUserAPI", null);
@@ -329,7 +317,7 @@ export const createUserAPI = async (userData) => {
 			formData.append("avatar", userData.avatar);
 		}
 
-		const { data } = await AxiosAuth.post(`/central/users`, formData, {
+		const { data } = await AxiosAuth.post(`/users`, formData, {
 			headers: {
 				"Content-Type": "multipart/form-data",
 			},
@@ -363,15 +351,11 @@ export const updateUserAPI = async (userId, userData) => {
 			formData.append("avatar", userData.avatar);
 		}
 
-		const { data } = await AxiosAuth.post(
-			`/central/users/${userId}`,
-			formData,
-			{
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
+		const { data } = await AxiosAuth.post(`/users/${userId}`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
 			},
-		);
+		});
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "updateUserAPI", null);
@@ -381,7 +365,7 @@ export const updateUserAPI = async (userId, userData) => {
 // Delete user
 export const deleteUserAPI = async (userId) => {
 	try {
-		const { data } = await AxiosAuth.delete(`/central/users/${userId}`);
+		const { data } = await AxiosAuth.delete(`/users/${userId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "deleteUserAPI", null);
@@ -392,7 +376,7 @@ export const deleteUserAPI = async (userId) => {
 export const updateUserPasswordAPI = async (passwordData) => {
 	try {
 		const { data } = await AxiosAuth.post(
-			`/central/user/update-password`,
+			`/user/update-password`,
 			passwordData,
 		);
 		return data;
@@ -407,15 +391,11 @@ export const updateUserAvatarAPI = async (avatarFile) => {
 		const formData = new FormData();
 		formData.append("avatar", avatarFile);
 
-		const { data } = await AxiosAuth.post(
-			`/central/user/update-avatar`,
-			formData,
-			{
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
+		const { data } = await AxiosAuth.post(`/user/update-avatar`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
 			},
-		);
+		});
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "updateUserAvatarAPI", null);
@@ -427,7 +407,7 @@ export const updateUserAvatarAPI = async (avatarFile) => {
 // Get all roles
 export const getRolesAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/roles`);
+		const { data } = await AxiosAuth.get(`/roles`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getRolesAPI", null);
@@ -437,7 +417,7 @@ export const getRolesAPI = async () => {
 // Get single role
 export const getRoleAPI = async (roleId) => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/roles/${roleId}`);
+		const { data } = await AxiosAuth.get(`/roles/${roleId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getRoleAPI", null);
@@ -447,7 +427,7 @@ export const getRoleAPI = async (roleId) => {
 // Create role
 export const createRoleAPI = async (roleData) => {
 	try {
-		const { data } = await AxiosAuth.post(`/central/roles`, roleData);
+		const { data } = await AxiosAuth.post(`/roles`, roleData);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "createRoleAPI", null);
@@ -457,7 +437,7 @@ export const createRoleAPI = async (roleData) => {
 // Update role
 export const updateRoleAPI = async (roleId, roleData) => {
 	try {
-		const { data } = await AxiosAuth.put(`/central/roles/${roleId}`, roleData);
+		const { data } = await AxiosAuth.put(`/roles/${roleId}`, roleData);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "updateRoleAPI", null);
@@ -467,7 +447,7 @@ export const updateRoleAPI = async (roleId, roleData) => {
 // Delete role
 export const deleteRoleAPI = async (roleId) => {
 	try {
-		const { data } = await AxiosAuth.delete(`/central/roles/${roleId}`);
+		const { data } = await AxiosAuth.delete(`/roles/${roleId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "deleteRoleAPI", null);
@@ -479,7 +459,7 @@ export const deleteRoleAPI = async (roleId) => {
 // Get all permissions
 export const getPermissionsAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/permissions`);
+		const { data } = await AxiosAuth.get(`/permissions`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getPermissionsAPI", null);
@@ -490,7 +470,7 @@ export const getPermissionsAPI = async () => {
 export const updateRolePermissionsAPI = async (roleId, permissionsData) => {
 	try {
 		const { data } = await AxiosAuth.put(
-			`/central/roles/${roleId}/permissions`,
+			`/roles/${roleId}/permissions`,
 			permissionsData,
 		);
 		return data;
@@ -503,7 +483,7 @@ export const updateRolePermissionsAPI = async (roleId, permissionsData) => {
 // Get all tenant applications
 export const getTenantApplicationsAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/tenant-applications`);
+		const { data } = await AxiosAuth.get(`/tenant-applications`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getTenantApplicationsAPI", null);
@@ -514,7 +494,7 @@ export const getTenantApplicationsAPI = async () => {
 export const getTenantApplicationAPI = async (applicationId) => {
 	try {
 		const { data } = await AxiosAuth.get(
-			`/central/tenant-applications/${applicationId}`,
+			`/tenant-applications/${applicationId}`,
 		);
 		return data;
 	} catch (error) {
@@ -526,7 +506,7 @@ export const getTenantApplicationAPI = async (applicationId) => {
 export const createTenantApplicationAPI = async (applicationData) => {
 	try {
 		const { data } = await AxiosAuth.post(
-			`/central/tenant-applications`,
+			`/tenant-applications`,
 			applicationData,
 		);
 		return data;
@@ -539,7 +519,7 @@ export const createTenantApplicationAPI = async (applicationData) => {
 export const approveTenantApplicationAPI = async (applicationId) => {
 	try {
 		const { data } = await AxiosAuth.post(
-			`/central/tenant-applications/${applicationId}/approve`,
+			`/tenant-applications/${applicationId}/approve`,
 		);
 		return data;
 	} catch (error) {
@@ -551,7 +531,7 @@ export const approveTenantApplicationAPI = async (applicationId) => {
 export const rejectTenantApplicationAPI = async (applicationId) => {
 	try {
 		const { data } = await AxiosAuth.post(
-			`/central/tenant-applications/${applicationId}/reject`,
+			`/tenant-applications/${applicationId}/reject`,
 		);
 		return data;
 	} catch (error) {
@@ -563,7 +543,7 @@ export const rejectTenantApplicationAPI = async (applicationId) => {
 // Get all tenants
 export const getTenantsAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/tenants`);
+		const { data } = await AxiosAuth.get(`/tenants`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getTenantsAPI", null);
@@ -573,7 +553,7 @@ export const getTenantsAPI = async () => {
 // Get single tenant
 export const getTenantAPI = async (tenantId) => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/tenants/${tenantId}`);
+		const { data } = await AxiosAuth.get(`/tenants/${tenantId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getTenantAPI", null);
@@ -583,7 +563,7 @@ export const getTenantAPI = async (tenantId) => {
 // Create tenant
 export const createTenantAPI = async (tenantData) => {
 	try {
-		const { data } = await AxiosAuth.post(`/central/tenants`, tenantData);
+		const { data } = await AxiosAuth.post(`/tenants`, tenantData);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "createTenantAPI", null);
@@ -593,10 +573,7 @@ export const createTenantAPI = async (tenantData) => {
 // Update tenant
 export const updateTenantAPI = async (tenantId, tenantData) => {
 	try {
-		const { data } = await AxiosAuth.put(
-			`/central/tenants/${tenantId}`,
-			tenantData,
-		);
+		const { data } = await AxiosAuth.put(`/tenants/${tenantId}`, tenantData);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "updateTenantAPI", null);
@@ -606,7 +583,7 @@ export const updateTenantAPI = async (tenantId, tenantData) => {
 // Delete tenant
 export const deleteTenantAPI = async (tenantId) => {
 	try {
-		const { data } = await AxiosAuth.delete(`/central/tenants/${tenantId}`);
+		const { data } = await AxiosAuth.delete(`/tenants/${tenantId}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "deleteTenantAPI", null);
@@ -643,15 +620,11 @@ export const submitPaymentAPI = async (token, paymentData) => {
 			}
 		}
 
-		const { data } = await AxiosAuth.post(
-			`/central/payment/${token}`,
-			formData,
-			{
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
+		const { data } = await AxiosAuth.post(`/payment/${token}`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
 			},
-		);
+		});
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "submitPaymentAPI", null);
@@ -661,7 +634,7 @@ export const submitPaymentAPI = async (token, paymentData) => {
 // get the payment information
 export const getPaymentAPI = async (token) => {
 	try {
-		const { data } = await AxiosAuth.get(`/central/payment/${token}`);
+		const { data } = await AxiosAuth.get(`/payment/${token}`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getPaymentAPI", null);

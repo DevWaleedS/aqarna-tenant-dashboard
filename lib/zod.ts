@@ -29,14 +29,13 @@ const createFileField = (options?: {
 };
 
 // Password Schema Base
-const passwordField = z
-	.string({ required_error: "Password is required" })
-	.min(8, { message: "Password must be more than 8 characters" })
-	.max(15, { message: "Password must be less than 15 characters" })
-	.regex(/[a-zA-Z]/, { message: "Contain at least one letter." })
-	.regex(/[0-9]/, { message: "Contain at least one number." })
-	.regex(/[^a-zA-Z0-9]/, { message: "Contain at least one special character." })
-	.trim();
+const passwordField = z.string({ required_error: "Password is required" });
+// .min(8, { message: "Password must be more than 8 characters" })
+// .max(15, { message: "Password must be less than 15 characters" })
+// .regex(/[a-zA-Z]/, { message: "Contain at least one letter." })
+// .regex(/[0-9]/, { message: "Contain at least one number." })
+// .regex(/[^a-zA-Z0-9]/, { message: "Contain at least one special character." })
+// .trim();
 
 // Email schema base
 const emailField = z
@@ -449,13 +448,13 @@ export const createContractSchema = z
 
 // ── Sub-schemas ───────────────────────────────────────────────────────────────
 
-const emergencyContactSchema = z.object({
+export const emergencyContactSchema = z.object({
 	name: z.string().min(1, "Emergency contact name is required"),
 	phone: z.string().min(1, "Emergency contact phone is required"),
 	relation: z.string().min(1, "Relation is required"),
 });
 
-const vehicleSchema = z.object({
+export const vehicleSchema = z.object({
 	make: z.string().min(1, "Make is required"),
 	model: z.string().min(1, "Model is required"),
 	model_year: z
@@ -466,11 +465,21 @@ const vehicleSchema = z.object({
 	plate_number: z.string().min(1, "Plate number is required"),
 });
 
-const petSchema = z.object({
+export const petSchema = z.object({
 	type: z.string().min(1, "Pet type is required"),
 	name: z.string().min(1, "Pet name is required"),
 	breed: z.string().optional(),
 });
+
+// ── Base object ───────────────────────────────────────────────────────────────
+//
+// IMPORTANT: Arrays are declared as plain z.array() with NO .default([]) and
+// NO .optional(). This guarantees TypeScript always infers T[], never T[] | undefined.
+//
+// The [] default is handled in useForm({ defaultValues }) — NOT in the schema.
+// This is the only approach that works cleanly across all versions of zod +
+// @hookform/resolvers because ZodDefault types the *input* side as T | undefined,
+// which causes a Resolver<T> mismatch even though the output type is correct.
 
 const customerBaseObject = z.object({
 	type: z.enum(["individual", "business"], {
@@ -493,13 +502,16 @@ const customerBaseObject = z.object({
 
 	address: z.string().optional(),
 	notes: z.string().optional(),
+	lang: z.enum(["ar", "en"]).optional(),
 
-	emergency_contact: z.array(emergencyContactSchema).default([]),
-	vehicles: z.array(vehicleSchema).default([]),
-	pets: z.array(petSchema).default([]),
+	// ✅ Plain arrays — always T[], never T[] | undefined
+	// Initialize to [] via useForm defaultValues, not here
+	emergency_contact: z.array(emergencyContactSchema),
+	vehicles: z.array(vehicleSchema),
+	pets: z.array(petSchema),
 });
 
-// ── Create schema — adds conditional validation via superRefine ───────────────
+// ── Create schema ─────────────────────────────────────────────────────────────
 export const createCustomerSchema = customerBaseObject.superRefine(
 	(data, ctx) => {
 		if (data.type === "individual" && !data.nid_no?.trim()) {
@@ -544,8 +556,14 @@ export type submitPaymentFormType = z.infer<typeof submitPaymentFormSchema>;
 // ==================== start the tenant work =====================================
 export type createContractType = z.infer<typeof createContractSchema>;
 
-// ── Update schema — .partial() called on the base object, NOT on ZodEffects ──
-export const updateCustomerSchema = customerBaseObject.partial();
+// ── Update schema — .partial() on base object, NOT on ZodEffects ──────────────
+export const updateCustomerSchema = customerBaseObject.partial().extend({
+	// Arrays stay as T[] even when partial — partial() would make them T[] | undefined
+	// so we re-declare them as optional arrays explicitly
+	emergency_contact: z.array(emergencyContactSchema).optional(),
+	vehicles: z.array(vehicleSchema).optional(),
+	pets: z.array(petSchema).optional(),
+});
 
 // ── Inferred types ────────────────────────────────────────────────────────────
 export type createCustomerType = z.infer<typeof createCustomerSchema>;

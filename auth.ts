@@ -44,7 +44,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 					// Step 1: Login to get token
 					const loginRes = await AxiosAPI.post(
-						"/central/auth/login",
+						"/auth/login",
 						{
 							email: parsed.email,
 							password: parsed.password,
@@ -62,7 +62,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					if (!loginData || !loginData.token) return null;
 
 					// Step 2: Get user details using token
-					const userRes = await AxiosAPI.get("/central/auth/me", {
+					const userRes = await AxiosAPI.get("/auth/me", {
 						headers: {
 							Authorization: `Bearer ${loginData.token}`,
 							"Accept-Language": locale,
