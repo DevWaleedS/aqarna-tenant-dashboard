@@ -174,7 +174,16 @@
 		"pending": "Pending",
 
 		"inactive": "Inactive",
-		"blacklisted": "Blacklisted"
+		"blacklisted": "Blacklisted",
+
+		"open": "Open",
+		"in_progress": "In Progress",
+		"resolved": "Resolved",
+		"closed": "Closed",
+		"cancelled": "Cancelled",
+
+		"broken": "Broken",
+		"processed": "Processed"
 	},
 
 	"input-phone-number": {
@@ -944,6 +953,240 @@
 				"close-button-text": "Close",
 				"delete-button-text": "Delete",
 				"deleting-button-text": "Deleting..."
+			}
+		},
+		"maintenance-tickets": {
+			"title": "Maintenance Tickets",
+			"subtitle": "Manage maintenance requests",
+			"search-placeholder": "Search by subject or description...",
+			"filter-by-status": "Filter by status",
+			"no_tickets_available": "No maintenance tickets available",
+			"no_tickets_found_matching_search": "No tickets match your search",
+
+			"table": {
+				"id": "#",
+				"subject": "Subject",
+				"unit": "Unit",
+				"customer": "Customer",
+				"priority": "Priority",
+				"status": "Status",
+				"scheduled_at": "Scheduled",
+				"created_at": "Submitted",
+				"actions": "Actions"
+			},
+
+			"priority": {
+				"low": "Low",
+				"medium": "Medium",
+				"high": "High",
+				"urgent": "Urgent"
+			},
+
+			"status": {
+				"open": "Open",
+				"in_progress": "In Progress",
+				"resolved": "Resolved",
+				"closed": "Closed",
+				"cancelled": "Cancelled"
+			},
+
+			"update-ticket-page": {
+				"title": "Update Ticket",
+				"ticket-info-section": "Ticket Information",
+				"subject-label": "Subject",
+				"description-label": "Description",
+				"unit-label": "Unit ID",
+				"customer-label": "Customer ID",
+				"images-label": "Images",
+
+				"admin-section": "Admin Actions",
+				"status-label": "Status",
+				"status-placeholder": "Select status",
+				"status-options": {
+					"open": "Open",
+					"in_progress": "In Progress",
+					"resolved": "Resolved",
+					"closed": "Closed",
+					"cancelled": "Cancelled"
+				},
+				"priority-label": "Priority",
+				"priority-placeholder": "Select priority",
+				"priority-options": {
+					"low": "Low",
+					"medium": "Medium",
+					"high": "High",
+					"urgent": "Urgent"
+				},
+				"scheduled-at-label": "Schedule Date",
+				"admin-notes-label": "Admin Notes",
+				"admin-notes-placeholder": "Add internal notes about this ticket...",
+
+				"cancel-button-text": "Cancel",
+				"save-button-text": "Update Ticket",
+				"save-button-loading-text": "Updating..."
+			}
+		},
+
+		"meters": {
+			"title": "Meters",
+			"subtitle": "Manage utility meters",
+			"create-new-meter": "Add New Meter",
+			"search-placeholder": "Search by name or serial number...",
+			"filter-by-status": "Filter by status",
+			"no_meters_available": "No meters available",
+			"no_meters_found_matching_search": "No meters match your search",
+
+			"bulk_actions": {
+				"selected": "selected",
+				"delete-selected": "Delete Selected"
+			},
+
+			"table": {
+				"id": "#",
+				"name": "Name",
+				"type": "Type",
+				"serial_number": "Serial Number",
+				"unit_id": "Unit",
+				"unit_price": "Unit Price",
+				"status": "Status",
+				"created_at": "Created",
+				"actions": "Actions"
+			},
+
+			"type": {
+				"electricity": "Electricity",
+				"water": "Water",
+				"gas": "Gas",
+				"internet": "Internet"
+			},
+
+			"status": {
+				"active": "Active",
+				"inactive": "Inactive",
+				"broken": "Broken"
+			},
+
+			"create-new-meter-page": {
+				"title": "Add New Meter",
+				"unit-id-label": "Unit ID",
+				"unit-id-placeholder": "Enter unit ID",
+				"type-label": "Meter Type",
+				"type-placeholder": "Select meter type",
+				"type-options": {
+					"electricity": "Electricity",
+					"water": "Water",
+					"gas": "Gas",
+					"internet": "Internet"
+				},
+				"serial-number-label": "Serial Number",
+				"serial-number-placeholder": "e.g. ELC-2025-001",
+				"name-label": "Meter Name",
+				"name-placeholder": "e.g. Main Electricity Meter",
+				"unit-price-label": "Unit Price",
+				"unit-price-placeholder": "Enter unit price",
+				"cancel-button-text": "Cancel",
+				"save-button-text": "Save Meter",
+				"save-button-loading-text": "Saving..."
+			},
+
+			"edit-meter-page": {
+				"title": "Edit Meter",
+				"not-found": "Meter not found",
+				"unit-id-label": "Unit ID",
+				"unit-id-placeholder": "Enter unit ID",
+				"type-label": "Meter Type",
+				"type-placeholder": "Select meter type",
+				"type-options": {
+					"electricity": "Electricity",
+					"water": "Water",
+					"gas": "Gas",
+					"internet": "Internet"
+				},
+				"serial-number-label": "Serial Number",
+				"serial-number-placeholder": "e.g. ELC-2025-001",
+				"name-label": "Meter Name",
+				"name-placeholder": "e.g. Main Electricity Meter",
+				"unit-price-label": "Unit Price",
+				"unit-price-placeholder": "Enter unit price",
+				"status-label": "Status",
+				"status-placeholder": "Select status",
+				"status-options": {
+					"active": "Active",
+					"inactive": "Inactive",
+					"broken": "Broken"
+				},
+				"cancel-button-text": "Cancel",
+				"save-button-text": "Update Meter",
+				"save-button-loading-text": "Updating..."
+			}
+		},
+
+		"meter-readings": {
+			"title": "Meter Readings",
+			"subtitle": "Manage utility meter readings",
+			"create-new-reading": "Add Reading",
+			"search-placeholder": "Search by meter ID or contract...",
+			"filter-by-status": "Filter by status",
+			"no_readings_available": "No meter readings available",
+			"no_readings_found_matching_search": "No readings match your search",
+
+			"bulk_actions": {
+				"selected": "selected",
+				"delete-selected": "Delete Selected"
+			},
+
+			"status": {
+				"processed": "Processed",
+				"pending": "Pending"
+			},
+
+			"table": {
+				"id": "#",
+				"meter_id": "Meter",
+				"contract_id": "Contract",
+				"reading_date": "Reading Date",
+				"value": "Current Value",
+				"previous_value": "Previous Value",
+				"consumption": "Consumption",
+				"cost": "Cost",
+				"is_processed": "Status",
+				"created_at": "Created",
+				"actions": "Actions"
+			},
+
+			"create-new-meter-reading-page": {
+				"title": "Add New Meter Reading",
+				"meter-id-label": "Meter ID",
+				"meter-id-placeholder": "Enter meter ID",
+				"contract-id-label": "Contract ID",
+				"contract-id-placeholder": "Enter contract ID",
+				"reading-date-label": "Reading Date",
+				"value-label": "Reading Value",
+				"value-placeholder": "e.g. 1250.5",
+				"image-label": "Reading Image (optional)",
+				"image-placeholder": "Enter image URL",
+				"cancel-button-text": "Cancel",
+				"save-button-text": "Save Reading",
+				"save-button-loading-text": "Saving..."
+			},
+
+			"show-meter-reading-page": {
+				"title": "Meter Reading Details",
+				"not-found": "Reading not found",
+				"reading-info-section": "Reading Information",
+				"meter-id-label": "Meter ID",
+				"contract-id-label": "Contract ID",
+				"reading-date-label": "Reading Date",
+				"value-label": "Current Value",
+				"previous-value-label": "Previous Value",
+				"consumption-label": "Consumption",
+				"cost-label": "Cost",
+				"status-label": "Status",
+				"created-at-label": "Recorded On",
+				"generate-invoice-button": "Generate Invoice",
+				"generating-invoice-button": "Generating...",
+				"invoice-generated-label": "Invoice #",
+				"close-button-text": "Close"
 			}
 		}
 	}

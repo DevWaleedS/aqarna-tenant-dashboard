@@ -1,4 +1,7 @@
-import { array, z } from "zod";
+import { z } from "zod";
+
+const METER_TYPES = ["electricity", "water", "gas", "internet"] as const;
+const METER_STATUSES = ["active", "inactive", "broken"] as const;
 
 // Reusable File Schema
 // More flexible version with configurable options
@@ -504,14 +507,14 @@ const customerBaseObject = z.object({
 	notes: z.string().optional(),
 	lang: z.enum(["ar", "en"]).optional(),
 
-	// ✅ Plain arrays — always T[], never T[] | undefined
+	// Plain arrays — always T[], never T[] | undefined
 	// Initialize to [] via useForm defaultValues, not here
 	emergency_contact: z.array(emergencyContactSchema),
 	vehicles: z.array(vehicleSchema),
 	pets: z.array(petSchema),
 });
 
-// ── Create schema ─────────────────────────────────────────────────────────────
+// ── Create customer schema ─────────────────────────────────────────────────────────────
 export const createCustomerSchema = customerBaseObject.superRefine(
 	(data, ctx) => {
 		if (data.type === "individual" && !data.nid_no?.trim()) {
@@ -540,6 +543,120 @@ export const createCustomerSchema = customerBaseObject.superRefine(
 	},
 );
 
+// ── Update schema — .partial() on base object, NOT on ZodEffects ──────────────
+export const updateCustomerSchema = customerBaseObject.partial().extend({
+	// Arrays stay as T[] even when partial — partial() would make them T[] | undefined
+	// so we re-declare them as optional arrays explicitly
+	emergency_contact: z.array(emergencyContactSchema).optional(),
+	vehicles: z.array(vehicleSchema).optional(),
+	pets: z.array(petSchema).optional(),
+});
+
+// ── Update schema (only fields the API accepts via PUT) ───────────────────────
+// The ticket is created by the customer via the mobile app.
+// Admins can only update: status, priority, admin_notes, scheduled_at.
+
+export const updateMaintenanceTicketSchema = z.object({
+	status: z
+		.enum(["open", "in_progress", "resolved", "closed", "cancelled"], {
+			required_error: "Status is required",
+		})
+		.optional(),
+
+	priority: z
+		.enum(["low", "medium", "high", "urgent"], {
+			required_error: "Priority is required",
+		})
+		.optional(),
+
+	admin_notes: z.string().optional(),
+
+	scheduled_at: z.string().optional(), // ISO date string
+});
+
+// ── Create schema ─────────────────────────────────────────────────────────────
+export const createMeterSchema = z.object({
+	unit_id: z
+		.number({ required_error: "Unit is required" })
+		.int()
+		.positive("Unit ID must be a positive number"),
+
+	type: z.enum(METER_TYPES, {
+		required_error: "Meter type is required",
+	}),
+
+	serial_number: z
+		.string()
+		.min(1, "Serial number is required")
+		.max(100, "Serial number is too long"),
+
+	name: z
+		.string()
+		.min(1, "Meter name is required")
+		.max(150, "Name is too long"),
+
+	unit_price: z
+		.number({ required_error: "Unit price is required" })
+		.min(0, "Unit price cannot be negative"),
+});
+
+// ── Update schema (all fields optional) ──────────────────────────────────────
+export const updateMeterSchema = z.object({
+	unit_id: z
+		.number()
+		.int()
+		.positive("Unit ID must be a positive number")
+		.optional(),
+	type: z.enum(METER_TYPES).optional(),
+	serial_number: z.string().min(1).max(100).optional(),
+	name: z.string().min(1).max(150).optional(),
+	unit_price: z.number().min(0).optional(),
+	status: z.enum(METER_STATUSES).optional(),
+});
+
+// No update schema — readings are immutable once created.
+// The only post-creation action is generating an invoice.
+
+export const createMeterReadingSchema = z.object({
+	meter_id: z
+		.number({ required_error: "Meter is required" })
+		.int()
+		.positive("Meter ID must be a positive number"),
+
+	contract_id: z
+		.number({ required_error: "Contract is required" })
+		.int()
+		.positive("Contract ID must be a positive number"),
+
+	reading_date: z
+		.string({ required_error: "Reading date is required" })
+		.min(1, "Reading date is required"),
+
+	value: z
+		.number({ required_error: "Reading value is required" })
+		.min(0, "Value cannot be negative"),
+
+	image: z.string().optional(),
+});
+
+// ==================== start the tenant work =====================================
+
+export type createContractType = z.infer<typeof createContractSchema>;
+export type createMeterReadingType = z.infer<typeof createMeterReadingSchema>;
+export type createCustomerType = z.infer<typeof createCustomerSchema>;
+export type updateCustomerType = z.infer<typeof updateCustomerSchema>;
+export type EmergencyContact = z.infer<typeof emergencyContactSchema>;
+export type Vehicle = z.infer<typeof vehicleSchema>;
+export type Pet = z.infer<typeof petSchema>;
+export type updateMaintenanceTicketType = z.infer<
+	typeof updateMaintenanceTicketSchema
+>;
+
+export type createMeterType = z.infer<typeof createMeterSchema>;
+export type updateMeterType = z.infer<typeof updateMeterSchema>;
+
+// ========================== old work =================================
+
 export type FormSchemaType = z.infer<typeof formSchema>;
 export type AddPackageFormSchemaType = z.infer<typeof addPackageFormSchema>;
 export type confirmTransactionType = z.infer<typeof confirmTransactionSchema>;
@@ -552,22 +669,3 @@ export type addNewTenantApplicationType = z.infer<
 >;
 export type createPasswordType = z.infer<typeof createPasswordSchema>;
 export type submitPaymentFormType = z.infer<typeof submitPaymentFormSchema>;
-
-// ==================== start the tenant work =====================================
-export type createContractType = z.infer<typeof createContractSchema>;
-
-// ── Update schema — .partial() on base object, NOT on ZodEffects ──────────────
-export const updateCustomerSchema = customerBaseObject.partial().extend({
-	// Arrays stay as T[] even when partial — partial() would make them T[] | undefined
-	// so we re-declare them as optional arrays explicitly
-	emergency_contact: z.array(emergencyContactSchema).optional(),
-	vehicles: z.array(vehicleSchema).optional(),
-	pets: z.array(petSchema).optional(),
-});
-
-// ── Inferred types ────────────────────────────────────────────────────────────
-export type createCustomerType = z.infer<typeof createCustomerSchema>;
-export type updateCustomerType = z.infer<typeof updateCustomerSchema>;
-export type EmergencyContact = z.infer<typeof emergencyContactSchema>;
-export type Vehicle = z.infer<typeof vehicleSchema>;
-export type Pet = z.infer<typeof petSchema>;

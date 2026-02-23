@@ -188,56 +188,6 @@ export const deleteNotificationAPI = async (notificationId) => {
 	}
 };
 
-// Get all packages
-export const getPackagesAPI = async () => {
-	try {
-		const { data } = await AxiosAuth.get(`/packages`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getPackagesAPI", null);
-	}
-};
-
-// Get single package
-export const getPackageAPI = async (packageId) => {
-	try {
-		const { data } = await AxiosAuth.get(`/packages/${packageId}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getPackageAPI", null);
-	}
-};
-
-// Create package
-export const createPackageAPI = async (packageData) => {
-	try {
-		const { data } = await AxiosAuth.post(`/packages`, packageData);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "createPackageAPI", null);
-	}
-};
-
-// Update package
-export const updatePackageAPI = async (packageId, packageData) => {
-	try {
-		const { data } = await AxiosAuth.put(`/packages/${packageId}`, packageData);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "updatePackageAPI", null);
-	}
-};
-
-// Delete package
-export const deletePackageAPI = async (packageId) => {
-	try {
-		const { data } = await AxiosAuth.delete(`/packages/${packageId}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "deletePackageAPI", null);
-	}
-};
-
 // ==================== Transactions ===================================
 
 // Get all transactions
@@ -478,170 +428,6 @@ export const updateRolePermissionsAPI = async (roleId, permissionsData) => {
 		return handleRequestError(error, "updateRolePermissionsAPI", null);
 	}
 };
-// ==================== Tenant Applications ===================================
-
-// Get all tenant applications
-export const getTenantApplicationsAPI = async () => {
-	try {
-		const { data } = await AxiosAuth.get(`/tenant-applications`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getTenantApplicationsAPI", null);
-	}
-};
-
-// Get single tenant application
-export const getTenantApplicationAPI = async (applicationId) => {
-	try {
-		const { data } = await AxiosAuth.get(
-			`/tenant-applications/${applicationId}`,
-		);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getTenantApplicationAPI", null);
-	}
-};
-
-// Create tenant application
-export const createTenantApplicationAPI = async (applicationData) => {
-	try {
-		const { data } = await AxiosAuth.post(
-			`/tenant-applications`,
-			applicationData,
-		);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "createTenantApplicationAPI", null);
-	}
-};
-
-// Approve tenant application
-export const approveTenantApplicationAPI = async (applicationId) => {
-	try {
-		const { data } = await AxiosAuth.post(
-			`/tenant-applications/${applicationId}/approve`,
-		);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "approveTenantApplicationAPI", null);
-	}
-};
-
-// Reject tenant application
-export const rejectTenantApplicationAPI = async (applicationId) => {
-	try {
-		const { data } = await AxiosAuth.post(
-			`/tenant-applications/${applicationId}/reject`,
-		);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "rejectTenantApplicationAPI", null);
-	}
-};
-// ==================== Tenants ===================================
-
-// Get all tenants
-export const getTenantsAPI = async () => {
-	try {
-		const { data } = await AxiosAuth.get(`/tenants`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getTenantsAPI", null);
-	}
-};
-
-// Get single tenant
-export const getTenantAPI = async (tenantId) => {
-	try {
-		const { data } = await AxiosAuth.get(`/tenants/${tenantId}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getTenantAPI", null);
-	}
-};
-
-// Create tenant
-export const createTenantAPI = async (tenantData) => {
-	try {
-		const { data } = await AxiosAuth.post(`/tenants`, tenantData);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "createTenantAPI", null);
-	}
-};
-
-// Update tenant
-export const updateTenantAPI = async (tenantId, tenantData) => {
-	try {
-		const { data } = await AxiosAuth.put(`/tenants/${tenantId}`, tenantData);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "updateTenantAPI", null);
-	}
-};
-
-// Delete tenant
-export const deleteTenantAPI = async (tenantId) => {
-	try {
-		const { data } = await AxiosAuth.delete(`/tenants/${tenantId}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "deleteTenantAPI", null);
-	}
-};
-
-// ==================== Payment ===================================
-
-// Submit payment
-export const submitPaymentAPI = async (token, paymentData) => {
-	try {
-		const formData = new FormData();
-
-		// Append payment method (required)
-		formData.append("payment_method", paymentData.payment_method);
-
-		// Append cheque fields if payment method is cheque
-		if (paymentData.payment_method === "cheque") {
-			if (paymentData.cheque_number) {
-				formData.append("cheque_number", paymentData.cheque_number);
-			}
-			if (paymentData.cheque_image) {
-				formData.append("cheque_image", paymentData.cheque_image);
-			}
-		}
-
-		// Append bank transfer fields if payment method is bank_transfer
-		if (paymentData.payment_method === "bank_transfer") {
-			if (paymentData.transfer_reference) {
-				formData.append("transfer_reference", paymentData.transfer_reference);
-			}
-			if (paymentData.transfer_receipt) {
-				formData.append("transfer_receipt", paymentData.transfer_receipt);
-			}
-		}
-
-		const { data } = await AxiosAuth.post(`/payment/${token}`, formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		});
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "submitPaymentAPI", null);
-	}
-};
-
-// get the payment information
-export const getPaymentAPI = async (token) => {
-	try {
-		const { data } = await AxiosAuth.get(`/payment/${token}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getPaymentAPI", null);
-	}
-};
-
-//  ==================== Start the Tenant endpoints ===================================
 
 //  ==================== Contracts ===================================
 
@@ -783,5 +569,134 @@ export const activateCustomerAPI = async (customerId) => {
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "activateCustomerAPI", null);
+	}
+};
+
+// ==================== Maintenance Tickets ===================================
+
+// Get all maintenance tickets
+export const getMaintenanceTicketsAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/maintenance-tickets`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getMaintenanceTicketsAPI", null);
+	}
+};
+
+// Get single maintenance ticket
+export const getMaintenanceTicketAPI = async (ticketId) => {
+	try {
+		const { data } = await AxiosAuth.get(`/maintenance-tickets/${ticketId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getMaintenanceTicketAPI", null);
+	}
+};
+
+// Update maintenance ticket (status, priority, admin_notes, scheduled_at)
+export const updateMaintenanceTicketAPI = async (ticketId, ticketData) => {
+	try {
+		const { data } = await AxiosAuth.put(
+			`/maintenance-tickets/${ticketId}`,
+			ticketData,
+		);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "updateMaintenanceTicketAPI", null);
+	}
+};
+
+// ==================== Meters ===================================
+
+// Get all meters
+export const getMetersAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/meters`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getMetersAPI", null);
+	}
+};
+
+// Get single meter
+export const getMeterAPI = async (meterId) => {
+	try {
+		const { data } = await AxiosAuth.get(`/meters/${meterId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getMeterAPI", null);
+	}
+};
+
+// Create meter
+export const createMeterAPI = async (meterData) => {
+	try {
+		const { data } = await AxiosAuth.post(`/meters`, meterData);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "createMeterAPI", null);
+	}
+};
+
+// Update meter
+export const updateMeterAPI = async (meterId, meterData) => {
+	try {
+		const { data } = await AxiosAuth.put(`/meters/${meterId}`, meterData);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "updateMeterAPI", null);
+	}
+};
+
+// Delete meter
+export const deleteMeterAPI = async (meterId) => {
+	try {
+		const { data } = await AxiosAuth.delete(`/meters/${meterId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "deleteMeterAPI", null);
+	}
+};
+
+// ==================== Meter Readings ===================================
+
+// Get all meter readings
+export const getMeterReadingsAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/meter-readings`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getMeterReadingsAPI", null);
+	}
+};
+
+// Get single meter reading
+export const getMeterReadingAPI = async (id) => {
+	try {
+		const { data } = await AxiosAuth.get(`/meter-readings/${id}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getMeterReadingAPI", null);
+	}
+};
+
+// Create meter reading
+export const createMeterReadingAPI = async (readingData) => {
+	try {
+		const { data } = await AxiosAuth.post(`/meter-readings`, readingData);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "createMeterReadingAPI", null);
+	}
+};
+
+// Generate invoice for a meter reading
+export const createMeterReadingInvoiceAPI = async (id) => {
+	try {
+		const { data } = await AxiosAuth.post(`/meter-readings/${id}/invoice`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "createMeterReadingInvoiceAPI", null);
 	}
 };
