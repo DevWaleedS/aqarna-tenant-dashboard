@@ -222,136 +222,6 @@ export const confirmTransactionAPI = async (transactionId) => {
 	}
 };
 
-// ==================== Users ===================================
-
-// Get all users
-export const getUsersAPI = async () => {
-	try {
-		const { data } = await AxiosAuth.get(`/users`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getUsersAPI", null);
-	}
-};
-
-// Get single user
-export const getUserAPI = async (userId) => {
-	try {
-		const { data } = await AxiosAuth.get(`/users/${userId}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getUserAPI", null);
-	}
-};
-
-// Create user
-export const createUserAPI = async (userData) => {
-	try {
-		const formData = new FormData();
-
-		// Append basic fields
-		formData.append("name", userData.name);
-		formData.append("email", userData.email);
-		formData.append("password", userData.password);
-		formData.append("password_confirmation", userData.password_confirmation);
-
-		// Append roles array
-		if (userData.roles && userData.roles.length > 0) {
-			userData.roles.forEach((role, index) => {
-				formData.append(`roles[${index}]`, role);
-			});
-		}
-
-		// Append avatar if exists
-		if (userData.avatar) {
-			formData.append("avatar", userData.avatar);
-		}
-
-		const { data } = await AxiosAuth.post(`/users`, formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		});
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "createUserAPI", null);
-	}
-};
-// Update user
-export const updateUserAPI = async (userId, userData) => {
-	try {
-		const formData = new FormData();
-
-		// Append _method parameter for Laravel method spoofing
-		formData.append("_method", "PUT");
-
-		// Append basic fields
-		if (userData.name) formData.append("name", userData.name);
-		if (userData.email) formData.append("email", userData.email);
-
-		// Append roles array
-		if (userData.roles && userData.roles.length > 0) {
-			userData.roles.forEach((role, index) => {
-				formData.append(`roles[${index}]`, role);
-			});
-		}
-
-		// Append avatar if exists
-		if (userData.avatar) {
-			formData.append("avatar", userData.avatar);
-		}
-
-		const { data } = await AxiosAuth.post(`/users/${userId}`, formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		});
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "updateUserAPI", null);
-	}
-};
-
-// Delete user
-export const deleteUserAPI = async (userId) => {
-	try {
-		const { data } = await AxiosAuth.delete(`/users/${userId}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "deleteUserAPI", null);
-	}
-};
-
-// Update user password
-export const updateUserPasswordAPI = async (passwordData) => {
-	try {
-		const { data } = await AxiosAuth.post(
-			`/user/update-password`,
-			passwordData,
-		);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "updateUserPasswordAPI", null);
-	}
-};
-
-// Update user avatar
-export const updateUserAvatarAPI = async (avatarFile) => {
-	try {
-		const formData = new FormData();
-		formData.append("avatar", avatarFile);
-
-		const { data } = await AxiosAuth.post(`/user/update-avatar`, formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		});
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "updateUserAvatarAPI", null);
-	}
-};
-
 // ==================== Roles ===================================
 
 // Get all roles
@@ -698,5 +568,257 @@ export const createMeterReadingInvoiceAPI = async (id) => {
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "createMeterReadingInvoiceAPI", null);
+	}
+};
+
+// ==================== Units Endpoints =======================
+
+// 1.1 — Get all units (customer-facing list)
+export const getUnitsAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/units`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getUnitsAPI", null);
+	}
+};
+
+// 1.2 — Create a new unit
+export const createUnitAPI = async (unitData) => {
+	try {
+		const { data } = await AxiosAuth.post(`/units`, unitData);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "createUnitAPI", null);
+	}
+};
+
+// 1.3 — Get single unit details
+export const getUnitAPI = async (unitId) => {
+	try {
+		const { data } = await AxiosAuth.get(`/units/${unitId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getUnitAPI", null);
+	}
+};
+
+// 1.4 — Update a unit
+export const updateUnitAPI = async (unitId, unitData) => {
+	try {
+		const { data } = await AxiosAuth.put(`/units/${unitId}`, unitData);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "updateUnitAPI", null);
+	}
+};
+
+// 1.5 — Delete a unit
+export const deleteUnitAPI = async (unitId) => {
+	try {
+		const { data } = await AxiosAuth.delete(`/units/${unitId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "deleteUnitAPI", null);
+	}
+};
+
+// 1.6 — Lookup (lightweight list for Select dropdowns)
+export const getUnitsLookupAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/units/lookup`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getUnitsLookupAPI", null);
+	}
+};
+
+// ==================== Properties Endpoints ==================
+
+// 1 — Get all properties
+export const getPropertiesAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/properties`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getPropertiesAPI", null);
+	}
+};
+
+// 2 — Get single property details
+export const getPropertyAPI = async (propertyId) => {
+	try {
+		const { data } = await AxiosAuth.get(`/properties/${propertyId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getPropertyAPI", null);
+	}
+};
+
+// 3 — Create a new property
+export const createPropertyAPI = async (propertyData) => {
+	try {
+		const { data } = await AxiosAuth.post(`/properties`, propertyData);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "createPropertyAPI", null);
+	}
+};
+
+// 4 — Update a property
+export const updatePropertyAPI = async (propertyId, propertyData) => {
+	try {
+		const { data } = await AxiosAuth.put(
+			`/properties/${propertyId}`,
+			propertyData,
+		);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "updatePropertyAPI", null);
+	}
+};
+
+// 5 — Delete a property
+export const deletePropertyAPI = async (propertyId) => {
+	try {
+		const { data } = await AxiosAuth.delete(`/properties/${propertyId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "deletePropertyAPI", null);
+	}
+};
+
+// 6 — Lookup (lightweight id + name list for Select dropdowns)
+export const getPropertiesLookupAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/properties/lookup`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getPropertiesLookupAPI", null);
+	}
+};
+
+// ==================== Subscriptions Endpoints ===============
+// 1.1 — Get subscription info (current subscription + package details)
+export const getSubscriptionInfoAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/subscriptions/info`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getSubscriptionInfoAPI", null);
+	}
+};
+
+// 1.2 — Renew current subscription — requires { package_id }
+export const renewSubscriptionAPI = async (renewData) => {
+	try {
+		const { data } = await AxiosAuth.post(`/subscriptions/renew`, renewData);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "renewSubscriptionAPI", null);
+	}
+};
+
+// 1.3 — Upgrade to a different package / billing cycle
+export const upgradeSubscriptionAPI = async (upgradeData) => {
+	try {
+		const { data } = await AxiosAuth.post(
+			`/subscriptions/upgrade`,
+			upgradeData,
+		);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "upgradeSubscriptionAPI", null);
+	}
+};
+
+// 1.4 — Packages lookup (lightweight id + name list for Select dropdowns)
+export const getPackagesLookupAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/packages/lookup`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getPackagesLookupAPI", null);
+	}
+};
+// ==================== Users Endpoints =======================
+// Paste these into your main /apis/endpoints.js file
+
+// 1.1 — Get all users
+export const getUsersAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/users`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getUsersAPI", null);
+	}
+};
+
+// 1.2 — Get single user details
+export const getUserAPI = async (userId) => {
+	try {
+		const { data } = await AxiosAuth.get(`/users/${userId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getUserAPI", null);
+	}
+};
+
+// 1.3 — Create new user (multipart/form-data — supports avatar upload)
+export const createUserAPI = async (userData) => {
+	try {
+		const { data } = await AxiosAuth.post(`/users`, userData, {
+			headers: { "Content-Type": "multipart/form-data" },
+		});
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "createUserAPI", null);
+	}
+};
+
+// 1.4 — Update user (multipart/form-data)
+export const updateUserAPI = async (userId, userData) => {
+	try {
+		const { data } = await AxiosAuth.put(`/users/${userId}`, userData, {
+			headers: { "Content-Type": "multipart/form-data" },
+		});
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "updateUserAPI", null);
+	}
+};
+
+// 1.5 — Delete user
+export const deleteUserAPI = async (userId) => {
+	try {
+		const { data } = await AxiosAuth.delete(`/users/${userId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "deleteUserAPI", null);
+	}
+};
+
+// 1.6 — Update password
+export const updateUserPasswordAPI = async (passwordData) => {
+	try {
+		const { data } = await AxiosAuth.post(
+			`/users/update-password`,
+			passwordData,
+		);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "updateUserPasswordAPI", null);
+	}
+};
+
+// 1.7 — Update avatar
+export const updateUserAvatarAPI = async (avatarData) => {
+	try {
+		const { data } = await AxiosAuth.post(`/users/update-avatar`, avatarData, {
+			headers: { "Content-Type": "multipart/form-data" },
+		});
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "updateUserAvatarAPI", null);
 	}
 };

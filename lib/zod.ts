@@ -3,6 +3,68 @@ import { z } from "zod";
 const METER_TYPES = ["electricity", "water", "gas", "internet"] as const;
 const METER_STATUSES = ["active", "inactive", "broken"] as const;
 
+// ── Shared enum constants about units  ─────────────────────────────────────────────────────
+const UNIT_TYPES = ["residential", "commercial", "industrial"] as const;
+const UNIT_STATUSES = [
+	"vacant",
+	"occupied",
+	"maintenance",
+	"reserved",
+] as const;
+const FURNISHING_STATUSES = [
+	"fully_furnished",
+	"semi_furnished",
+	"unfurnished",
+] as const;
+const AC_TYPES = ["split", "central", "window", "none"] as const;
+const INTERNET_STATUSES = ["wifi", "fiber", "none"] as const;
+const ORIENTATIONS = [
+	"north",
+	"south",
+	"east",
+	"west",
+	"northeast",
+	"northwest",
+	"southeast",
+	"southwest",
+] as const;
+
+// ── Shared enum constants about properties  ─────────────────────────────────────────────────────
+
+const PROPERTY_TYPES = ["residential", "commercial", "industrial"] as const;
+
+const AMENITIES = [
+	"swimming_pool",
+	"gym",
+	"parking",
+	"elevator",
+	"security",
+	"playground",
+	"garden",
+	"rooftop",
+	"concierge",
+	"sauna",
+	"storage",
+	"laundry",
+] as const;
+
+export const PROPERTY_AMENITIES = AMENITIES;
+
+// ── Shared enum constants about billing  ─────────────────────────────────────────────────────
+
+const BILLING_CYCLES = ["monthly", "yearly"] as const;
+
+// ==================== Users & Authentication Schemas ====================
+const MAX_AVATAR_SIZE = 2 * 1024 * 1024; // 2 MB
+const ACCEPTED_IMAGE_TYPES = [
+	"image/jpeg",
+	"image/jpg",
+	"image/png",
+	"image/webp",
+];
+
+// ==================== Authentication & User Management Schemas ====================
+
 // Reusable File Schema
 // More flexible version with configurable options
 const createFileField = (options?: {
@@ -83,284 +145,6 @@ export const createPasswordSchema = z
 		message: "Password does not match",
 		path: ["password_confirmation"],
 	});
-
-export const formSchema = z.object({
-	firstName: z.string().min(1, "First name is required"),
-	lastName: z.string().min(1, "Last name is required"),
-	email: emailField,
-	phone: phoneField,
-	password: passwordField,
-});
-
-// add package form schema
-export const addPackageFormSchema = z.object({
-	name: z.string().min(1, "Package name is required"),
-	description: z.string().min(1, "Package description is required"),
-	max_properties: z.number().min(1, "Maximum properties is required"),
-	max_units: z.number().min(1, "Maximum units is required"),
-	monthly_price: z.number().min(0, "Monthly price is required"),
-	yearly_price: z.number().min(0, "Yearly price is required"),
-	features: z.array(z.string()).optional(),
-});
-
-// Confirm Transaction form schema
-export const confirmTransactionSchema = z.object({
-	tenant_application_id: z.string(),
-	package_id: z.string(),
-	payment_gateway: z.string(),
-	payment_method: z.string(),
-	price: z.string(),
-	payment_token: z.string(),
-	notes: z.string(),
-});
-
-export const addNewUserSchema = z
-	.object({
-		name: z.string().min(1, "Name is required"),
-		email: emailField,
-		password: passwordField,
-		confirmed_password: z.string({
-			required_error: "Please confirm your password",
-		}),
-		roles: z.array(z.string()).optional(),
-		avatar: createFileField({
-			maxSize: 2_000_000,
-			required: false,
-		}),
-	})
-	.refine((data) => data.password === data.confirmed_password, {
-		message: "Passwords do not match",
-		path: ["confirmed_password"],
-	});
-
-// Add this new schema for editing users (after addNewUserSchema)
-export const editUserSchema = z
-	.object({
-		name: z.string().min(1, "Name is required"),
-		email: emailField,
-		password: z.string().optional(),
-		confirmed_password: z.string().optional(),
-		roles: z.array(z.string()).optional(),
-		avatar: createFileField({
-			maxSize: 2_000_000,
-			required: false,
-		}),
-	})
-	.refine(
-		(data) => {
-			// If password is provided, confirmed_password must also be provided and match
-			if (data.password && data.password.length > 0) {
-				return data.confirmed_password === data.password;
-			}
-			return true;
-		},
-		{
-			message: "Passwords do not match",
-			path: ["confirmed_password"],
-		},
-	)
-	.refine(
-		(data) => {
-			// If password is provided, validate it meets requirements
-			if (data.password && data.password.length > 0) {
-				return (
-					data.password.length >= 8 &&
-					data.password.length <= 15 &&
-					/[a-zA-Z]/.test(data.password) &&
-					/[0-9]/.test(data.password) &&
-					/[^a-zA-Z0-9]/.test(data.password)
-				);
-			}
-			return true;
-		},
-		{
-			message:
-				"Password must be 8-15 characters and contain at least one letter, number, and special character",
-			path: ["password"],
-		},
-	);
-
-export const addNewRoleSchema = z.object({
-	name: z.string().min(1, "Name is required"),
-	permissions: z.array(z.string()).min(1, "permissions is required"),
-});
-
-export const addNewTenantSchema = z
-	.object({
-		// Application type
-		type: z.enum(["business", "individual"], {
-			required_error: "Application type is required",
-		}),
-
-		// Owner information
-		owner: z.object({
-			name: z.string().min(1, "Owner name is required"),
-			email: emailField,
-			phone: phoneField,
-			dial_code: z.string().min(1, "Dial code is required"),
-		}),
-
-		// Tenant information
-		tenant: z.object({
-			name: z.string().min(1, "Tenant name is required"),
-			subdomain: z
-				.string()
-				.min(1, "Subdomain is required")
-				.regex(
-					/^[a-z0-9-]+$/,
-					"Subdomain can only contain lowercase letters, numbers, and hyphens",
-				),
-			cr_no: z.string().optional(),
-			tin: z.string().optional(),
-			address: z.string().optional(),
-			phone: phoneField,
-			dial_code: z.string().min(1, "Dial code is required"),
-		}),
-
-		// Subscription information
-		subscription: z.object({
-			package_id: z.string().min(1, "Package is required"),
-			cycle: z.enum(["monthly", "yearly"], {
-				required_error: "Billing cycle is required",
-			}),
-			period: z.string().optional(),
-		}),
-
-		// Optional message
-		message: z.string().optional(),
-	})
-	.superRefine((data, ctx) => {
-		const { cycle, period } = data.subscription;
-
-		if (cycle === "monthly" && !period) {
-			ctx.addIssue({
-				path: ["subscription", "period"],
-				message: "Period is required for monthly cycle",
-				code: z.ZodIssueCode.custom,
-			});
-		}
-	});
-
-export const addNewTenantApplicationSchema = z
-	.object({
-		// Application type
-		type: z.enum(["business", "individual"], {
-			required_error: "Application type is required",
-		}),
-
-		// Owner information
-		owner: z.object({
-			name: z.string().min(1, "Owner name is required"),
-			email: emailField,
-			phone: phoneField,
-			dial_code: z.string().min(1, "Dial code is required"),
-		}),
-
-		// Tenant information
-		tenant: z.object({
-			name: z.string().min(1, "Tenant name is required"),
-			subdomain: z
-				.string()
-				.min(1, "Subdomain is required")
-				.regex(
-					/^[a-z0-9-]+$/,
-					"Subdomain can only contain lowercase letters, numbers, and hyphens",
-				),
-			cr_no: z.string().optional(),
-			tin: z.string().optional(),
-			address: z.string().optional(),
-			phone: phoneField,
-			dial_code: z.string().min(1, "Dial code is required"),
-		}),
-
-		// Subscription information
-		subscription: z.object({
-			package_id: z.string().min(1, "Package is required"),
-			cycle: z.enum(["monthly", "yearly"], {
-				required_error: "Billing cycle is required",
-			}),
-			period: z.string().optional(),
-		}),
-
-		// Optional message
-		message: z.string().optional(),
-	})
-	.superRefine((data, ctx) => {
-		const { cycle, period } = data.subscription;
-
-		if (cycle === "monthly" && !period) {
-			ctx.addIssue({
-				path: ["subscription", "period"],
-				message: "Period is required for monthly cycle",
-				code: z.ZodIssueCode.custom,
-			});
-		}
-	});
-
-export const submitPaymentFormSchema = z
-	.object({
-		// Payment method (required)
-		payment_method: z.enum(["cash", "cheque", "bank_transfer"], {
-			required_error: "Payment method is required",
-		}),
-
-		// Cheque fields (conditional)
-		cheque_number: z.string().optional(),
-		cheque_image: z
-			.instanceof(File)
-			.refine((file) => file.size <= 2_000_000, {
-				message: "File size must be less than 2MB",
-			})
-			.optional(),
-
-		// Bank transfer fields (conditional)
-		transfer_reference: z.string().optional(),
-		transfer_receipt: z
-			.instanceof(File)
-			.refine((file) => file.size <= 2_000_000, {
-				message: "File size must be less than 2MB",
-			})
-			.optional(),
-	})
-	.superRefine((data, ctx) => {
-		// Validate cheque fields when payment method is cheque
-		if (data.payment_method === "cheque") {
-			if (!data.cheque_number || data.cheque_number.trim() === "") {
-				ctx.addIssue({
-					path: ["cheque_number"],
-					message: "Cheque number is required for cheque payment",
-					code: z.ZodIssueCode.custom,
-				});
-			}
-			if (!data.cheque_image) {
-				ctx.addIssue({
-					path: ["cheque_image"],
-					message: "Cheque image is required for cheque payment",
-					code: z.ZodIssueCode.custom,
-				});
-			}
-		}
-
-		// Validate bank transfer fields when payment method is bank_transfer
-		if (data.payment_method === "bank_transfer") {
-			if (!data.transfer_reference || data.transfer_reference.trim() === "") {
-				ctx.addIssue({
-					path: ["transfer_reference"],
-					message: "Transfer reference is required for bank transfer",
-					code: z.ZodIssueCode.custom,
-				});
-			}
-			if (!data.transfer_receipt) {
-				ctx.addIssue({
-					path: ["transfer_receipt"],
-					message: "Transfer receipt is required for bank transfer",
-					code: z.ZodIssueCode.custom,
-				});
-			}
-		}
-	});
-
-// ==================== start the tenant work =====================================
 
 // ==================== Contract Schema ====================
 
@@ -616,7 +400,6 @@ export const updateMeterSchema = z.object({
 
 // No update schema — readings are immutable once created.
 // The only post-creation action is generating an invoice.
-
 export const createMeterReadingSchema = z.object({
 	meter_id: z
 		.number({ required_error: "Meter is required" })
@@ -639,8 +422,227 @@ export const createMeterReadingSchema = z.object({
 	image: z.string().optional(),
 });
 
-// ==================== start the tenant work =====================================
+// ==================== Units Schemas ====================
 
+// ── Create schema (required fields marked) ────────────────────────────────────
+export const createUnitSchema = z.object({
+	property_id: z
+		.number({ required_error: "Property is required" })
+		.int()
+		.positive("Property ID must be a positive number"),
+
+	name: z
+		.string({ required_error: "Unit name is required" })
+		.min(1, "Unit name is required")
+		.max(150),
+
+	unit_number: z
+		.string({ required_error: "Unit number is required" })
+		.min(1, "Unit number is required")
+		.max(20),
+
+	floor_number: z
+		.number({ required_error: "Floor number is required" })
+		.int()
+		.min(0, "Floor cannot be negative"),
+
+	type: z.enum(UNIT_TYPES, { required_error: "Unit type is required" }),
+
+	area: z
+		.number({ required_error: "Area is required" })
+		.min(0, "Area cannot be negative"),
+
+	monthly_rent: z
+		.number({ required_error: "Monthly rent is required" })
+		.min(0, "Rent cannot be negative"),
+
+	// Optional fields
+	description: z.string().max(1000).optional(),
+	rooms_count: z.number().int().min(0).optional(),
+	bathrooms_count: z.number().int().min(0).optional(),
+	kitchens_count: z.number().int().min(0).optional(),
+	balconies_count: z.number().int().min(0).optional(),
+	view_type: z.string().max(100).optional(),
+	furnishing_status: z.enum(FURNISHING_STATUSES).optional(),
+	orientation: z.enum(ORIENTATIONS).optional(),
+	security_deposit: z.number().min(0).optional(),
+	min_lease_term: z.number().int().min(1).optional(),
+	ac_type: z.enum(AC_TYPES).optional(),
+	internet_status: z.enum(INTERNET_STATUSES).optional(),
+});
+
+// ── Update schema (everything optional; adds status) ─────────────────────────
+export const updateUnitSchema = z.object({
+	property_id: z.number().int().positive().optional(),
+	name: z.string().min(1).max(150).optional(),
+	unit_number: z.string().min(1).max(20).optional(),
+	floor_number: z.number().int().min(0).optional(),
+	type: z.enum(UNIT_TYPES).optional(),
+	status: z.enum(UNIT_STATUSES).optional(), // only available on update
+	area: z.number().min(0).optional(),
+	monthly_rent: z.number().min(0).optional(),
+	description: z.string().max(1000).optional(),
+	rooms_count: z.number().int().min(0).optional(),
+	bathrooms_count: z.number().int().min(0).optional(),
+	kitchens_count: z.number().int().min(0).optional(),
+	balconies_count: z.number().int().min(0).optional(),
+	view_type: z.string().max(100).optional(),
+	furnishing_status: z.enum(FURNISHING_STATUSES).optional(),
+	orientation: z.enum(ORIENTATIONS).optional(),
+	security_deposit: z.number().min(0).optional(),
+	min_lease_term: z.number().int().min(1).optional(),
+	ac_type: z.enum(AC_TYPES).optional(),
+	internet_status: z.enum(INTERNET_STATUSES).optional(),
+});
+
+// ── Create schema ─────────────────────────────────────────────────────────────
+export const createPropertySchema = z.object({
+	name: z
+		.string({ required_error: "Property name is required" })
+		.min(1, "Property name is required")
+		.max(150),
+
+	type: z.enum(PROPERTY_TYPES, { required_error: "Property type is required" }),
+
+	address_line_1: z
+		.string({ required_error: "Address is required" })
+		.min(1, "Address is required")
+		.max(255),
+
+	address_line_2: z.string().max(255).optional(),
+
+	building_number: z.string().max(20).optional(),
+
+	latitude: z.string().optional(),
+	longitude: z.string().optional(),
+
+	floors_count: z.number().int().min(1).optional(),
+
+	area: z.number().min(0).optional(),
+
+	concierge_phone: z.string().max(30).optional(),
+
+	amenities: z.array(z.enum(AMENITIES)).optional(),
+});
+
+// ── Update schema (all fields optional) ──────────────────────────────────────
+export const updatePropertySchema = z.object({
+	name: z.string().min(1).max(150).optional(),
+	type: z.enum(PROPERTY_TYPES).optional(),
+	address_line_1: z.string().min(1).max(255).optional(),
+	address_line_2: z.string().max(255).optional(),
+	building_number: z.string().max(20).optional(),
+	latitude: z.string().optional(),
+	longitude: z.string().optional(),
+	floors_count: z.number().int().min(1).optional(),
+	area: z.number().min(0).optional(),
+	concierge_phone: z.string().max(30).optional(),
+	amenities: z.array(z.enum(AMENITIES)).optional(),
+});
+
+// ── Renew schema — requires the package to renew with ─────────────────────────
+export const renewSubscriptionSchema = z.object({
+	package_id: z
+		.number({ required_error: "Please select a package" })
+		.int()
+		.positive("Package ID must be a positive number"),
+});
+
+// ── Upgrade schema ────────────────────────────────────────────────────────────
+export const upgradeSubscriptionSchema = z.object({
+	package_id: z
+		.number({ required_error: "Please select a package" })
+		.int()
+		.positive("Package ID must be a positive number"),
+
+	billing_cycle: z.enum(BILLING_CYCLES, {
+		required_error: "Please select a billing cycle",
+	}),
+});
+
+// ── Create user schema ────────────────────────────────────────────────────────
+export const createUserSchema = z
+	.object({
+		name: z
+			.string({ required_error: "Name is required" })
+			.min(2, "Name must be at least 2 characters")
+			.max(100),
+
+		email: z
+			.string({ required_error: "Email is required" })
+			.email("Please enter a valid email address"),
+
+		password: z
+			.string({ required_error: "Password is required" })
+			.min(8, "Password must be at least 8 characters"),
+
+		confirmed_password: z.string({
+			required_error: "Please confirm your password",
+		}),
+
+		roles: z.array(z.string()).optional(),
+
+		avatar: z
+			.instanceof(File)
+			.refine((f) => f.size <= MAX_AVATAR_SIZE, "Avatar must be under 2 MB")
+			.refine(
+				(f) => ACCEPTED_IMAGE_TYPES.includes(f.type),
+				"Only JPG, PNG or WebP images are accepted",
+			)
+			.optional(),
+	})
+	.refine((data) => data.password === data.confirmed_password, {
+		message: "Passwords do not match",
+		path: ["confirmed_password"],
+	});
+
+// ── Update user schema ────────────────────────────────────────────────────────
+export const updateUserSchema = z.object({
+	name: z.string().min(2).max(100).optional(),
+	email: z.string().email("Please enter a valid email address").optional(),
+	roles: z.array(z.string()).optional(),
+	avatar: z
+		.instanceof(File)
+		.refine((f) => f.size <= MAX_AVATAR_SIZE, "Avatar must be under 2 MB")
+		.refine(
+			(f) => ACCEPTED_IMAGE_TYPES.includes(f.type),
+			"Only JPG, PNG or WebP images are accepted",
+		)
+		.optional(),
+});
+
+// ── Update password schema ────────────────────────────────────────────────────
+export const updatePasswordSchema = z
+	.object({
+		current_password: z
+			.string({ required_error: "Current password is required" })
+			.min(1, "Current password is required"),
+
+		password: z
+			.string({ required_error: "New password is required" })
+			.min(8, "Password must be at least 8 characters"),
+
+		confirmed_password: z.string({
+			required_error: "Please confirm your new password",
+		}),
+	})
+	.refine((data) => data.password === data.confirmed_password, {
+		message: "Passwords do not match",
+		path: ["confirmed_password"],
+	});
+
+// ── Update avatar schema ──────────────────────────────────────────────────────
+export const updateAvatarSchema = z.object({
+	avatar: z
+		.instanceof(File, { message: "Please select an image" })
+		.refine((f) => f.size <= MAX_AVATAR_SIZE, "Avatar must be under 2 MB")
+		.refine(
+			(f) => ACCEPTED_IMAGE_TYPES.includes(f.type),
+			"Only JPG, PNG or WebP images are accepted",
+		),
+});
+
+// ==================== start the tenant work =====================================
 export type createContractType = z.infer<typeof createContractSchema>;
 export type createMeterReadingType = z.infer<typeof createMeterReadingSchema>;
 export type createCustomerType = z.infer<typeof createCustomerSchema>;
@@ -651,21 +653,16 @@ export type Pet = z.infer<typeof petSchema>;
 export type updateMaintenanceTicketType = z.infer<
 	typeof updateMaintenanceTicketSchema
 >;
-
 export type createMeterType = z.infer<typeof createMeterSchema>;
 export type updateMeterType = z.infer<typeof updateMeterSchema>;
+export type createUnitType = z.infer<typeof createUnitSchema>;
+export type updateUnitType = z.infer<typeof updateUnitSchema>;
+export type createPropertyType = z.infer<typeof createPropertySchema>;
+export type updatePropertyType = z.infer<typeof updatePropertySchema>;
+export type renewSubscriptionType = z.infer<typeof renewSubscriptionSchema>;
+export type upgradeSubscriptionType = z.infer<typeof upgradeSubscriptionSchema>;
 
-// ========================== old work =================================
-
-export type FormSchemaType = z.infer<typeof formSchema>;
-export type AddPackageFormSchemaType = z.infer<typeof addPackageFormSchema>;
-export type confirmTransactionType = z.infer<typeof confirmTransactionSchema>;
-export type addNewUserType = z.infer<typeof addNewUserSchema>;
-export type editUserType = z.infer<typeof editUserSchema>;
-export type addNewRoleType = z.infer<typeof addNewRoleSchema>;
-export type addNewTenantType = z.infer<typeof addNewTenantSchema>;
-export type addNewTenantApplicationType = z.infer<
-	typeof addNewTenantApplicationSchema
->;
-export type createPasswordType = z.infer<typeof createPasswordSchema>;
-export type submitPaymentFormType = z.infer<typeof submitPaymentFormSchema>;
+export type createUserType = z.infer<typeof createUserSchema>;
+export type updateUserType = z.infer<typeof updateUserSchema>;
+export type updatePasswordType = z.infer<typeof updatePasswordSchema>;
+export type updateAvatarType = z.infer<typeof updateAvatarSchema>;

@@ -1,115 +1,151 @@
 "use client";
 
 import DashboardBreadcrumb from "@/components/layout/dashboard-breadcrumb";
-import SearchBox from "@/components/shared/search-box";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { Loader2, Plus } from "lucide-react";
-import UsersGridCard from "./users-grid-card";
 import { useTranslations } from "next-intl";
-import AddNewUser from "./_add-new-user/page";
-
-import { useState, useMemo } from "react";
-import { useUsers } from "@/hooks/queries/central/useUsersQuery";
+import { Button } from "@/components/ui/button";
+import { Trash2, Plus } from "lucide-react";
+import { useState } from "react";
+import MultiFunctionsTable from "@/components/multi-functions-table";
+import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import PagesDialog from "@/components/dailogs/pages-dialog";
-import Loading from "../../loading";
-import TablePagination from "@/components/table-pagination";
+import { cn } from "@/lib/utils";
 
-const ITEMS_PER_PAGE = 12; // 3 rows × 4 columns for grid layout
+import UsersTable from "./_components/users-table";
+import CreateNewUser from "./_components/create-new-user";
+import { useUsers } from "@/hooks/queries/tenants/useUsersQuery";
+
+const ROLE_OPTIONS = ["all", "admin", "manager", "staff", "viewer"];
 
 const Users = () => {
-	const t = useTranslations("central.users");
-	const { users, isLoading } = useUsers();
+	const t = useTranslations("tenant.users");
+	const conformMessages = useTranslations("confirmation-dialog");
+	const bulkMessages = useTranslations("tenant.users.bulk_actions");
+
+	const { users, isLoading, deleteUser } = useUsers();
 
 	const [searchQuery, setSearchQuery] = useState("");
+	const [roleFilter, setRoleFilter] = useState<string>("all");
 	const [currentPage, setCurrentPage] = useState(1);
+	const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
+	const itemsPerPage = 10;
 
-	// Filter users based on search query
-	const filteredUsers = useMemo(() => {
-		if (!searchQuery) return users;
+	// ── Filter ────────────────────────────────────────────────────────────────
+	const filteredUsers = users.filter((user: any) => {
+		const name = (user.name ?? "").toLowerCase();
+		const email = (user.email ?? "").toLowerCase();
+		const query = searchQuery.toLowerCase();
 
-		return users.filter(
-			(user: any) =>
-				user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				user.department?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				user.designation?.toLowerCase().includes(searchQuery.toLowerCase()),
-		);
-	}, [users, searchQuery]);
+		const matchesSearch = name.includes(query) || email.includes(query);
 
-	// Calculate pagination
-	const totalItems = filteredUsers.length;
-	const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-	const endIndex = startIndex + ITEMS_PER_PAGE;
-	const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+		const matchesRole =
+			roleFilter === "all" ||
+			(user.roles ?? []).some((r: string) => r.toLowerCase() === roleFilter);
 
-	// Handle page change
-	const handlePageChange = (page: number) => {
-		setCurrentPage(page);
-		window.scrollTo({ top: 0, behavior: "smooth" });
+		return matchesSearch && matchesRole;
+	});
+
+	// ── Pagination ────────────────────────────────────────────────────────────
+	const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const paginatedUsers = filteredUsers.slice(
+		startIndex,
+		startIndex + itemsPerPage,
+	);
+
+	// ── Handlers ─────────────────────────────────────────────────────────────
+	const handlePageChange = (page: number) => setCurrentPage(page);
+
+	const handleSelectAll = (checked: boolean) => {
+		setSelectedIds(checked ? paginatedUsers.map((u: any) => u.id) : []);
 	};
 
-	// Reset to page 1 when search query changes
-	useMemo(() => {
-		setCurrentPage(1);
-	}, [searchQuery]);
+	const handleSelectOne = (id: string | number, checked: boolean) => {
+		setSelectedIds((prev) =>
+			checked ? [...prev, id] : prev.filter((sid) => sid !== id),
+		);
+	};
+
+	const handleDelete = async (id: string | number) => {
+		await deleteUser(id);
+	};
+
+	const handleDeleteSelected = async () => {
+		for (const id of selectedIds) {
+			await deleteUser(id);
+		}
+		setSelectedIds([]);
+	};
+
+	const isAllSelected =
+		paginatedUsers.length > 0 && selectedIds.length === paginatedUsers.length;
 
 	return (
 		<>
-			<DashboardBreadcrumb title={t("title")} text={t("title")} />
+			<DashboardBreadcrumb title={t("subtitle")} text={t("title")} />
 
-			<Card className='card h-full p-0! block! border-0 overflow-hidden'>
-				<CardHeader className='border-b border-neutral-200 dark:border-slate-600 py-4! px-6 flex items-center flex-wrap gap-3 justify-between'>
-					<div className='w-full flex items-center flex-wrap gap-3'>
-						<SearchBox
-							searchPlaceholder={t("search-placeholder")}
-							value={searchQuery}
-							onChange={setSearchQuery}
-						/>
-						<div className='ml-auto rtl:mr-auto rtl:ml-0'>
-							<PagesDialog
-								button={
-									<Button className={cn(`w-auto h-11 `)}>
-										<Plus className='w-5 h-5' />
-										{t("add-user-button-text")}
+			<MultiFunctionsTable
+				AddNewPageButton={
+					<PagesDialog
+						button={
+							<Button className={cn("w-auto h-11 gap-2")}>
+								<Plus className='w-4 h-4' />
+								{t("create-new-user")}
+							</Button>
+						}
+						pageTitle={t("create-new-user")}>
+						<CreateNewUser />
+					</PagesDialog>
+				}
+				searchPlaceholder={t("search-placeholder")}
+				filterByStatusPlaceholder={t("filter-by-role")}
+				searchQuery={searchQuery}
+				statusOptions={ROLE_OPTIONS}
+				onSearchChange={setSearchQuery}
+				statusFilter={roleFilter}
+				onStatusChange={setRoleFilter}
+				currentPage={currentPage}
+				totalPages={totalPages}
+				onPageChange={handlePageChange}
+				totalItems={filteredUsers.length}
+				selectedCount={selectedIds.length}
+				customBulkActions={
+					selectedIds.length > 0 && (
+						<div className='w-full flex items-center justify-between gap-3 p-3 bg-primary/10 dark:bg-primary/20 rounded-lg animate-in fade-in slide-in-from-top-2 duration-300'>
+							<span className='text-sm font-medium text-neutral-900 dark:text-white'>
+								{selectedIds.length} {bulkMessages("selected")}
+							</span>
+							<ConfirmationDialog
+								type='danger'
+								confirmText={conformMessages("confirm-delete-button-text")}
+								title={conformMessages("title")}
+								icon={<Trash2 className='w-5 h-5' />}
+								trigger={
+									<Button
+										size='sm'
+										className='btn px-3! py-2! flex items-center gap-1.5 bg-red-100 dark:bg-red-600/25 text-red-600 dark:text-red-400 border-red-100 hover:bg-red-200 hover:dark:bg-red-600/30 h-9 text-xs'>
+										<Trash2 className='w-3.5 h-3.5' />
+										{bulkMessages("delete-selected")}
 									</Button>
 								}
-								pageTitle={t("add-new-user-page.title")}>
-								<AddNewUser />
-							</PagesDialog>
+								onConfirm={handleDeleteSelected}>
+								{conformMessages("message_multiple_delete", {
+									count: selectedIds.length,
+								})}
+							</ConfirmationDialog>
 						</div>
-					</div>
-				</CardHeader>
-
-				<CardContent className='card-body p-6'>
-					{isLoading ? (
-						<Loading />
-					) : paginatedUsers.length === 0 ? (
-						<div className='text-center py-12'>
-							<p className='text-neutral-500 dark:text-neutral-400'>
-								{searchQuery
-									? t("no-users-found-matching-your-search")
-									: t("no-users-available")}
-							</p>
-						</div>
-					) : (
-						<div className='grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 gap-6'>
-							<UsersGridCard users={paginatedUsers} />
-						</div>
-					)}
-				</CardContent>
-
-				{!isLoading && totalPages > 1 && (
-					<TablePagination
-						currentPage={currentPage}
-						totalPages={totalPages}
-						onPageChange={handlePageChange}
-						totalItems={totalItems}
-					/>
-				)}
-			</Card>
+					)
+				}>
+				<UsersTable
+					users={paginatedUsers}
+					isLoading={isLoading}
+					onDelete={handleDelete}
+					selectedIds={selectedIds}
+					onSelectAll={handleSelectAll}
+					onSelectOne={handleSelectOne}
+					isAllSelected={isAllSelected}
+					searchQuery={searchQuery}
+				/>
+			</MultiFunctionsTable>
 		</>
 	);
 };

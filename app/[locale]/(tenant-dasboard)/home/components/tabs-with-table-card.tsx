@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 
 import TransactionHistoryTable from "../../transactions/_components/transaction-history-table";
 
-const TabsWithTableCard = () => {
+const Units = () => {
 	const t = useTranslations("central.home.tabs-with-table-card");
 	const { transactions, isLoading, confirmTransaction, isConfirming } =
 		useTransactions();
@@ -53,4 +53,4 @@ const TabsWithTableCard = () => {
 	);
 };
 
-export default TabsWithTableCard;
+export default Units;

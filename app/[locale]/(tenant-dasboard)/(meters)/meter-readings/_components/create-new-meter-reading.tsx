@@ -141,7 +141,7 @@ const CreateNewMeterReading = () => {
 				</div>
 
 				{/* Image URL (optional) */}
-				<div className='col-span-12'>
+				{/* <div className='col-span-12'>
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
 						{t("image-label")}
 					</Label>
@@ -154,7 +154,7 @@ const CreateNewMeterReading = () => {
 					{errors.image && (
 						<p className='text-red-500 text-sm mt-1'>{errors.image.message}</p>
 					)}
-				</div>
+				</div> */}
 			</div>
 
 			<Separator className='w-auto my-4' />

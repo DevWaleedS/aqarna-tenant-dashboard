@@ -9,47 +9,49 @@ import MultiFunctionsTable from "@/components/multi-functions-table";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import { cn } from "@/lib/utils";
-import { useUnits } from "@/hooks/queries/tenants/useUnits";
-import UnitsTable from "./_components/units-table";
-import CreateNewUnit from "./_components/create-new-unit";
 
-const STATUS_OPTIONS = ["all", "vacant", "occupied", "maintenance", "reserved"];
+import CreateNewProperty from "./_components/create-new-property";
 
-const Units = () => {
-	const t = useTranslations("tenant.units");
+import { useProperties } from "@/hooks/queries/tenants/usePropertiesQuery";
+import PropertiesTable from "./_components/properties-table";
+
+// Properties filter by type, not status
+const TYPE_OPTIONS = ["all", "residential", "commercial", "industrial"];
+
+const Properties = () => {
+	const t = useTranslations("tenant.properties");
 	const conformMessages = useTranslations("confirmation-dialog");
-	const bulkMessages = useTranslations("tenant.units.bulk_actions");
+	const bulkMessages = useTranslations("tenant.properties.bulk_actions");
 
-	const { units, isLoading, deleteUnit } = useUnits();
+	const { properties, isLoading, deleteProperty } = useProperties();
 
 	const [searchQuery, setSearchQuery] = useState("");
-	const [statusFilter, setStatusFilter] = useState<string>("all");
+	const [typeFilter, setTypeFilter] = useState<string>("all");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
 	const itemsPerPage = 10;
 
 	// ── Filter ───────────────────────────────────────────────────────────────
-	const filteredUnits = units.filter((unit: any) => {
-		const name = (unit.name ?? "").toLowerCase();
-		const unitNumber = (unit.unit_number ?? "").toLowerCase();
-		const propertyName = (unit.property?.name ?? "").toLowerCase();
+	const filteredProperties = properties.filter((property: any) => {
+		const name = (property.name ?? "").toLowerCase();
+		const address = (property.address_line_1 ?? "").toLowerCase();
+		const buildingNumber = (property.building_number ?? "").toLowerCase();
 		const query = searchQuery.toLowerCase();
 
 		const matchesSearch =
 			name.includes(query) ||
-			unitNumber.includes(query) ||
-			propertyName.includes(query);
+			address.includes(query) ||
+			buildingNumber.includes(query);
 
-		const matchesStatus =
-			statusFilter === "all" || unit.status === statusFilter;
+		const matchesType = typeFilter === "all" || property.type === typeFilter;
 
-		return matchesSearch && matchesStatus;
+		return matchesSearch && matchesType;
 	});
 
 	// ── Pagination ───────────────────────────────────────────────────────────
-	const totalPages = Math.ceil(filteredUnits.length / itemsPerPage);
+	const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
 	const startIndex = (currentPage - 1) * itemsPerPage;
-	const paginatedUnits = filteredUnits.slice(
+	const paginatedProperties = filteredProperties.slice(
 		startIndex,
 		startIndex + itemsPerPage,
 	);
@@ -58,7 +60,7 @@ const Units = () => {
 	const handlePageChange = (page: number) => setCurrentPage(page);
 
 	const handleSelectAll = (checked: boolean) => {
-		setSelectedIds(checked ? paginatedUnits.map((u: any) => u.id) : []);
+		setSelectedIds(checked ? paginatedProperties.map((p: any) => p.id) : []);
 	};
 
 	const handleSelectOne = (id: string | number, checked: boolean) => {
@@ -68,18 +70,19 @@ const Units = () => {
 	};
 
 	const handleDelete = async (id: string | number) => {
-		await deleteUnit(id);
+		await deleteProperty(id);
 	};
 
 	const handleDeleteSelected = async () => {
 		for (const id of selectedIds) {
-			await deleteUnit(id);
+			await deleteProperty(id);
 		}
 		setSelectedIds([]);
 	};
 
 	const isAllSelected =
-		paginatedUnits.length > 0 && selectedIds.length === paginatedUnits.length;
+		paginatedProperties.length > 0 &&
+		selectedIds.length === paginatedProperties.length;
 
 	return (
 		<>
@@ -91,24 +94,24 @@ const Units = () => {
 						button={
 							<Button className={cn(`w-auto h-11`)}>
 								<Plus className='w-5 h-5' />
-								{t("create-new-unit")}
+								{t("create-new-property")}
 							</Button>
 						}
-						pageTitle={t("create-new-unit")}>
-						<CreateNewUnit />
+						pageTitle={t("create-new-property")}>
+						<CreateNewProperty />
 					</PagesDialog>
 				}
 				searchPlaceholder={t("search-placeholder")}
-				filterByStatusPlaceholder={t("filter-by-status")}
+				filterByStatusPlaceholder={t("filter-by-type")}
 				searchQuery={searchQuery}
-				statusOptions={STATUS_OPTIONS}
+				statusOptions={TYPE_OPTIONS}
 				onSearchChange={setSearchQuery}
-				statusFilter={statusFilter}
-				onStatusChange={setStatusFilter}
+				statusFilter={typeFilter}
+				onStatusChange={setTypeFilter}
 				currentPage={currentPage}
 				totalPages={totalPages}
 				onPageChange={handlePageChange}
-				totalItems={filteredUnits.length}
+				totalItems={filteredProperties.length}
 				selectedCount={selectedIds.length}
 				customBulkActions={
 					selectedIds.length > 0 && (
@@ -140,8 +143,8 @@ const Units = () => {
 						</div>
 					)
 				}>
-				<UnitsTable
-					units={paginatedUnits}
+				<PropertiesTable
+					properties={paginatedProperties}
 					isLoading={isLoading}
 					onDelete={handleDelete}
 					selectedIds={selectedIds}
@@ -155,4 +158,4 @@ const Units = () => {
 	);
 };
 
-export default Units;
+export default Properties;
