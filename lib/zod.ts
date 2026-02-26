@@ -642,6 +642,44 @@ export const updateAvatarSchema = z.object({
 		),
 });
 
+const nameField = z
+	.string({ required_error: "Role name is required" })
+	.min(2, "Role name must be at least 2 characters")
+	.max(50, "Role name must be under 50 characters")
+	.regex(
+		/^[a-z0-9_]+$/,
+		"Only lowercase letters, numbers and underscores allowed",
+	);
+
+// ── Create role schema ────────────────────────────────────────────────────────
+export const createRoleSchema = z.object({
+	name: nameField,
+	permissions: z.array(z.string()),
+});
+
+// ── Update role schema ────────────────────────────────────────────────────────
+// name is required here too — the form always sends both fields.
+// If you truly want name-optional at the API level, handle that in onSubmit,
+// not in the Zod schema (avoids the Resolver generic mismatch).
+export const updateRoleSchema = z.object({
+	name: nameField,
+	permissions: z.array(z.string()),
+});
+
+// ── Update permissions only ───────────────────────────────────────────────────
+export const updateRolePermissionsSchema = z.object({
+	permissions: z
+		.array(z.string())
+		.min(1, "Please select at least one permission"),
+});
+
+// ── Confirm transaction schema ────────────────────────────────────────────────
+export const confirmTransactionSchema = z.object({
+	notes: z
+		.string({ required_error: "Notes are required" })
+		.min(3, "Notes must be at least 3 characters")
+		.max(500, "Notes must be under 500 characters"),
+});
 // ==================== start the tenant work =====================================
 export type createContractType = z.infer<typeof createContractSchema>;
 export type createMeterReadingType = z.infer<typeof createMeterReadingSchema>;
@@ -666,3 +704,10 @@ export type createUserType = z.infer<typeof createUserSchema>;
 export type updateUserType = z.infer<typeof updateUserSchema>;
 export type updatePasswordType = z.infer<typeof updatePasswordSchema>;
 export type updateAvatarType = z.infer<typeof updateAvatarSchema>;
+
+export type createRoleType = z.infer<typeof createRoleSchema>;
+export type updateRoleType = z.infer<typeof updateRoleSchema>;
+export type updateRolePermissionsType = z.infer<
+	typeof updateRolePermissionsSchema
+>;
+export type confirmTransactionType = z.infer<typeof confirmTransactionSchema>;

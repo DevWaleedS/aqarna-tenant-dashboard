@@ -9,7 +9,6 @@ import { createContractSchema, createContractType } from "@/lib/zod";
 import { useTranslations } from "next-intl";
 import { Separator } from "@/components/ui/separator";
 import { DialogClose } from "@/components/ui/dialog";
-import { Loader2 } from "lucide-react";
 import {
 	Select,
 	SelectContent,
@@ -20,9 +19,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useContracts } from "@/hooks/queries/tenants/useContractsQuery";
-import { MultiSelect } from "@/components/ui/multi-select";
+
 import { DatePicker } from "@/components/shared/date-picker";
 import { format } from "date-fns";
+import MultiSelect, {
+	MultiSelectOption,
+} from "@/components/shared/multi-select";
+import { Building2, Loader2 } from "lucide-react";
 
 const MOCK_CUSTOMERS = [
 	{ id: 105, first_name: "Ahmed", last_name: "Mohammed" },
@@ -56,6 +59,17 @@ const CreateNewContract = () => {
 
 	const selectedBillingFrequency = watch("billing_frequency");
 	const selectedPenaltyType = watch("termination_penalty_type");
+
+	const unitOptions: MultiSelectOption[] = MOCK_UNITS.map((u) => ({
+		value: u.id, // → stored in form, sent to API
+		label: u.unit_number, // → shown in pill + dropdown row
+		badge: new Intl.NumberFormat("en-US", {
+			notation: "compact",
+			maximumFractionDigits: 1,
+		}).format(u.unit_price), // → "125K" badge on the right
+		description: `Price: ${new Intl.NumberFormat("en-US").format(u.unit_price)}`,
+		icon: <Building2 className='w-3.5 h-3.5' />,
+	}));
 
 	const onSubmit = async (data: createContractType) => {
 		try {
@@ -414,13 +428,13 @@ const CreateNewContract = () => {
 						control={control}
 						render={({ field }) => (
 							<MultiSelect
-								className='h-12 px-4'
-								options={MOCK_UNITS}
 								value={field.value ?? []}
 								onChange={field.onChange}
+								options={unitOptions}
+								isLoading={false}
 								placeholder={t("units-placeholder")}
-								labelKey='unit_number'
-								valueKey='unit_number'
+								searchPlaceholder='Search units...'
+								error={errors.units?.message as string | undefined}
 							/>
 						)}
 					/>

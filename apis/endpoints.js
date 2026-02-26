@@ -188,43 +188,9 @@ export const deleteNotificationAPI = async (notificationId) => {
 	}
 };
 
-// ==================== Transactions ===================================
+// ==================== Roles Endpoints =======================
 
-// Get all transactions
-export const getTransactionsAPI = async () => {
-	try {
-		const { data } = await AxiosAuth.get(`/transactions`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getTransactionsAPI", null);
-	}
-};
-
-// Get single transaction
-export const getTransactionAPI = async (transactionId) => {
-	try {
-		const { data } = await AxiosAuth.get(`/transactions/${transactionId}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getTransactionAPI", null);
-	}
-};
-
-// Confirm transaction
-export const confirmTransactionAPI = async (transactionId) => {
-	try {
-		const { data } = await AxiosAuth.post(
-			`/transactions/${transactionId}/confirm`,
-		);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "confirmTransactionAPI", null);
-	}
-};
-
-// ==================== Roles ===================================
-
-// Get all roles
+// 1.1 — Get all roles
 export const getRolesAPI = async () => {
 	try {
 		const { data } = await AxiosAuth.get(`/roles`);
@@ -234,17 +200,7 @@ export const getRolesAPI = async () => {
 	}
 };
 
-// Get single role
-export const getRoleAPI = async (roleId) => {
-	try {
-		const { data } = await AxiosAuth.get(`/roles/${roleId}`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getRoleAPI", null);
-	}
-};
-
-// Create role
+// 1.2 — Create new role  { name, permissions[] }
 export const createRoleAPI = async (roleData) => {
 	try {
 		const { data } = await AxiosAuth.post(`/roles`, roleData);
@@ -254,7 +210,17 @@ export const createRoleAPI = async (roleData) => {
 	}
 };
 
-// Update role
+// 1.3 — Get single role details
+export const getRoleAPI = async (roleId) => {
+	try {
+		const { data } = await AxiosAuth.get(`/roles/${roleId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getRoleAPI", null);
+	}
+};
+
+// 1.4 — Update role  { name, permissions[] }
 export const updateRoleAPI = async (roleId, roleData) => {
 	try {
 		const { data } = await AxiosAuth.put(`/roles/${roleId}`, roleData);
@@ -264,7 +230,7 @@ export const updateRoleAPI = async (roleId, roleData) => {
 	}
 };
 
-// Delete role
+// 1.5 — Delete role
 export const deleteRoleAPI = async (roleId) => {
 	try {
 		const { data } = await AxiosAuth.delete(`/roles/${roleId}`);
@@ -286,7 +252,7 @@ export const getPermissionsAPI = async () => {
 	}
 };
 
-// Update role permissions
+//  Update role permissions only
 export const updateRolePermissionsAPI = async (roleId, permissionsData) => {
 	try {
 		const { data } = await AxiosAuth.put(
@@ -820,5 +786,40 @@ export const updateUserAvatarAPI = async (avatarData) => {
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "updateUserAvatarAPI", null);
+	}
+};
+
+// ==================== Transactions Endpoints =======================
+
+// 1.1 — Get all transactions (supports pagination via params)
+export const getTransactionsAPI = async (params = {}) => {
+	try {
+		const { data } = await AxiosAuth.get(`/transactions`, { params });
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getTransactionsAPI", null);
+	}
+};
+
+// 1.2 — Get single transaction details
+export const getTransactionAPI = async (transactionId) => {
+	try {
+		const { data } = await AxiosAuth.get(`/transactions/${transactionId}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getTransactionAPI", null);
+	}
+};
+
+// 1.3 — Confirm a transaction payment  { notes }
+export const confirmTransactionAPI = async (transactionId, payload) => {
+	try {
+		const { data } = await AxiosAuth.post(
+			`/transactions/${transactionId}/confirm`,
+			payload,
+		);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "confirmTransactionAPI", null);
 	}
 };

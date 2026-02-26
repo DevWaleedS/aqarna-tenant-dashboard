@@ -8,12 +8,16 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DialogClose } from "@/components/ui/dialog";
-import { Loader2, Mail, User } from "lucide-react";
+import { Loader2, Mail, Shield, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { updateUserSchema, updateUserType } from "@/lib/zod";
 import { useUser, useUsers } from "@/hooks/queries/tenants/useUsersQuery";
+import { useRoles } from "@/hooks/queries/tenants/useRoles";
+import MultiSelect, {
+	MultiSelectOption,
+} from "@/components/shared/multi-select";
 import AvatarUploader from "@/components/shared/avatar-uploader";
-import RolesMultiSelect from "@/components/shared/roles-multi-select";
+
 import ChangePasswordContent from "@/components/shared/change-password-content";
 
 interface EditCurrentUserProps {
@@ -28,6 +32,15 @@ const EditCurrentUser = ({ userId, onClose }: EditCurrentUserProps) => {
 
 	const { user, isLoading } = useUser(userId);
 	const { updateUser, isUpdating } = useUsers();
+	const { roles, isLoading: rolesLoading } = useRoles();
+
+	const rolesOptions: MultiSelectOption[] = roles.map((r: any) => ({
+		value: r.name,
+		label: r.name,
+		badge: r.permissions_count > 0 ? `${r.permissions_count} perms` : undefined,
+		description: `Guard: ${r.guard_name}`,
+		icon: <Shield className='w-3.5 h-3.5' />,
+	}));
 
 	const {
 		register,
@@ -184,11 +197,13 @@ const EditCurrentUser = ({ userId, onClose }: EditCurrentUserProps) => {
 						name='roles'
 						control={control}
 						render={({ field }) => (
-							<RolesMultiSelect
+							<MultiSelect
 								value={field.value ?? []}
 								onChange={field.onChange}
+								options={rolesOptions}
+								isLoading={rolesLoading}
 								placeholder={tCreate("roles-placeholder")}
-								hint={tCreate("roles-hint")}
+								searchPlaceholder='Search roles...'
 							/>
 						)}
 					/>

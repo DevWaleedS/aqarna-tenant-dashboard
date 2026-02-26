@@ -195,7 +195,11 @@
 		"admin": "Admin",
 		"manager": "Manager",
 		"staff": "Staff",
-		"viewer": "Viewer"
+		"viewer": "Viewer",
+
+		"paid": "Paid",
+		"failed": "Failed",
+		"refunded": "Refunded"
 	},
 
 	"input-phone-number": {
@@ -1613,6 +1617,148 @@
 				"verified-label": "Email Verified",
 				"joined-label": "Member Since",
 				"close-button-text": "Close"
+			}
+		},
+
+		"roles": {
+			"title": "Roles",
+			"subtitle": "Manage access control roles and permissions",
+			"create-new-role": "New Role",
+			"search-placeholder": "Search roles...",
+			"no_roles_available": "No roles yet",
+			"no_roles_available_desc": "Create your first role to start managing access control.",
+			"no_roles_found": "No roles match your search",
+			"table": {
+				"role": "Role",
+				"guard": "Guard",
+				"permissions": "Permissions",
+				"created": "Created",
+				"actions": "Actions"
+			},
+			"permissions-count": "{count} permissions",
+			"no-permissions": "No permissions",
+			"bulk_actions": {
+				"selected": "selected",
+				"delete-selected": "Delete Selected"
+			},
+			"create-page": {
+				"title": "Create New Role",
+				"name-section": "Role Details",
+				"name-label": "Role Name",
+				"name-placeholder": "e.g. editor, moderator",
+				"name-hint": "Lowercase letters, numbers and underscores only",
+				"permissions-section": "Assign Permissions",
+				"permissions-hint": "Select the permissions this role will have",
+				"search-permissions": "Search permissions...",
+				"select-all": "Select all",
+				"deselect-all": "Deselect all",
+				"selected-count": "{count} selected",
+				"no-permissions-found": "No permissions match your search",
+				"cancel-button-text": "Cancel",
+				"save-button-text": "Create Role",
+				"save-button-loading-text": "Creating..."
+			},
+			"edit-page": {
+				"title": "Edit Role",
+				"not-found": "Role not found",
+				"name-label": "Role Name",
+				"name-placeholder": "e.g. editor, moderator",
+				"permissions-section": "Permissions",
+				"cancel-button-text": "Cancel",
+				"save-button-text": "Save Changes",
+				"save-button-loading-text": "Saving..."
+			},
+			"show-page": {
+				"title": "Role Details",
+				"not-found": "Role not found",
+				"name-label": "Name",
+				"guard-label": "Guard",
+				"permissions-label": "Permissions",
+				"permissions-count-label": "Total Permissions",
+				"created-label": "Created",
+				"updated-label": "Last Updated",
+				"no-permissions": "No permissions assigned",
+				"close-button-text": "Close",
+				"edit-button-text": "Edit Role"
+			},
+			"permissions-dialog": {
+				"title": "Manage Permissions",
+				"description": "Update the permissions assigned to this role.",
+				"save-button-text": "Save Permissions",
+				"save-button-loading-text": "Saving...",
+				"cancel-button-text": "Cancel"
+			}
+		},
+
+		"transactions": {
+			"title": "Transactions",
+			"subtitle": "Track and manage all payment transactions",
+			"search-placeholder": "Search by details, gateway or method...",
+			"filter-by-status": "Filter by status",
+			"no_transactions_available": "No transactions found",
+			"no_transactions_available_desc": "There are no payment transactions recorded yet.",
+			"no_transactions_found_matching_search": "No transactions match your search",
+			"status": {
+				"all": "All Statuses",
+				"pending": "Pending",
+				"paid": "Paid",
+				"failed": "Failed",
+				"refunded": "Refunded",
+				"cancelled": "Cancelled"
+			},
+			"gateway": {
+				"stripe": "Stripe",
+				"paypal": "PayPal",
+				"bank_transfer": "Bank Transfer",
+				"cash": "Cash",
+				"cheque": "Cheque"
+			},
+			"table": {
+				"id": "#ID",
+				"amount": "Amount",
+				"gateway": "Gateway",
+				"method": "Method",
+				"status": "Status",
+				"paid-at": "Paid At",
+				"confirmed-by": "Confirmed By",
+				"actions": "Actions"
+			},
+			"show-page": {
+				"title": "Transaction Details",
+				"not-found": "Transaction not found",
+				"overview-section": "Overview",
+				"payment-section": "Payment Info",
+				"confirmation-section": "Confirmation",
+				"attachments-section": "Attachments",
+				"id-label": "Transaction ID",
+				"amount-label": "Amount",
+				"currency-label": "Currency",
+				"gateway-label": "Payment Gateway",
+				"method-label": "Payment Method",
+				"status-label": "Status",
+				"details-label": "Details",
+				"notes-label": "Notes",
+				"paid-at-label": "Paid At",
+				"confirmed-by-label": "Confirmed By",
+				"confirmed-at-label": "Confirmed At",
+				"cheque-image-label": "Cheque Image",
+				"transfer-receipt-label": "Transfer Receipt",
+				"invoice-label": "Invoice",
+				"created-label": "Created At",
+				"view-attachment": "View",
+				"close-button-text": "Close",
+				"confirm-button-text": "Confirm Payment"
+			},
+			"confirm-dialog": {
+				"title": "Confirm Payment",
+				"description": "Add notes to confirm this transaction as paid.",
+				"notes-label": "Confirmation Notes",
+				"notes-placeholder": "e.g. Confirmed via bank transfer receipt",
+				"confirm-button-text": "Confirm Payment",
+				"confirm-loading-text": "Confirming...",
+				"cancel-button-text": "Cancel",
+				"success-title": "Payment Confirmed",
+				"success-desc": "This transaction has been marked as paid."
 			}
 		}
 	}

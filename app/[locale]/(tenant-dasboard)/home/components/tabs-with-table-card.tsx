@@ -2,10 +2,9 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTransactions } from "@/hooks/queries/central/useTransactions";
+import { useTransactions } from "@/hooks/queries/tenants/useTransactions";
 import { useTranslations } from "next-intl";
-
-import TransactionHistoryTable from "../../transactions/_components/transaction-history-table";
+import TransactionsTable from "../../transactions/_components/transactions-table";
 
 const Units = () => {
 	const t = useTranslations("central.home.tabs-with-table-card");
@@ -40,12 +39,10 @@ const Units = () => {
 						some data well added here
 					</TabsContent>
 					<TabsContent value='latestTransactions'>
-						<TransactionHistoryTable
+						{/* <TransactionsTable
 							transactions={transactions.slice(0, 5)}
 							isLoading={isLoading}
-							onConfirm={confirmTransaction}
-							isConfirming={isConfirming}
-						/>
+						/> */}
 					</TabsContent>
 				</Tabs>
 			</CardContent>

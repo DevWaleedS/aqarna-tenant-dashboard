@@ -1,161 +1,170 @@
 "use client";
-import DashboardBreadcrumb from "@/components/layout/dashboard-breadcrumb";
 
+import DashboardBreadcrumb from "@/components/layout/dashboard-breadcrumb";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import { Plus, Shield, ShieldCheck, Trash2 } from "lucide-react";
+import { useState } from "react";
+import MultiFunctionsTable from "@/components/multi-functions-table";
+import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
+import PagesDialog from "@/components/dailogs/pages-dialog";
+import { useRoles } from "@/hooks/queries/tenants/useRoles";
+
+import CreateNewRole from "./_components/create-new-role";
 import RolesTable from "./_components/roles-table";
 
-import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
-import AddNewRole from "./_components/add-new-role";
-import { cn } from "@/lib/utils";
-import { useState, useMemo } from "react";
-
-import { useRoles } from "@/hooks/queries/central/UseRoles";
-import MultiFunctionsTable from "@/components/multi-functions-table";
-import PagesDialog from "@/components/dailogs/pages-dialog";
-import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
-import Loading from "../../loading";
-
-const ITEMS_PER_PAGE = 10;
-
-const ManageRoles = () => {
-	const t = useTranslations("central.roles-and-permissions");
+const Roles = () => {
+	const t = useTranslations("tenant.roles");
 	const conformMessages = useTranslations("confirmation-dialog");
-	const bulkMessages = useTranslations("notifications.bulk_actions");
-	const { roles, deleteRole, isDeleting, isLoading } = useRoles();
+
+	const { roles, isLoading, deleteRole } = useRoles();
 
 	const [searchQuery, setSearchQuery] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
+	const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
+	const itemsPerPage = 10;
 
-	// Filter roles based on search query
-	const filteredRoles = useMemo(() => {
-		if (!searchQuery.trim()) return roles;
+	// ── Filter ────────────────────────────────────────────────────────────────
+	const filteredRoles = roles.filter((role: any) =>
+		role.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+	);
 
-		const query = searchQuery.toLowerCase();
-		return roles.filter(
-			(role: any) =>
-				role.name.toLowerCase().includes(query) ||
-				role.guard_name.toLowerCase().includes(query),
+	// ── Pagination ────────────────────────────────────────────────────────────
+	const totalPages = Math.ceil(filteredRoles.length / itemsPerPage);
+	const paginatedRoles = filteredRoles.slice(
+		(currentPage - 1) * itemsPerPage,
+		currentPage * itemsPerPage,
+	);
+
+	// ── Handlers ─────────────────────────────────────────────────────────────
+	const handleSelectAll = (checked: boolean) =>
+		setSelectedIds(checked ? paginatedRoles.map((r: any) => r.id) : []);
+
+	const handleSelectOne = (id: string | number, checked: boolean) =>
+		setSelectedIds((prev) =>
+			checked ? [...prev, id] : prev.filter((sid) => sid !== id),
 		);
-	}, [roles, searchQuery]);
 
-	// Pagination
-	const totalPages = Math.ceil(filteredRoles.length / ITEMS_PER_PAGE);
-	const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-	const endIndex = startIndex + ITEMS_PER_PAGE;
-	const paginatedRoles = filteredRoles.slice(startIndex, endIndex);
-
-	// Reset to page 1 when search changes
-	const handleSearchChange = (value: string) => {
-		setSearchQuery(value);
-		setCurrentPage(1);
-		setSelectedRoles([]);
+	const handleDelete = async (id: string | number) => {
+		await deleteRole(id);
+		setSelectedIds((prev) => prev.filter((sid) => sid !== id));
 	};
 
-	// Handle page change
-	const handlePageChange = (page: number) => {
-		setCurrentPage(page);
-		setSelectedRoles([]);
-	};
-
-	// Handle bulk delete
 	const handleDeleteSelected = async () => {
-		try {
-			// Delete all selected roles
-			await Promise.all(
-				selectedRoles.map((roleId) => deleteRole(roleId.toString())),
-			);
-			setSelectedRoles([]);
-		} catch (error) {
-			console.error("Error deleting roles:", error);
-		}
+		for (const id of selectedIds) await deleteRole(id);
+		setSelectedIds([]);
 	};
 
-	// Check if any selected roles exist in current filtered results
-	const selectedCount = selectedRoles.filter((id) =>
-		filteredRoles.some((role: any) => role.id === id),
-	).length;
+	const isAllSelected =
+		paginatedRoles.length > 0 && selectedIds.length === paginatedRoles.length;
+
+	// ── Summary stats ─────────────────────────────────────────────────────────
+	const totalPermissions = roles.reduce(
+		(sum: number, r: any) => sum + (r.permissions_count ?? 0),
+		0,
+	);
 
 	return (
 		<>
-			<DashboardBreadcrumb
-				title={t("roles-page-title")}
-				text={t("roles-page-title")}
-			/>
+			<DashboardBreadcrumb title={t("subtitle")} text={t("title")} />
+
+			{/* ── Summary strip ───────────────────────────────────────────── */}
+			{roles.length > 0 && (
+				<div className='mt-5 grid grid-cols-2 sm:grid-cols-2 gap-3'>
+					{[
+						{
+							icon: <Shield className='w-5 h-5' />,
+							label: "Total Roles",
+							value: roles.length,
+							color: "bg-primary/10 text-primary",
+						},
+						{
+							icon: <ShieldCheck className='w-5 h-5' />,
+							label: "Total Permissions",
+							value: totalPermissions,
+							color:
+								"bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400",
+						},
+					].map(({ icon, label, value, color }) => (
+						<div
+							key={label}
+							className='flex items-center gap-3 p-4 rounded-xl border border-neutral-200 dark:border-slate-700 bg-white dark:bg-slate-900'>
+							<div
+								className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+								{icon}
+							</div>
+							<div>
+								<p className='text-xs text-neutral-400 dark:text-neutral-500'>
+									{label}
+								</p>
+								<p className='text-xl font-extrabold text-neutral-800 dark:text-neutral-100 tabular-nums'>
+									{value}
+								</p>
+							</div>
+						</div>
+					))}
+				</div>
+			)}
 
 			<MultiFunctionsTable
 				AddNewPageButton={
 					<PagesDialog
 						button={
-							<Button className={cn(`w-auto h-11`)}>
-								<Plus className='w-5 h-5' />
-								{t("add-new-role-button")}
+							<Button className='w-auto h-11 gap-2'>
+								<Plus className='w-4 h-4' />
+								{t("create-new-role")}
 							</Button>
 						}
-						pageTitle={t("add-new-role-button")}>
-						<AddNewRole />
+						pageTitle={t("create-new-role")}>
+						<CreateNewRole />
 					</PagesDialog>
 				}
 				searchPlaceholder={t("search-placeholder")}
 				searchQuery={searchQuery}
-				onSearchChange={handleSearchChange}
-				statusOptions={[]}
+				onSearchChange={setSearchQuery}
 				currentPage={currentPage}
 				totalPages={totalPages}
-				onPageChange={handlePageChange}
+				onPageChange={setCurrentPage}
 				totalItems={filteredRoles.length}
-				selectedCount={selectedCount}
+				selectedCount={selectedIds.length}
 				customBulkActions={
-					selectedCount > 0 && (
+					selectedIds.length > 0 && (
 						<div className='w-full flex items-center justify-between gap-3 p-3 bg-primary/10 dark:bg-primary/20 rounded-lg animate-in fade-in slide-in-from-top-2 duration-300'>
 							<span className='text-sm font-medium text-neutral-900 dark:text-white'>
-								{selectedCount} {bulkMessages("selected")}
+								{selectedIds.length} {t("bulk_actions.selected")}
 							</span>
-							<div className='flex items-center gap-2'>
-								<ConfirmationDialog
-									type='danger'
-									title={conformMessages("title")}
-									icon={<Trash2 className='w-5 h-5' />}
-									trigger={
-										<Button
-											size='sm'
-											variant='destructive'
-											disabled={isDeleting}
-											className='bg-red-500 hover:bg-red-600'>
-											<Trash2 className='w-4 h-4 mr-2 rtl:mr-0 rtl:ml-2' />
-											{bulkMessages("delete")}
-										</Button>
-									}
-									onConfirm={handleDeleteSelected}>
-									{conformMessages("message_multiple", {
-										count: selectedCount,
-									})}
-								</ConfirmationDialog>
-							</div>
+							<ConfirmationDialog
+								type='danger'
+								confirmText={conformMessages("confirm-delete-button-text")}
+								title={conformMessages("title")}
+								icon={<Trash2 className='w-5 h-5' />}
+								trigger={
+									<Button
+										size='sm'
+										className='h-9 text-xs gap-1.5 bg-red-100 dark:bg-red-600/25 text-red-600 dark:text-red-400 border-red-100 hover:bg-red-200'>
+										<Trash2 className='w-3.5 h-3.5' />
+										{t("bulk_actions.delete-selected")}
+									</Button>
+								}
+								onConfirm={handleDeleteSelected}>
+								{conformMessages("delete-message")}
+							</ConfirmationDialog>
 						</div>
 					)
-				}
-				hasUnreadSelected={false}>
-				{isLoading ? (
-					<Loading />
-				) : paginatedRoles.length === 0 ? (
-					<div className='text-center py-12'>
-						<p className='text-neutral-500 dark:text-neutral-400'>
-							{searchQuery
-								? t("no_roles_found_matching_your_search")
-								: t("no_roles_available")}
-						</p>
-					</div>
-				) : (
-					<RolesTable
-						roles={paginatedRoles}
-						selectedRoles={selectedRoles}
-						setSelectedRoles={setSelectedRoles}
-					/>
-				)}
+				}>
+				<RolesTable
+					roles={paginatedRoles}
+					isLoading={isLoading}
+					searchQuery={searchQuery}
+					onDelete={handleDelete}
+					selectedIds={selectedIds}
+					onSelectAll={handleSelectAll}
+					onSelectOne={handleSelectOne}
+					isAllSelected={isAllSelected}
+				/>
 			</MultiFunctionsTable>
 		</>
 	);
 };
-export default ManageRoles;
+
+export default Roles;
