@@ -118,16 +118,6 @@ export const loginSchema = z.object({
 	remember_me: z.boolean().optional(),
 });
 
-// Register Schema
-export const registerSchema = loginSchema.extend({
-	username: z.string().min(2, {
-		message: "Username must be at least 2 characters.",
-	}),
-	acceptTerms: z.literal(true, {
-		errorMap: () => ({ message: "You must accept the terms and conditions" }),
-	}),
-});
-
 // Forgot Password Schema
 export const forgotPasswordSchema = z.object({
 	email: emailField,
@@ -145,6 +135,13 @@ export const createPasswordSchema = z
 		message: "Password does not match",
 		path: ["password_confirmation"],
 	});
+
+export const verifyEmailSchema = z.object({
+	code: z
+		.string({ required_error: "Verification code is required" })
+		.length(6, "Code must be exactly 6 digits")
+		.regex(/^\d{6}$/, "Code must contain only digits"),
+});
 
 // ==================== Contract Schema ====================
 
@@ -702,6 +699,7 @@ export type upgradeSubscriptionType = z.infer<typeof upgradeSubscriptionSchema>;
 
 export type createUserType = z.infer<typeof createUserSchema>;
 export type updateUserType = z.infer<typeof updateUserSchema>;
+export type createPasswordType = z.infer<typeof createPasswordSchema>;
 export type updatePasswordType = z.infer<typeof updatePasswordSchema>;
 export type updateAvatarType = z.infer<typeof updateAvatarSchema>;
 
@@ -711,3 +709,4 @@ export type updateRolePermissionsType = z.infer<
 	typeof updateRolePermissionsSchema
 >;
 export type confirmTransactionType = z.infer<typeof confirmTransactionSchema>;
+export type verifyEmailType = z.infer<typeof verifyEmailSchema>;

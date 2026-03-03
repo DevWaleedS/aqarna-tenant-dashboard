@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 
 import { z } from "zod";
 import { useTranslations } from "next-intl";
-import { useRecoverAccount } from "@/hooks/queries/central/useAuth";
+import { useRecoverAccount } from "@/hooks/queries/tenants/useAuth";
 
 const ForgotPasswordComponent = () => {
 	const t = useTranslations("auth.forgot-password");

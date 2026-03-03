@@ -14,7 +14,7 @@ import { useLocale, useTranslations } from "next-intl";
 import LanguageImg1 from "@/public/assets/images/flags/flag1.png";
 import LanguageImg3 from "@/public/assets/images/flags/flag3.png";
 import { cn } from "@/lib/utils";
-import { useSetLanguages } from "@/hooks/queries/central/useSetLanguage";
+import { useSetLanguages } from "@/hooks/queries/tenants/useSetLanguage";
 
 const LanguageSelect = () => {
 	const t = useTranslations("language");

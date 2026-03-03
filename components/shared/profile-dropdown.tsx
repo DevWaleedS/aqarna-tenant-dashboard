@@ -7,7 +7,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useCurrentUser } from "@/hooks/queries/central/useAuth";
+import { useCurrentUser } from "@/hooks/queries/tenants/useAuth";
 
 import { cn } from "@/lib/utils";
 import userImg from "@/public/assets/images/user.png";

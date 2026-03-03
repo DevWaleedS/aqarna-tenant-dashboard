@@ -10,7 +10,7 @@ import LogoWhite from "@/public/assets/images/logo-light.png";
 import LogoIcon from "@/public/assets/images/logo-icon.png";
 import { cn } from "@/lib/utils";
 import { useSidebarCollapsed } from "@/hooks/useSidebarCollapsed";
-import { useSetting } from "@/hooks/queries/central/useSetting";
+import { useSetting } from "@/hooks/queries/tenants/useSetting";
 
 function LogoSidebar() {
 	const { theme } = useTheme();

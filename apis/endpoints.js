@@ -42,6 +42,28 @@ export const resetPasswordAPI = async (data) => {
 	}
 };
 
+// ==================== Email Verification Endpoints =======================
+
+// Resend verification code to user's email
+export const resendVerificationEmailAPI = async (payload) => {
+	try {
+		const { data } = await AxiosAPI.post(`/email/resend`, payload);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "resendVerificationEmailAPI", null);
+	}
+};
+
+// Verify email with the 6-digit code
+export const verifyEmailAPI = async (payload) => {
+	try {
+		const { data } = await AxiosAPI.post(`/email/verify`, payload);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "verifyEmailAPI", null);
+	}
+};
+
 // sign out API
 export const LogoutAPI = async () => {
 	try {

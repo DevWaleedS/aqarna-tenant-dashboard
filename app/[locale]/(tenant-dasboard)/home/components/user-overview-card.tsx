@@ -4,7 +4,7 @@ import UserOverviewChart from "@/components/charts/user-overview-chart";
 import CustomSelect from "@/components/shared/custom-select";
 import { Card, CardContent } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
-import { useDashboard } from "@/hooks/queries/central/useDashboard";
+import { useDashboard } from "@/hooks/queries/tenants/useDashboard";
 
 const statusOptions = ["Weekly", "Monthly", "Yearly"];
 

@@ -22,7 +22,7 @@ import { createPasswordSchema, createPasswordType } from "@/lib/zod";
 
 import { decryptData } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
-import { useResetPassword } from "@/hooks/queries/central/useAuth";
+import { useResetPassword } from "@/hooks/queries/tenants/useAuth";
 
 const CreatePasswordComponent = () => {
 	const t = useTranslations("auth.create-new-password");

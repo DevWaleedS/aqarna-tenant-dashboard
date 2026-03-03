@@ -4,14 +4,9 @@ import { ZodError } from "zod";
 import { loginSchema } from "./lib/zod";
 import { AxiosAPI } from "./lib/axiosInstance";
 
-// -------------------------
-// NextAuth configuration
-// -------------------------
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	secret: process.env.NEXTAUTH_SECRET,
 	trustHost: true,
-
-	// Add these debug options temporarily
 	debug: process.env.NODE_ENV === "development",
 
 	providers: [
@@ -28,15 +23,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 				if (!credentials) return null;
 
 				try {
-					// Convert remember_me to boolean
 					const rememberMe =
 						credentials.remember_me === "true" ||
 						credentials.remember_me === true;
 
-					// Get locale (default to 'en' if not provided)
 					const locale = (credentials.locale as string) || "ar";
 
-					// Validate with Zod
 					const parsed = loginSchema.parse({
 						email: credentials.email,
 						password: credentials.password,
@@ -50,15 +42,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 							password: parsed.password,
 							remember_me: rememberMe,
 						},
-						{
-							headers: {
-								"Accept-Language": locale,
-							},
-						},
+						{ headers: { "Accept-Language": locale } },
 					);
 
 					const loginData = loginRes.data;
-
 					if (!loginData || !loginData.token) return null;
 
 					// Step 2: Get user details using token
@@ -70,8 +57,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					});
 
 					const userData = userRes.data?.data;
-
 					if (!userData || !userData.id) return null;
+
+					// ── Email verification check ──────────────────────────────
+					// Adjust the field name below to match your actual API response
+					// e.g. userData.is_verified / userData.email_verified_at / userData.verified
+					const isEmailVerified =
+						userData.is_verified === true ||
+						userData.email_verified_at !== null ||
+						userData.email_verified_at !== undefined;
+					// ─────────────────────────────────────────────────────────
 
 					return {
 						id: String(userData.id),
@@ -83,6 +78,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 						accessToken: loginData.token,
 						refreshToken: loginData.token,
 						rememberMe,
+						isEmailVerified, // ← new field
 					};
 				} catch (error) {
 					if (error instanceof ZodError) {
@@ -95,29 +91,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		}),
 	],
 
-	// -------------------------
-	// Custom Pages Configuration
-	// -------------------------
 	pages: {
 		signIn: "/auth/login",
 		signOut: "/auth/login",
-		error: "/auth/login", // This is where it redirects on error
+		error: "/auth/login",
 		verifyRequest: "/auth/verify-request",
 		newUser: "/auth/register",
 	},
 
-	// -------------------------
-	// Session & JWT strategy
-	// -------------------------
 	session: {
 		strategy: "jwt",
-		maxAge: 30 * 24 * 60 * 60, // 30 days default
+		maxAge: 30 * 24 * 60 * 60,
 	},
 
 	callbacks: {
-		// -------------------------
-		// JWT callback
-		// -------------------------
 		async jwt({ token, user }) {
 			if (user) {
 				token.id = user.id;
@@ -129,18 +116,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 				token.accessToken = user.accessToken;
 				token.refreshToken = user.refreshToken;
 				token.rememberMe = user.rememberMe ?? false;
+				token.isEmailVerified = user.isEmailVerified ?? false; // ← new
 			}
 
-			// Adjust token expiry based on rememberMe
 			const expiryDays = token.rememberMe ? 30 : 1;
 			token.exp = Math.floor(Date.now() / 1000) + expiryDays * 24 * 60 * 60;
 
 			return token;
 		},
 
-		// -------------------------
-		// Session callback
-		// -------------------------
 		async session({ session, token }) {
 			session.user.id = token.id || "";
 			session.user.email = token.email || "";
@@ -151,6 +135,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			session.accessToken = token.accessToken || "";
 			session.refreshToken = token.refreshToken || "";
 			session.rememberMe = token.rememberMe || false;
+			session.isEmailVerified = (token.isEmailVerified as boolean) ?? false; // ← new
 			return session;
 		},
 	},

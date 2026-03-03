@@ -5,9 +5,9 @@ import { ArrowUp, ArrowDown } from "lucide-react";
 import CustomSelect from "@/components/shared/custom-select";
 import SalesStaticChart from "@/components/charts/sales-static-chart";
 import { useTranslations } from "next-intl";
-import { useDashboard } from "@/hooks/queries/central/useDashboard";
+import { useDashboard } from "@/hooks/queries/tenants/useDashboard";
 import { useMemo } from "react";
-import { useSetting } from "@/hooks/queries/central/useSetting";
+import { useSetting } from "@/hooks/queries/tenants/useSetting";
 
 const statusOptions = ["Weekly", "Monthly", "Yearly"];
 

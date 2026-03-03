@@ -63,6 +63,24 @@
 			"reset-password-button-loading-text": "Resetting...",
 			"not-now-return-text": "Not now? Return",
 			"back-to-sign-in-link": "Sign In"
+		},
+		"verify-email": {
+			"title": "Verify your email",
+			"subtitle": "We sent a 6-digit code to",
+			"subtitle-fallback": "We sent a 6-digit code to your email",
+			"code-label": "Verification Code",
+			"code-placeholder": "Enter 6-digit code",
+			"verify-button": "Verify Email",
+			"verify-button-loading": "Verifying...",
+			"resend-prompt": "Didn't receive the code?",
+			"resend-button": "Resend Code",
+			"resend-button-loading": "Sending...",
+			"resend-countdown": "Resend in {seconds}s",
+			"back-to-login": "Back to login",
+			"verified-successfully": "Email verified successfully!",
+			"code-resent": "A new code has been sent to your email",
+			"invalid-code": "Invalid or expired verification code",
+			"wrong-email": "Wrong email address?"
 		}
 	},
 	"profile-dropdown": {

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCheck, Trash2 } from "lucide-react";
 
 import { useState } from "react";
-import { useNotifications } from "@/hooks/queries/central/useNotification";
+import { useNotifications } from "@/hooks/queries/tenants/useNotification";
 import MultiFunctionsTable from "@/components/multi-functions-table";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 

@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
-import { useDashboard } from "@/hooks/queries/central/useDashboard";
-import { useSetting } from "@/hooks/queries/central/useSetting";
+import { useDashboard } from "@/hooks/queries/tenants/useDashboard";
+import { useSetting } from "@/hooks/queries/tenants/useSetting";
 
 interface CardConfig {
 	key: "users" | "packages" | "tenants" | "subscriptions" | "transactions";

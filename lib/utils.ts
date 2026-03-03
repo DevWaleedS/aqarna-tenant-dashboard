@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import CryptoJS from "crypto-js"; // ✅ important: import CryptoJS
+import CryptoJS from "crypto-js";
 
 const SECRET_KEY =
 	process.env.NEXT_PUBLIC_LOCAL_STORAGE_KEY || "default_secret";
