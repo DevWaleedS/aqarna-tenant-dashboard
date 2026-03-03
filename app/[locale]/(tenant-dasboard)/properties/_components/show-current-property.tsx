@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { Separator } from "@/components/ui/separator";
 import { DialogClose } from "@/components/ui/dialog";
 import { Loader2, MapPin, Phone, Building2 } from "lucide-react";
-import { useProperty } from "@/hooks/queries/tenants/usePropertiesQuery";
+import { useProperty } from "@/hooks/queries/usePropertiesQuery";
 
 interface ShowCurrentPropertyProps {
 	propertyId: number | string;

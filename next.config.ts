@@ -2,6 +2,16 @@ import { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
+	experimental: {
+		serverActions: {
+			allowedOrigins: [
+				"app.localhost:3000",
+				"app.aqarna-dev.com",
+				"*.aqarna-dev.com",
+			],
+		},
+	},
+
 	images: {
 		remotePatterns: [
 			{
@@ -14,17 +24,21 @@ const nextConfig: NextConfig = {
 				hostname: "avatars.githubusercontent.com",
 				pathname: "/**",
 			},
-
 			{
 				protocol: "https",
 				hostname: "aqarna-dev.com",
 				pathname: "/**",
 			},
-
 			{
-				protocol: "http", // MUST be http
+				protocol: "http",
 				hostname: "aqarna-dev.com",
-				port: "9000", // MUST include port
+				port: "9000",
+				pathname: "/**",
+			},
+			{
+				protocol: "http",
+				hostname: "app.localhost",
+				port: "3000",
 				pathname: "/**",
 			},
 		],

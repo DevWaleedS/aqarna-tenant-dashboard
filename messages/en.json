@@ -143,13 +143,13 @@
 	},
 	"confirmation-dialog": {
 		"title": "Are you sure?",
-		"message": "Do you really want to delete this item? This process cannot be undone.",
+		"delete-message": "Do you really want to delete this item? This process cannot be undone.",
 		"terminate-message": "Do you really want to terminate this item? This process cannot be undone.",
 
-		"message_multiple": "You have selected {count} items, Do you really want to delete these items? This process cannot be undone.",
+		"message_multiple_delete": "You have selected {count} items, Do you really want to delete these items? This process cannot be undone.",
 		"message_multiple_terminate": "You have selected {count} items, Do you really want to terminate these items? This process cannot be undone.",
 		"cancel-button-text": "Cancel",
-		"confirm-button-text": "Yes, Delete it!",
+		"confirm-delete-button-text": "Yes, Delete it!",
 		"confirm-terminate-button-text": "Yes, Terminate it!"
 	},
 

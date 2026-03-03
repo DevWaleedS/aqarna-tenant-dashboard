@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import ShowCurrentTransaction from "./show-current-transaction";
 import ConfirmTransactionDialog from "./confirm-transaction-dialog";
-import type { Transaction } from "@/hooks/queries/tenants/useTransactions";
+import type { Transaction } from "@/hooks/queries/useTransactions";
 
 // ── Status config ─────────────────────────────────────────────────────────────
 const STATUS_CONFIG: Record<

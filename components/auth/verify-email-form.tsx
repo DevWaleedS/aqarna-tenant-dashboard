@@ -18,7 +18,7 @@ import { verifyEmailSchema, verifyEmailType } from "@/lib/zod";
 import {
 	useResendVerification,
 	useVerifyEmail,
-} from "@/hooks/queries/tenants/useEmailVerification";
+} from "@/hooks/queries/useEmailVerification";
 import OtpInput from "./Otp-input";
 
 const RESEND_COOLDOWN = 60; // seconds

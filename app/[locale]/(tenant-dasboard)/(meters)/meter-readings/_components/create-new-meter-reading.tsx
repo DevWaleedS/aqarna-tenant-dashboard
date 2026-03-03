@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { Separator } from "@/components/ui/separator";
 import { DialogClose } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
-import { useMeterReadings } from "@/hooks/queries/tenants/useMeterReadings";
+import { useMeterReadings } from "@/hooks/queries/useMeterReadings";
 import { DatePicker } from "@/components/shared/date-picker";
 
 const CreateNewMeterReading = () => {

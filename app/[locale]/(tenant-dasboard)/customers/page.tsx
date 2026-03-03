@@ -9,7 +9,7 @@ import MultiFunctionsTable from "@/components/multi-functions-table";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import { cn } from "@/lib/utils";
-import { useCustomers } from "@/hooks/queries/tenants/useCustomers";
+import { useCustomers } from "@/hooks/queries/useCustomers";
 
 import CustomersTable from "./_components/customers-table";
 import CreateNewCustomer from "./_components/create-new-customer";

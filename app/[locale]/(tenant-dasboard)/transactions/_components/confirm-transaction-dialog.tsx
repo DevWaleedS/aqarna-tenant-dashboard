@@ -16,7 +16,7 @@ import {
 import { CheckCircle2, Loader2, ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { confirmTransactionSchema, confirmTransactionType } from "@/lib/zod";
-import { useTransactions } from "@/hooks/queries/tenants/useTransactions";
+import { useTransactions } from "@/hooks/queries/useTransactions";
 
 interface ConfirmTransactionDialogProps {
 	transactionId: number | string;

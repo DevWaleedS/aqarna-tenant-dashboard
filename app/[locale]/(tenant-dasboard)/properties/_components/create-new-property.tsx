@@ -22,7 +22,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useProperties } from "@/hooks/queries/tenants/usePropertiesQuery";
+import { useProperties } from "@/hooks/queries/usePropertiesQuery";
 import { cn } from "@/lib/utils";
 
 const CreateNewProperty = () => {

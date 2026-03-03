@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { DialogClose } from "@/components/ui/dialog";
 import { Loader2, Star, Wifi, Wind } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { useUnit } from "@/hooks/queries/tenants/useUnits";
+import { useUnit } from "@/hooks/queries/useUnits";
 
 interface ShowCurrentUnitProps {
 	unitId: number | string;

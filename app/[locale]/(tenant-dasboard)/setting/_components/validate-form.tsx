@@ -12,7 +12,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
-import { useSetting, Setting } from "@/hooks/queries/tenants/useSetting";
+import { useSetting, Setting } from "@/hooks/queries/useSetting";
 import toast from "react-hot-toast";
 import { useTranslations, useLocale } from "next-intl";
 import { Checkbox } from "@/components/ui/checkbox";

@@ -6,7 +6,7 @@ import { useState } from "react";
 import MultiFunctionsTable from "@/components/multi-functions-table";
 
 import MaintenanceTicketsTable from "./_components/maintenance-tickets-table";
-import { useMaintenanceTickets } from "@/hooks/queries/tenants/useMaintenanceTicketsQuery";
+import { useMaintenanceTickets } from "@/hooks/queries/useMaintenanceTicketsQuery";
 
 const STATUS_OPTIONS = [
 	"all",

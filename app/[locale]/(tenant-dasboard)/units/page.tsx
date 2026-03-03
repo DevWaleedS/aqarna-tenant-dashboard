@@ -9,7 +9,7 @@ import MultiFunctionsTable from "@/components/multi-functions-table";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import { cn } from "@/lib/utils";
-import { useUnits } from "@/hooks/queries/tenants/useUnits";
+import { useUnits } from "@/hooks/queries/useUnits";
 import UnitsTable from "./_components/units-table";
 import CreateNewUnit from "./_components/create-new-unit";
 

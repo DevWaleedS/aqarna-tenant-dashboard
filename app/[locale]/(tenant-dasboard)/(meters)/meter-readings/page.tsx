@@ -8,7 +8,7 @@ import { useState } from "react";
 import MultiFunctionsTable from "@/components/multi-functions-table";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import { cn } from "@/lib/utils";
-import { useMeterReadings } from "@/hooks/queries/tenants/useMeterReadings";
+import { useMeterReadings } from "@/hooks/queries/useMeterReadings";
 import MeterReadingsTable from "./_components/meter-readings-table";
 import CreateNewMeterReading from "./_components/create-new-meter-reading";
 

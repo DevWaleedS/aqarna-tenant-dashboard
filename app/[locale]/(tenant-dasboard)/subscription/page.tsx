@@ -49,7 +49,7 @@ import {
 import {
 	useSubscription,
 	usePackagesLookup,
-} from "@/hooks/queries/tenants/useSubscription";
+} from "@/hooks/queries/useSubscription";
 import {
 	renewSubscriptionSchema,
 	renewSubscriptionType,

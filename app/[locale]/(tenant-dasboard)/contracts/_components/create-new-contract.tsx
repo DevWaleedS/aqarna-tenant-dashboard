@@ -18,7 +18,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useContracts } from "@/hooks/queries/tenants/useContractsQuery";
+import { useContracts } from "@/hooks/queries/useContractsQuery";
 
 import { DatePicker } from "@/components/shared/date-picker";
 import { format } from "date-fns";

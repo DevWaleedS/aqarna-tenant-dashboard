@@ -18,7 +18,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useMeters } from "@/hooks/queries/tenants/useMeters";
+import { useMeters } from "@/hooks/queries/useMeters";
 
 const CreateNewMeter = () => {
 	const t = useTranslations("tenant.meters.create-new-meter-page");

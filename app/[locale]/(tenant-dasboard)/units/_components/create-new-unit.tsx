@@ -19,7 +19,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useUnits } from "@/hooks/queries/tenants/useUnits";
+import { useUnits } from "@/hooks/queries/useUnits";
 
 const CreateNewUnit = () => {
 	const t = useTranslations("tenant.units.create-new-unit-page");

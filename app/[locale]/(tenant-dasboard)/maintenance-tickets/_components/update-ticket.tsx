@@ -28,7 +28,7 @@ import { format } from "date-fns";
 import {
 	useMaintenanceTicket,
 	useMaintenanceTickets,
-} from "@/hooks/queries/tenants/useMaintenanceTicketsQuery";
+} from "@/hooks/queries/useMaintenanceTicketsQuery";
 
 interface UpdateTicketProps {
 	ticketId: number | string;

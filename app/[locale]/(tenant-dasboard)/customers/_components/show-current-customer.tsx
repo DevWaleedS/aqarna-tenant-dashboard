@@ -10,10 +10,7 @@ import { Ban, CheckCircle, Loader2, Star, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
-import {
-	useCustomer,
-	useCustomers,
-} from "@/hooks/queries/tenants/useCustomers";
+import { useCustomer, useCustomers } from "@/hooks/queries/useCustomers";
 
 interface ShowCurrentCustomerProps {
 	customerId: number | string;

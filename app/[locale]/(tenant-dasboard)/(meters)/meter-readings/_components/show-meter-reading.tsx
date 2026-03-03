@@ -11,7 +11,7 @@ import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import {
 	useMeterReading,
 	useMeterReadings,
-} from "@/hooks/queries/tenants/useMeterReadings";
+} from "@/hooks/queries/useMeterReadings";
 
 interface ShowMeterReadingProps {
 	readingId: number | string;

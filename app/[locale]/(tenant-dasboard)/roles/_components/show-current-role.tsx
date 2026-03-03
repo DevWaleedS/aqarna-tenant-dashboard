@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { format, parseISO } from "date-fns";
-import { useRole } from "@/hooks/queries/tenants/useRoles";
+import { useRole } from "@/hooks/queries/useRoles";
 import { cn } from "@/lib/utils";
 
 interface ShowCurrentRoleProps {

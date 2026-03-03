@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { format, parseISO } from "date-fns";
-import { useTransaction } from "@/hooks/queries/tenants/useTransactions";
+import { useTransaction } from "@/hooks/queries/useTransactions";
 import { cn } from "@/lib/utils";
 import ConfirmTransactionDialog from "./confirm-transaction-dialog";
 

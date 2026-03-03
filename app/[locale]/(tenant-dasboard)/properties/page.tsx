@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 import CreateNewProperty from "./_components/create-new-property";
 
-import { useProperties } from "@/hooks/queries/tenants/usePropertiesQuery";
+import { useProperties } from "@/hooks/queries/usePropertiesQuery";
 import PropertiesTable from "./_components/properties-table";
 
 // Properties filter by type, not status

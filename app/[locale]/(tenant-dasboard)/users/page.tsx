@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 import UsersTable from "./_components/users-table";
 import CreateNewUser from "./_components/create-new-user";
-import { useUsers } from "@/hooks/queries/tenants/useUsersQuery";
+import { useUsers } from "@/hooks/queries/useUsersQuery";
 
 const ROLE_OPTIONS = ["all", "admin", "manager", "staff", "viewer"];
 

@@ -11,8 +11,8 @@ import { DialogClose } from "@/components/ui/dialog";
 import { Loader2, Mail, Shield, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { createUserSchema, createUserType } from "@/lib/zod";
-import { useUsers } from "@/hooks/queries/tenants/useUsersQuery";
-import { useRoles } from "@/hooks/queries/tenants/useRoles";
+import { useUsers } from "@/hooks/queries/useUsersQuery";
+import { useRoles } from "@/hooks/queries/useRoles";
 import MultiSelect, {
 	MultiSelectOption,
 } from "@/components/shared/multi-select";

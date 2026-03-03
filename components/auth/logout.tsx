@@ -3,7 +3,7 @@
 import { Button } from "../ui/button";
 import { LogOutIcon, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useLogout } from "@/hooks/queries/tenants/useAuth";
+import { useLogout } from "@/hooks/queries/useAuth";
 
 const Logout = () => {
 	const t = useTranslations("profile-dropdown");

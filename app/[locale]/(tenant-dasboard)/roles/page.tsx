@@ -8,7 +8,7 @@ import { useState } from "react";
 import MultiFunctionsTable from "@/components/multi-functions-table";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import PagesDialog from "@/components/dailogs/pages-dialog";
-import { useRoles } from "@/hooks/queries/tenants/useRoles";
+import { useRoles } from "@/hooks/queries/useRoles";
 
 import CreateNewRole from "./_components/create-new-role";
 import RolesTable from "./_components/roles-table";

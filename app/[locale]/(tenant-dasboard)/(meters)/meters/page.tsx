@@ -9,7 +9,7 @@ import MultiFunctionsTable from "@/components/multi-functions-table";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import { cn } from "@/lib/utils";
-import { useMeters } from "@/hooks/queries/tenants/useMeters";
+import { useMeters } from "@/hooks/queries/useMeters";
 import MetersTable from "./_components/meters-table";
 import CreateNewMeter from "./_components/create-new-meter";
 

@@ -22,10 +22,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import {
-	useProperty,
-	useProperties,
-} from "@/hooks/queries/tenants/usePropertiesQuery";
+import { useProperty, useProperties } from "@/hooks/queries/usePropertiesQuery";
 import { cn } from "@/lib/utils";
 
 interface EditCurrentPropertyProps {

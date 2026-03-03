@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTransactions } from "@/hooks/queries/tenants/useTransactions";
+import { useTransactions } from "@/hooks/queries/useTransactions";
 import { useTranslations } from "next-intl";
 import TransactionsTable from "../../transactions/_components/transactions-table";
 

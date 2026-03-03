@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import DashboardBreadcrumb from "@/components/layout/dashboard-breadcrumb";
-import { useSetting } from "@/hooks/queries/tenants/useSetting";
+import { useSetting } from "@/hooks/queries/useSetting";
 import { useTranslations, useLocale } from "next-intl";
 import SettingForm from "./_components/validate-form";
 import { Loader2, Menu, X } from "lucide-react";

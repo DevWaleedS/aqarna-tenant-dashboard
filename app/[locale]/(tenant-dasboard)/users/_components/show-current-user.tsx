@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import { format, parseISO } from "date-fns";
 
 import { cn } from "@/lib/utils";
-import { useUser } from "@/hooks/queries/tenants/useUsersQuery";
+import { useUser } from "@/hooks/queries/useUsersQuery";
 
 interface ShowCurrentUserProps {
 	userId: number | string;

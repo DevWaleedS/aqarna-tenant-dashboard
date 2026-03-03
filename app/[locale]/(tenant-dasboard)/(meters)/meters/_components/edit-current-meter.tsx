@@ -18,7 +18,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useMeter, useMeters } from "@/hooks/queries/tenants/useMeters";
+import { useMeter, useMeters } from "@/hooks/queries/useMeters";
 
 interface EditCurrentMeterProps {
 	meterId: number | string;

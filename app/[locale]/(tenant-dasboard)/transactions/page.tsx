@@ -11,7 +11,7 @@ import {
 	XCircle,
 } from "lucide-react";
 import MultiFunctionsTable from "@/components/multi-functions-table";
-import { useTransactions } from "@/hooks/queries/tenants/useTransactions";
+import { useTransactions } from "@/hooks/queries/useTransactions";
 import TransactionsTable from "./_components/transactions-table";
 import { cn } from "@/lib/utils";
 

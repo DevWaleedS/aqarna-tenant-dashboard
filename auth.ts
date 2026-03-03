@@ -1,13 +1,29 @@
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { ZodError } from "zod";
 import { loginSchema } from "./lib/zod";
 import { AxiosAPI } from "./lib/axiosInstance";
 
+// ── Custom error — surfaces real API messages instead of "CredentialsSignin" ──
+class AuthError extends CredentialsSignin {
+	constructor(message: string) {
+		super(message);
+		this.message = message;
+		this.code = message; // `code` is what ends up in res.error on the client
+	}
+}
+
+// ── Detect environment ────────────────────────────────────────────────────────
+const isProd = process.env.NODE_ENV === "production";
+
+const cookieDomain = isProd
+	? (process.env.COOKIE_DOMAIN ?? ".aqarna-dev.com")
+	: undefined;
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	secret: process.env.NEXTAUTH_SECRET,
 	trustHost: true,
-	debug: process.env.NODE_ENV === "development",
+	debug: !isProd,
 
 	providers: [
 		CredentialsProvider({
@@ -20,7 +36,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			},
 
 			authorize: async (credentials) => {
-				if (!credentials) return null;
+				if (!credentials) {
+					throw new AuthError("No credentials provided");
+				}
 
 				try {
 					const rememberMe =
@@ -34,39 +52,54 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 						password: credentials.password,
 					});
 
-					// Step 1: Login to get token
-					const loginRes = await AxiosAPI.post(
-						"central/auth/login",
-						{
-							email: parsed.email,
-							password: parsed.password,
-							remember_me: rememberMe,
-						},
-						{ headers: { "Accept-Language": locale } },
-					);
+					// Step 1: login → token
+					let loginData: any;
+					try {
+						const loginRes = await AxiosAPI.post(
+							"auth/login",
+							{
+								email: parsed.email,
+								password: parsed.password,
+								remember_me: rememberMe,
+							},
+							{ headers: { "Accept-Language": locale } },
+						);
+						loginData = loginRes.data;
+					} catch (err: any) {
+						throw new AuthError(
+							err?.response?.data?.message || err?.message || "Login failed",
+						);
+					}
 
-					const loginData = loginRes.data;
-					if (!loginData || !loginData.token) return null;
+					if (!loginData?.token) {
+						throw new AuthError("No token returned from server");
+					}
 
-					// Step 2: Get user details using token
-					const userRes = await AxiosAPI.get("/central/auth/me", {
-						headers: {
-							Authorization: `Bearer ${loginData.token}`,
-							"Accept-Language": locale,
-						},
-					});
+					// Step 2: fetch user with token
+					let userData: any;
+					try {
+						const userRes = await AxiosAPI.get("auth/me", {
+							headers: {
+								Authorization: `Bearer ${loginData.token}`,
+								"Accept-Language": locale,
+							},
+						});
+						userData = userRes.data?.data;
+					} catch (err: any) {
+						throw new AuthError(
+							err?.response?.data?.message ||
+								err?.message ||
+								"Failed to fetch user",
+						);
+					}
 
-					const userData = userRes.data?.data;
-					if (!userData || !userData.id) return null;
+					if (!userData?.id) {
+						throw new AuthError("User not found");
+					}
 
-					// ── Email verification check ──────────────────────────────
-					// Adjust the field name below to match your actual API response
-					// e.g. userData.is_verified / userData.email_verified_at / userData.verified
-					const isEmailVerified =
-						userData.is_verified === true ||
-						userData.email_verified_at !== null ||
-						userData.email_verified_at !== undefined;
-					// ─────────────────────────────────────────────────────────
+					// ── Email verification flag (your field) ─────────────────
+					const isEmailVerified = userData.verification_required;
+					// ────────────────────────────────────────────────────────
 
 					return {
 						id: String(userData.id),
@@ -78,14 +111,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 						accessToken: loginData.token,
 						refreshToken: loginData.token,
 						rememberMe,
-						isEmailVerified, // ← new field
+						isEmailVerified,
 					};
 				} catch (error) {
+					// Re-throw our typed errors as-is
+					if (error instanceof CredentialsSignin) throw error;
+
+					// Zod validation errors
 					if (error instanceof ZodError) {
-						console.error("❌ Zod validation errors:", error.errors);
+						throw new AuthError(error.errors.map((e) => e.message).join(", "));
 					}
+
 					console.error("❌ Auth error:", error);
-					return null;
+					throw new AuthError("Something went wrong. Please try again.");
 				}
 			},
 		}),
@@ -95,8 +133,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		signIn: "/auth/login",
 		signOut: "/auth/login",
 		error: "/auth/login",
-		verifyRequest: "/auth/verify-request",
-		newUser: "/auth/register",
+		verifyRequest: "/auth/verify-email",
 	},
 
 	session: {
@@ -116,7 +153,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 				token.accessToken = user.accessToken;
 				token.refreshToken = user.refreshToken;
 				token.rememberMe = user.rememberMe ?? false;
-				token.isEmailVerified = user.isEmailVerified ?? false; // ← new
+				token.isEmailVerified = user.isEmailVerified ?? false;
 			}
 
 			const expiryDays = token.rememberMe ? 30 : 1;
@@ -135,24 +172,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			session.accessToken = token.accessToken || "";
 			session.refreshToken = token.refreshToken || "";
 			session.rememberMe = token.rememberMe || false;
-			session.isEmailVerified = (token.isEmailVerified as boolean) ?? false; // ← new
+			session.isEmailVerified = (token.isEmailVerified as boolean) ?? false;
 			return session;
 		},
 	},
 
 	cookies: {
 		sessionToken: {
-			name:
-				process.env.NODE_ENV === "production"
-					? "__Secure-next-auth.session-token"
-					: "next-auth.session-token",
+			name: isProd
+				? "__Secure-next-auth.session-token"
+				: "next-auth.session-token",
 			options: {
 				httpOnly: true,
 				sameSite: "lax",
 				path: "/",
-				secure: process.env.NODE_ENV === "production",
-				domain:
-					process.env.NODE_ENV === "production" ? "aqarna-dev.com" : undefined,
+				secure: isProd,
+				domain: cookieDomain,
 			},
 		},
 	},

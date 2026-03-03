@@ -11,7 +11,7 @@ import Link from "next/link";
 
 import { formatDistanceToNow } from "date-fns";
 import { ar, enUS } from "date-fns/locale";
-import { useNotifications } from "@/hooks/queries/tenants/useNotification";
+import { useNotifications } from "@/hooks/queries/useNotification";
 import Image from "next/image";
 
 const NotificationDropdown = () => {

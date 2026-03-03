@@ -11,10 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { format } from "date-fns";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
-import {
-	useContract,
-	useContracts,
-} from "@/hooks/queries/tenants/useContractsQuery";
+import { useContract, useContracts } from "@/hooks/queries/useContractsQuery";
 
 interface ShowCurrentContractProps {
 	contractId: number | string;

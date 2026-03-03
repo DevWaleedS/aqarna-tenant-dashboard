@@ -2,7 +2,7 @@
 
 import VerifyEmailForm from "@/components/auth/verify-email-form";
 import ThemeLogo from "@/components/shared/theme-logo";
-import AuthImage from "@/public/assets/images/auth/auth-img.png";
+import AuthImage from "@/public/assets/images/auth/forgot-pass-img.png";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";

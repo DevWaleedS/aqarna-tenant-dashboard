@@ -19,7 +19,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useCustomers } from "@/hooks/queries/tenants/useCustomers";
+import { useCustomers } from "@/hooks/queries/useCustomers";
 import InputPhoneCountryInput from "@/components/shared/InputPhoneCountryInput";
 
 const CreateNewCustomer = () => {

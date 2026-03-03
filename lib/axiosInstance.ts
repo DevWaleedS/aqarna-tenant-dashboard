@@ -44,11 +44,11 @@ const getLocaleFromPath = (): Locale => {
 const handleAuthError = (error: AxiosError) => {
 	const status = error?.response?.status;
 
-	// if (status === 401) {
-	// 	// Get current locale for redirect
-	// 	const locale = getLocaleFromPath();
-	// 	signOut({ callbackUrl: `/${locale}/auth/login` });
-	// }
+	if (status === 401) {
+		// Get current locale for redirect
+		const locale = getLocaleFromPath();
+		signOut({ callbackUrl: `/${locale}/auth/login` });
+	}
 
 	return Promise.reject(error);
 };

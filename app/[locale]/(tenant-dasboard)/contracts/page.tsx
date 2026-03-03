@@ -12,7 +12,7 @@ import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import { cn } from "@/lib/utils";
 import CreateNewContract from "./_components/create-new-contract";
-import { useContracts } from "@/hooks/queries/tenants/useContractsQuery";
+import { useContracts } from "@/hooks/queries/useContractsQuery";
 
 const STATUS_OPTIONS = [
 	"all",
