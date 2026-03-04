@@ -2,7 +2,7 @@
  * Server-side permission checking utilities for middleware and server components
  */
 
-import { Session } from "next-auth";
+// replaced next-auth Session with generic type
 import { hasPermission } from "./permissionUtils";
 
 /**
@@ -13,7 +13,8 @@ import { hasPermission } from "./permissionUtils";
  * @returns boolean indicating if user has the required permission(s)
  */
 export function sessionHasPermission(
-	session: Session | null,
+	// session-like object containing user.permissions property
+	session: { user?: { permissions?: string[] } } | null,
 	requiredPermissions: string | string[],
 	requireAll: boolean = true,
 ): boolean {
@@ -31,7 +32,9 @@ export function sessionHasPermission(
 /**
  * Get all permissions from session
  */
-export function getSessionPermissions(session: Session | null): string[] {
+export function getSessionPermissions(
+	session: { user?: { permissions?: string[] } } | null,
+): string[] {
 	return session?.user?.permissions || [];
 }
 
@@ -39,7 +42,8 @@ export function getSessionPermissions(session: Session | null): string[] {
  * Check if session has role (if roles are available)
  */
 export function sessionHasRole(
-	session: Session | null,
+	// session-like object containing user.roles
+	session: { user?: { roles?: string[] } } | null,
 	requiredRoles: string | string[],
 	requireAll: boolean = true,
 ): boolean {

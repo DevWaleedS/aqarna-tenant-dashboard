@@ -37,15 +37,18 @@ const VerifyEmail = () => {
 					</div>
 
 					{/* Icon + Heading */}
-					<div className='mb-8'>
-						<div className='w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5'>
-							<ShieldCheck className='w-7 h-7 text-primary' />
+					<div className='my-8'>
+						<div className='flex justify-baseline items-baseline gap-2'>
+							<div className='w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center '>
+								<ShieldCheck className='w-7 h-7 text-primary' />
+							</div>
+							<div>
+								<h4 className='font-semibold mb-2'>{t("title")}</h4>
+								<p className='text-neutral-500 dark:text-neutral-300 text-lg'>
+									{email ? `${t("subtitle")} ${email}` : t("subtitle-fallback")}
+								</p>
+							</div>
 						</div>
-
-						<h4 className='font-semibold mb-2'>{t("title")}</h4>
-						<p className='text-neutral-500 dark:text-neutral-300 text-lg'>
-							{email ? `${t("subtitle")} ${email}` : t("subtitle-fallback")}
-						</p>
 					</div>
 
 					{/* Form */}

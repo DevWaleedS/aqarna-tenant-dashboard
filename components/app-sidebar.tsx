@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useSession } from "next-auth/react";
+import { useCurrentUser } from "@/hooks/queries/useAuth";
 
 import { NavMain } from "@/components/nav-main";
 import {
@@ -15,15 +15,17 @@ import { data } from "./sidebar-data";
 import { filterMenuItemsByPermissions } from "@/lib/permissionUtils";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-	const { data: session } = useSession();
+	const { userData } = useCurrentUser();
+
+	console.log("userData......", userData);
 
 	// Filter menu items based on user permissions
 	const filteredItems = React.useMemo(() => {
-		if (!session?.user?.permissions) {
+		if (!userData?.permissions) {
 			return [];
 		}
-		return filterMenuItemsByPermissions(data.navMain, session.user.permissions);
-	}, [session?.user?.permissions]);
+		return filterMenuItemsByPermissions(data.navMain, userData.permissions);
+	}, [userData?.permissions]);
 
 	return (
 		<Sidebar collapsible='icon' {...props} className='hidden xl:block'>

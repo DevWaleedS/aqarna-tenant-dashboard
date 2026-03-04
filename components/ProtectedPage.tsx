@@ -1,9 +1,9 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { hasPermission } from "@/lib/permissionUtils";
+import { useCurrentUser } from "@/hooks/queries/useAuth";
 
 interface ProtectedPageProps {
 	requiredPermissions: string | string[];
@@ -27,14 +27,17 @@ export function ProtectedPage({
 	children,
 	fallback,
 }: ProtectedPageProps) {
-	const { data: session, status } = useSession();
+	const { userData } = useCurrentUser();
+	const status = userData ? "authenticated" : "unauthenticated";
 	const router = useRouter();
+
+	console.log("userData........", userData);
 
 	useEffect(() => {
 		// Wait for session to load
-		if (status === "loading") {
-			return;
-		}
+		// if (status === "loading") {
+		// 	return;
+		// }
 
 		// Redirect to login if not authenticated
 		if (status === "unauthenticated") {
@@ -44,7 +47,7 @@ export function ProtectedPage({
 
 		// Check permissions
 		const userHasPermission = hasPermission(
-			session?.user?.permissions,
+			userData?.permissions,
 			requiredPermissions,
 			requireAll,
 		);
@@ -53,25 +56,18 @@ export function ProtectedPage({
 			// Redirect to dashboard home if no permission
 			router.push("/home");
 		}
-	}, [session, status, requiredPermissions, requireAll, router]);
+	}, [status, requiredPermissions, requireAll, router]);
 
-	// Show loading state while session is being fetched
-	if (status === "loading") {
-		return (
-			<div className='flex items-center justify-center h-screen'>
-				Loading...
-			</div>
-		);
-	}
-
-	// If unauthenticated, don't render content
+	// Early exit if not authenticated
 	if (status === "unauthenticated") {
+		// redirect to login
+		router.push("/auth/login");
 		return null;
 	}
 
 	// Check permissions
 	const userHasPermission = hasPermission(
-		session?.user?.permissions,
+		userData?.permissions,
 		requiredPermissions,
 		requireAll,
 	);

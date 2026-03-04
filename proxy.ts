@@ -1,30 +1,36 @@
+// middleware.ts
+// ─────────────────────────────────────────────────────────────────────────────
+// Pure cookie-based auth — no NextAuth dependency.
+// Reads `auth_token` and `auth_user` cookies written by useAuth/auth-token.ts.
+// ─────────────────────────────────────────────────────────────────────────────
+
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
-import { auth } from "./auth";
 import { routing } from "@/i18n/routing";
 
-// ── Public routes (no auth required) ─────────────────────────────────────────
+// ── Cookie keys (must match lib/auth-token.ts) ────────────────────────────────
+const TOKEN_KEY = "auth_token";
+const USER_KEY = "auth_user";
+
+// ── Routes ────────────────────────────────────────────────────────────────────
 const publicRoutes = [
 	"/auth/login",
-	"/auth/register",
 	"/auth/forgot-password",
 	"/auth/create-password",
-	"/auth/verify-email", // ← email verification is always accessible
-	"/payment",
+	"/auth/verify-email",
 ];
 
-// ── Routes authenticated users should not access ──────────────────────────────
 const authOnlyRoutes = ["/auth/login", "/auth/register"];
 
 // ─────────────────────────────────────────────────────────────────────────────
 
 const intlMiddleware = createMiddleware(routing);
 
-export default async function middleware(request: NextRequest) {
+export default function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
 
-	// 1️⃣ Ignore internals / static assets
+	// 1️⃣ Ignore static assets / Next internals
 	if (
 		pathname.startsWith("/_next") ||
 		pathname.startsWith("/api") ||
@@ -34,74 +40,76 @@ export default async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 
-	// 2️⃣ Run next-intl middleware first
+	// 2️⃣ Run next-intl first
 	const intlResponse = intlMiddleware(request);
 
-	// 3️⃣ Extract locale
-	const pathSegments = pathname.split("/").filter(Boolean);
-	const potentialLocale = pathSegments[0];
+	// 3️⃣ Resolve locale
+	const segments = pathname.split("/").filter(Boolean);
+	const potentialLocale = segments[0];
 	const locale = routing.locales.includes(potentialLocale as any)
 		? potentialLocale
 		: routing.defaultLocale;
 
-	// 4️⃣ Strip locale prefix for route checks
+	// 4️⃣ Strip locale prefix
 	const pathWithoutLocale = routing.locales.includes(potentialLocale as any)
 		? pathname.replace(`/${locale}`, "") || "/"
 		: pathname;
 
 	// 5️⃣ Classify route
 	const isPublicRoute = publicRoutes.some(
-		(route) =>
-			pathWithoutLocale === route || pathWithoutLocale.startsWith(route + "/"),
+		(r) => pathWithoutLocale === r || pathWithoutLocale.startsWith(r + "/"),
 	);
-
 	const isAuthOnlyRoute = authOnlyRoutes.some(
-		(route) =>
-			pathWithoutLocale === route || pathWithoutLocale.startsWith(route + "/"),
+		(r) => pathWithoutLocale === r || pathWithoutLocale.startsWith(r + "/"),
 	);
-
 	const isVerifyEmailRoute =
 		pathWithoutLocale === "/auth/verify-email" ||
 		pathWithoutLocale.startsWith("/auth/verify-email/");
 
-	// 6️⃣ Get session (skip for public routes)
-	let session = null;
-	if (!isPublicRoute) {
+	// 6️⃣ Read auth state from cookies
+	const token = request.cookies.get(TOKEN_KEY)?.value;
+	const userRaw = request.cookies.get(USER_KEY)?.value;
+
+	let isEmailVerified = false;
+	let userEmail = "";
+
+	if (userRaw) {
 		try {
-			session = await auth();
+			const parsed = JSON.parse(userRaw);
+			isEmailVerified = parsed.isEmailVerified === true;
+			userEmail = parsed.email ?? "";
 		} catch {
-			return NextResponse.redirect(
-				new URL(`/${locale}/auth/login`, request.url),
-			);
+			// malformed cookie — treat as unauthenticated
 		}
 	}
 
-	// 7️⃣ Protect private routes
-	if (!session?.user && !isPublicRoute) {
+	const isAuthenticated = !!token;
+
+	// 7️⃣ Redirect unauthenticated users away from private routes
+	if (!isAuthenticated && !isPublicRoute) {
 		return NextResponse.redirect(new URL(`/${locale}/auth/login`, request.url));
 	}
 
-	// 8️⃣ Redirect logged-in but UNVERIFIED users to verify-email
-	//    (except when they're already on the verify-email page)
+	// 8️⃣ Redirect authenticated but UNVERIFIED users to verify-email
+	//    (except when already on the verify page)
 	if (
-		session?.user &&
-		session.isEmailVerified === false &&
+		isAuthenticated &&
+		!isEmailVerified &&
 		!isVerifyEmailRoute &&
 		!isAuthOnlyRoute
 	) {
-		const verifyUrl = new URL(`/${locale}/auth/verify-email`, request.url);
-		// Pass email as query param so the page can show it & use it for resend
-		verifyUrl.searchParams.set("email", session.user.email ?? "");
-		return NextResponse.redirect(verifyUrl);
+		const url = new URL(`/${locale}/auth/verify-email`, request.url);
+		url.searchParams.set("email", userEmail);
+		return NextResponse.redirect(url);
 	}
 
-	// 9️⃣ Redirect already-verified authenticated users away from login/register
-	if (session?.user && isAuthOnlyRoute) {
+	// 9️⃣ Redirect verified + authenticated users away from login/register
+	if (isAuthenticated && isAuthOnlyRoute) {
 		return NextResponse.redirect(new URL(`/${locale}`, request.url));
 	}
 
-	// 🔟 Redirect already-verified users away from verify-email
-	if (session?.user && session.isEmailVerified === true && isVerifyEmailRoute) {
+	// 🔟 Redirect verified users away from verify-email page
+	if (isAuthenticated && isEmailVerified && isVerifyEmailRoute) {
 		return NextResponse.redirect(new URL(`/${locale}`, request.url));
 	}
 

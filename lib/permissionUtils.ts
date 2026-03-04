@@ -3,10 +3,7 @@
  * Used for both client-side and server-side permission validation
  */
 
-import {
-	NavItem,
-	NavSubItem,
-} from "@/components/(central)/app-sidebar/sidebar-data";
+import { NavItem } from "@/components/sidebar-data";
 
 /**
  * Check if user has the required permission(s)

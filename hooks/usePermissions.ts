@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useCurrentUser } from "@/hooks/queries/useAuth";
 
 /**
  * Hook to check if user has required permission(s)
@@ -12,13 +12,13 @@ export function usePermissions(
 	requiredPermissions: string | string[],
 	requireAll: boolean = true,
 ): boolean {
-	const { data: session } = useSession();
+	const { userData } = useCurrentUser();
 
-	if (!session?.user?.permissions) {
+	if (!userData?.permissions) {
 		return false;
 	}
 
-	const userPermissions = session.user.permissions;
+	const userPermissions = userData.permissions;
 	const permissions = Array.isArray(requiredPermissions)
 		? requiredPermissions
 		: [requiredPermissions];

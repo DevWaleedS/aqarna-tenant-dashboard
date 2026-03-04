@@ -5,7 +5,7 @@ import { LoadingProvider } from "@/contexts/LoadingContext";
 import type { Metadata } from "next";
 import { Cairo, Inter } from "next/font/google";
 import "../styles/globals.css";
-import AuthTokenProvider from "@/providers/AuthTokenProvider";
+
 import { Toaster } from "react-hot-toast";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 	title: "Aqarna - Real Estate Next.js Template | Modern & Responsive",
 	description: "Aqarna - Real Estate Next.js Template | Modern & Responsive",
 	metadataBase: new URL(
-		"https://wowdash-nextjs-typescript-shadcn-5fu5.vercel.app"
+		"https://wowdash-nextjs-typescript-shadcn-5fu5.vercel.app",
 	),
 	openGraph: {
 		title: "Aqarna - Real Estate Next.js Template | Modern & Responsive",
@@ -72,14 +72,12 @@ export default async function RootLayout({ children, params }: Props) {
 		<html dir={isRTL ? "rtl" : "ltr"} lang={locale}>
 			<body className={`${fontClass} antialiased`}>
 				<ReactQueryProvider>
-					<AuthTokenProvider>
-						<LoadingProvider>
-							<NextIntlClientProvider locale={locale}>
-								<Toaster />
-								{children}
-							</NextIntlClientProvider>
-						</LoadingProvider>
-					</AuthTokenProvider>
+					<LoadingProvider>
+						<NextIntlClientProvider locale={locale}>
+							<Toaster />
+							{children}
+						</NextIntlClientProvider>
+					</LoadingProvider>
 				</ReactQueryProvider>
 			</body>
 		</html>

@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { ClientRoot } from "@/app/[locale]/client-root";
-import AuthTokenProvider from "@/providers/AuthTokenProvider";
 
 export default async function DashboardLayout({
 	children,
@@ -11,11 +10,7 @@ export default async function DashboardLayout({
 		const cookieStore = await cookies();
 		const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
-		return (
-			<AuthTokenProvider>
-				<ClientRoot defaultOpen={defaultOpen}>{children}</ClientRoot>
-			</AuthTokenProvider>
-		);
+		return <ClientRoot defaultOpen={defaultOpen}>{children}</ClientRoot>;
 	} catch (error) {
 		return (
 			<div className='p-8 text-center'>

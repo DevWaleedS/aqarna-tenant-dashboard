@@ -22,6 +22,40 @@ function handleRequestError(error, resourceName, id) {
 }
 
 // ==================== Auth ===================================
+
+// ==================== Auth Endpoints =======================
+// Paste these into your main /apis/endpoints.js file.
+// These replace the NextAuth credential callbacks.
+
+// Login — returns { token, ... }
+export const loginAPI = async (payload) => {
+	try {
+		const { data } = await AxiosAPI.post("/auth/login", payload);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "loginAPI", null);
+	}
+};
+
+// Fetch current authenticated user — requires Bearer token
+export const getCurrentUserAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get("/auth/me");
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getCurrentUserAPI", null);
+	}
+};
+
+// Logout — invalidates token on the server
+export const logoutAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.post("/auth/logout");
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "logoutAPI", null);
+	}
+};
 // recover account API
 export const recoverAccountAPI = async (email) => {
 	try {
@@ -64,16 +98,6 @@ export const verifyEmailAPI = async (payload) => {
 	}
 };
 
-// sign out API
-export const LogoutAPI = async () => {
-	try {
-		const response = await AxiosAuth.post("/auth/logout");
-		return response.data;
-	} catch (error) {
-		return handleRequestError(error, "Logout", null);
-	}
-};
-
 // Get dashboard overview
 export const getDashboardOverviewAPI = async () => {
 	try {
@@ -81,17 +105,6 @@ export const getDashboardOverviewAPI = async () => {
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getDashboardOverviewAPI", null);
-	}
-};
-
-// Get user current info
-export const getCurrentUserAPI = async () => {
-	try {
-		const { data } = await AxiosAuth.get(`/auth/me`);
-
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getCurrentUserAPI", null);
 	}
 };
 

@@ -12,13 +12,12 @@ import { useCurrentUser } from "@/hooks/queries/useAuth";
 import { cn } from "@/lib/utils";
 import userImg from "@/public/assets/images/user.png";
 import { Mail, User } from "lucide-react";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react"; (removed)
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
 const ProfileDropdown = () => {
-	const { data: session } = useSession();
 	const { userData } = useCurrentUser();
 
 	const t = useTranslations("profile-dropdown");

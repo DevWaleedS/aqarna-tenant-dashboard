@@ -1,7 +1,8 @@
 "use client";
 
 import { resendVerificationEmailAPI, verifyEmailAPI } from "@/apis/endpoints";
-import { useMutation } from "@tanstack/react-query";
+import { getAuthUser, setAuthUser } from "@/lib/auth-token";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -12,6 +13,7 @@ import toast from "react-hot-toast";
 export const useVerifyEmail = () => {
 	const router = useRouter();
 	const locale = useLocale();
+	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: ({ email, code }: { email: string; code: string }) =>
@@ -19,7 +21,16 @@ export const useVerifyEmail = () => {
 
 		onSuccess: (res) => {
 			toast.success(res?.message || "Email verified successfully!");
-			// Small delay before redirect for UX
+
+			// ── Update auth_user cookie so middleware stops redirecting ──────
+			const existing = getAuthUser();
+			if (existing) {
+				setAuthUser({ ...existing, isEmailVerified: true });
+			}
+
+			// ── Invalidate currentUser so profile re-fetches ─────────────────
+			queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+
 			setTimeout(() => {
 				router.push(`/${locale}/home`);
 			}, 300);
