@@ -25,6 +25,7 @@ import {
 import { useProperty, useProperties } from "@/hooks/queries/usePropertiesQuery";
 import { cn } from "@/lib/utils";
 import InputPhoneCountryInput from "@/components/shared/InputPhoneCountryInput";
+import LocationPickerInput from "@/components/location-picker-input";
 
 interface EditCurrentPropertyProps {
 	propertyId: number | string;
@@ -56,6 +57,9 @@ const EditCurrentProperty = ({
 	});
 
 	const selectedAmenities = watch("amenities") ?? [];
+	// ↓ NEW — watch the two coord fields so LocationPickerInput stays in sync
+	const latValue = watch("latitude");
+	const lngValue = watch("longitude");
 
 	const toggleAmenity = (amenity: (typeof PROPERTY_AMENITIES)[number]) => {
 		const current = selectedAmenities;
@@ -272,26 +276,24 @@ const EditCurrentProperty = ({
 					/>
 				</div>
 
-				<div className='md:col-span-6 col-span-12'>
+				{/* ── NEW: Location Picker replaces the two raw lat/lng inputs ── */}
+				<div className='col-span-12'>
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
-						{tCreate("latitude-label")}
+						{tEdit("location-label")}
 					</Label>
-					<Input
-						className='h-12 px-4 font-mono'
-						placeholder={tCreate("latitude-placeholder")}
-						{...register("latitude")}
+					<LocationPickerInput
+						latitude={latValue ?? ""}
+						longitude={lngValue ?? ""}
+						onLocationChange={(lat, lng) => {
+							setValue("latitude", lat, { shouldValidate: true });
+							setValue("longitude", lng, { shouldValidate: true });
+						}}
 					/>
-				</div>
-
-				<div className='md:col-span-6 col-span-12'>
-					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
-						{tCreate("longitude-label")}
-					</Label>
-					<Input
-						className='h-12 px-4 font-mono'
-						placeholder={tCreate("longitude-placeholder")}
-						{...register("longitude")}
-					/>
+					{(errors.latitude || errors.longitude) && (
+						<p className='text-red-500 text-sm mt-1'>
+							{errors.latitude?.message ?? errors.longitude?.message}
+						</p>
+					)}
 				</div>
 
 				{/* ════ Amenities ════ */}

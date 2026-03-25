@@ -25,7 +25,7 @@ export const useVerifyEmail = () => {
 			// ── Update auth_user cookie so middleware stops redirecting ──────
 			const existing = getAuthUser();
 			if (existing) {
-				setAuthUser({ ...existing, isEmailVerified: true });
+				setAuthUser({ ...existing });
 			}
 
 			// ── Invalidate currentUser so profile re-fetches ─────────────────

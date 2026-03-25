@@ -90,7 +90,6 @@
 		"logging_out": "Logging out...",
 		"logged_out_successfully": "You logged out successfully."
 	},
-
 	"notifications": {
 		"title": "Notifications",
 		"mark-all-as-read-button": "Mark all as read",
@@ -152,7 +151,6 @@
 		"confirm-delete-button-text": "Yes, Delete it!",
 		"confirm-terminate-button-text": "Yes, Terminate it!"
 	},
-
 	"loading-text": {
 		"loading-text": "Loading..."
 	},
@@ -252,6 +250,40 @@
 		}
 	},
 
+	"shared": {
+		"location-picker": {
+			"trigger-placeholder": "Pick a location on the map",
+			"trigger-action": "Open map",
+
+			"dialog-title": "Select Location",
+
+			"mode-search": "Search",
+			"mode-gps": "My Location",
+			"mode-manual": "Manual",
+
+			"search-placeholder": "Search for a city, street or landmark…",
+			"no-results": "No locations found for that search.",
+			"search-error": "Search failed. Please check your connection.",
+
+			"gps-button": "Use my current location",
+			"gps-locating": "Locating…",
+			"gps-not-supported": "Geolocation is not supported by your browser.",
+			"gps-denied": "Location access was denied. Please allow it in your browser settings.",
+
+			"latitude-label": "Latitude",
+			"longitude-label": "Longitude",
+			"manual-apply": "Apply",
+			"manual-invalid": "Enter valid coordinates — latitude (−90 to 90) and longitude (−180 to 180).",
+
+			"map-hint": "Click on the map or drag the pin to select a location",
+
+			"locating": "Looking up address",
+			"no-pin": "No location selected yet — click the map or use one of the modes above.",
+
+			"confirm": "Confirm Location",
+			"cancel": "Cancel"
+		}
+	},
 	"central": {
 		"sidebar": {
 			"home": "Home",
@@ -1461,6 +1493,7 @@
 				"latitude-label": "Latitude",
 				"latitude-placeholder": "e.g. 30.0444",
 				"longitude-label": "Longitude",
+				"location-label": "Location (Latitude & Longitude)",
 				"longitude-placeholder": "e.g. 31.2357",
 				"amenities-section": "Amenities",
 				"amenities-label": "Select Amenities",
@@ -1473,7 +1506,8 @@
 				"not-found": "Property not found",
 				"cancel-button-text": "Cancel",
 				"save-button-text": "Update Property",
-				"save-button-loading-text": "Updating..."
+				"save-button-loading-text": "Updating...",
+				"location-label": "Location (Latitude & Longitude)"
 			},
 			"show-current-property-page": {
 				"title": "Property Details",

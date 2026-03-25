@@ -68,6 +68,8 @@ const VerifyEmailForm = ({ email }: VerifyEmailFormProps) => {
 		verifyEmail({ email, code: data.code });
 	};
 
+	console.log("email", email);
+
 	const handleResend = () => {
 		if (!canResend || isResending) return;
 		resendCode(email, {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -25,6 +25,7 @@ import {
 import { useProperties } from "@/hooks/queries/usePropertiesQuery";
 import { cn } from "@/lib/utils";
 import InputPhoneCountryInput from "@/components/shared/InputPhoneCountryInput";
+import LocationPickerInput from "@/components/location-picker-input";
 
 const CreateNewProperty = () => {
 	const t = useTranslations("tenant.properties.create-new-property-page");
@@ -58,6 +59,8 @@ const CreateNewProperty = () => {
 	});
 
 	const selectedAmenities = watch("amenities") ?? [];
+	const latValue = watch("latitude");
+	const lngValue = watch("longitude");
 
 	const toggleAmenity = (amenity: (typeof PROPERTY_AMENITIES)[number]) => {
 		const current = selectedAmenities;
@@ -192,7 +195,6 @@ const CreateNewProperty = () => {
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
 						{t("concierge-phone-label")}
 					</Label>
-
 					<Controller
 						name='concierge_phone'
 						control={control}
@@ -246,27 +248,24 @@ const CreateNewProperty = () => {
 					/>
 				</div>
 
-				{/* Latitude + Longitude */}
-				<div className='md:col-span-6 col-span-12'>
+				{/* ── NEW: Location Picker replaces the two raw inputs ─────────────── */}
+				<div className='col-span-12'>
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
-						{t("latitude-label")}
+						{t("location-label")}
 					</Label>
-					<Input
-						className='h-12 px-4 font-mono'
-						placeholder={t("latitude-placeholder")}
-						{...register("latitude")}
+					<LocationPickerInput
+						latitude={latValue ?? ""}
+						longitude={lngValue ?? ""}
+						onLocationChange={(lat, lng) => {
+							setValue("latitude", lat);
+							setValue("longitude", lng);
+						}}
 					/>
-				</div>
-
-				<div className='md:col-span-6 col-span-12'>
-					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
-						{t("longitude-label")}
-					</Label>
-					<Input
-						className='h-12 px-4 font-mono'
-						placeholder={t("longitude-placeholder")}
-						{...register("longitude")}
-					/>
+					{(errors.latitude || errors.longitude) && (
+						<p className='text-red-500 text-sm mt-1'>
+							{errors.latitude?.message ?? errors.longitude?.message}
+						</p>
+					)}
 				</div>
 
 				{/* ════ Amenities ════ */}
