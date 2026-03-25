@@ -17,8 +17,6 @@ import { filterMenuItemsByPermissions } from "@/lib/permissionUtils";
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { userData } = useCurrentUser();
 
-	console.log("userData......", userData);
-
 	// Filter menu items based on user permissions
 	const filteredItems = React.useMemo(() => {
 		if (!userData?.permissions) {

@@ -21,6 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useCustomer, useCustomers } from "@/hooks/queries/useCustomers";
 import InputPhoneCountryInput from "@/components/shared/InputPhoneCountryInput";
+import AvatarUploader from "@/components/shared/avatar-uploader";
 
 interface EditCurrentCustomerProps {
 	customerId: number | string;
@@ -48,6 +49,7 @@ const EditCurrentCustomer = ({
 	} = useForm<updateCustomerType>({
 		resolver: zodResolver(updateCustomerSchema),
 		defaultValues: {
+			avatar: undefined, // ← added
 			emergency_contact: [],
 			vehicles: [],
 			pets: [],
@@ -60,6 +62,7 @@ const EditCurrentCustomer = ({
 	useEffect(() => {
 		if (!customer) return;
 		reset({
+			avatar: undefined, // always start with no new file selected
 			type: customer.type,
 			name: customer.name ?? "",
 			email: customer.email ?? "",
@@ -67,7 +70,6 @@ const EditCurrentCustomer = ({
 			phone: customer.phone ?? "",
 			secondary_dial_code: String(customer.secondary_dial_code ?? ""),
 			secondary_phone: customer.secondary_phone ?? "",
-
 			nid_no: customer.nid_no ?? "",
 			cr_no: customer.cr_no ?? "",
 			tin: customer.tin ?? "",
@@ -98,10 +100,70 @@ const EditCurrentCustomer = ({
 		remove: removePet,
 	} = useFieldArray({ control, name: "pets" });
 
+	// ── Submit with FormData ──────────────────────────────────────────────────
 	const onSubmit = async (data: updateCustomerType) => {
 		try {
+			const formData = new FormData();
+
+			// ── Avatar (only append if a new file was selected) ──
+			if (data.avatar) formData.append("avatar", data.avatar);
+
+			// ── Basic ────────────────────────────────────────────
+			formData.append("type", data.type ?? "");
+			formData.append("name", data.name ?? "");
+			formData.append("email", data.email ?? "");
+
+			// ── Identification ───────────────────────────────────
+			if (data.nid_no) formData.append("nid_no", data.nid_no);
+			if (data.cr_no) formData.append("cr_no", data.cr_no);
+			if (data.tin) formData.append("tin", data.tin);
+
+			// ── Contact ──────────────────────────────────────────
+			formData.append("phone", data.phone ?? "");
+			formData.append("dial_code", data.dial_code ?? "");
+
+			if (data.secondary_phone) {
+				formData.append("secondary_phone", data.secondary_phone);
+				formData.append("secondary_dial_code", data.secondary_dial_code ?? "");
+			}
+
+			if (data.address) formData.append("address", data.address);
+			if (data.notes) formData.append("notes", data.notes);
+
+			// ── Emergency contacts ───────────────────────────────
+			data.emergency_contact?.forEach((contact, i) => {
+				formData.append(`emergency_contact[${i}][name]`, contact.name ?? "");
+				formData.append(`emergency_contact[${i}][phone]`, contact.phone ?? "");
+				formData.append(
+					`emergency_contact[${i}][relation]`,
+					contact.relation ?? "",
+				);
+			});
+
+			// ── Vehicles ─────────────────────────────────────────
+			data.vehicles?.forEach((vehicle, i) => {
+				formData.append(`vehicles[${i}][make]`, vehicle.make ?? "");
+				formData.append(`vehicles[${i}][model]`, vehicle.model ?? "");
+				formData.append(
+					`vehicles[${i}][model_year]`,
+					String(vehicle.model_year ?? ""),
+				);
+				formData.append(`vehicles[${i}][color]`, vehicle.color ?? "");
+				formData.append(
+					`vehicles[${i}][plate_number]`,
+					vehicle.plate_number ?? "",
+				);
+			});
+
+			// ── Pets ─────────────────────────────────────────────
+			data.pets?.forEach((pet, i) => {
+				formData.append(`pets[${i}][type]`, pet.type ?? "");
+				formData.append(`pets[${i}][name]`, pet.name ?? "");
+				formData.append(`pets[${i}][breed]`, pet.breed ?? "");
+			});
+
 			await updateCustomer(
-				{ id: customerId, data },
+				{ id: customerId, data: formData },
 				{
 					onSuccess: () => {
 						closeButtonRef.current?.click();
@@ -138,6 +200,28 @@ const EditCurrentCustomer = ({
 			<DialogClose ref={closeButtonRef} className='hidden' />
 
 			<div className='grid grid-cols-12 gap-5 pb-6'>
+				{/* ════ Avatar ════ */}
+				<div className='col-span-12 flex flex-col items-center py-4'>
+					<Controller
+						name='avatar'
+						control={control}
+						render={() => (
+							<AvatarUploader
+								currentUrl={customer?.avatar ?? undefined}
+								onChange={(file) =>
+									setValue("avatar", file ?? undefined, {
+										shouldValidate: true,
+									})
+								}
+								error={errors.avatar?.message as string | undefined}
+								uploadLabel={t("avatar-upload")}
+								changeLabel={t("avatar-change")}
+								removeLabel={t("avatar-remove")}
+								hint={t("avatar-hint")}
+							/>
+						)}
+					/>
+				</div>
 				{/* ── Type ── */}
 				<div className='col-span-12'>
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
@@ -148,7 +232,10 @@ const EditCurrentCustomer = ({
 						name='type'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value} // ← forces remount when value changes from undefined → "business"
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue placeholder={t("type-placeholder")} />
 								</SelectTrigger>

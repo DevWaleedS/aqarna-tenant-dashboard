@@ -108,11 +108,11 @@ const ShowCurrentCustomer = ({
 
 				{/* Avatar + Name + Rating row */}
 				{customer.avatar && (
-					<div className='col-span-12 flex items-center gap-4'>
+					<div className='col-span-12 flex items-end justify-center  gap-4'>
 						<img
 							src={customer.avatar}
 							alt={customer.name}
-							className='w-16 h-16 rounded-full object-cover border border-neutral-200 dark:border-slate-600'
+							className='w-24 h-24 rounded-full object-cover border border-neutral-200 dark:border-slate-600'
 						/>
 						<div>
 							<p className='font-semibold text-neutral-800 dark:text-white'>

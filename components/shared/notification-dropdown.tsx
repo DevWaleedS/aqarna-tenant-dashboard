@@ -12,7 +12,7 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { ar, enUS } from "date-fns/locale";
 import { useNotifications } from "@/hooks/queries/useNotification";
-import Image from "next/image";
+import SafeImage from "@/components/ui/safe-image";
 
 const NotificationDropdown = () => {
 	const t = useTranslations("notifications");
@@ -128,7 +128,7 @@ const NotificationDropdown = () => {
 													backgroundColor: notification.data.color + "33",
 												}}>
 												<div style={{ color: notification.data.color }}>
-													<Image
+													<SafeImage
 														src={notification.data.icon}
 														alt='notification icon'
 														width={20}

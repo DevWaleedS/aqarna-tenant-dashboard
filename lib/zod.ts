@@ -164,6 +164,9 @@ export const createContractSchema = z
 		}),
 
 		grace_period_days: z.number().min(0).default(0).optional(),
+		property_id: z
+			.string({ required_error: "Property is required" })
+			.min(1, "Property is required"),
 
 		units: z
 			.array(z.string(), { required_error: "At least one unit is required" })
@@ -266,6 +269,14 @@ export const petSchema = z.object({
 // which causes a Resolver<T> mismatch even though the output type is correct.
 
 const customerBaseObject = z.object({
+	avatar: z
+		.instanceof(File)
+		.refine((f) => f.size <= MAX_AVATAR_SIZE, "Avatar must be under 2 MB")
+		.refine(
+			(f) => ACCEPTED_IMAGE_TYPES.includes(f.type),
+			"Only JPG, PNG or WebP images are accepted",
+		)
+		.optional(),
 	type: z.enum(["individual", "business"], {
 		required_error: "Customer type is required",
 	}),

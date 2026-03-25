@@ -794,7 +794,11 @@
 				},
 				"termination-penalty-value-label": "Penalty Value",
 				"termination-penalty-value-placeholder": "e.g. 2",
+				"property-label": "Property",
+				"property-placeholder": "Select a property",
 				"units-label": "Units",
+				"search-units": "Search units...",
+
 				"units-placeholder": "Select units",
 				"units-required": "Please select at least one unit",
 				"notes-label": "Notes",
@@ -880,6 +884,11 @@
 			},
 
 			"create-new-customer-page": {
+				"avatar-section": "Profile Picture",
+				"avatar-hint": "JPG, PNG or WebP — max 2 MB",
+				"avatar-change": "Change Photo",
+				"avatar-remove": "Remove",
+				"avatar-upload": "Upload Photo",
 				"type-label": "Customer Type",
 				"type-placeholder": "Select type",
 				"type-options": {

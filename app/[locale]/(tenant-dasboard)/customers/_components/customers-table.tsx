@@ -176,22 +176,18 @@ const CustomersTable = ({
 									<span className='font-medium'>{customer.name}</span>
 								</div>
 							</TableCell>
-
 							{/* Email */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-sm'>
 								{customer.email ?? "—"}
 							</TableCell>
-
 							{/* Phone */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center text-sm'>
 								{phone}
 							</TableCell>
-
 							{/* Type */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center capitalize'>
 								{customer.type ?? "—"}
 							</TableCell>
-
 							{/* KYC */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
 								<span
@@ -202,7 +198,6 @@ const CustomersTable = ({
 									{customer.kyc_status?.replace("_", " ") ?? "—"}
 								</span>
 							</TableCell>
-
 							{/* Rating */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
 								{customer.rating ? (
@@ -214,7 +209,6 @@ const CustomersTable = ({
 									"—"
 								)}
 							</TableCell>
-
 							{/* Status */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
 								<span
@@ -224,12 +218,10 @@ const CustomersTable = ({
 									{customer.status}
 								</span>
 							</TableCell>
-
 							{/* Joined date */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center text-sm'>
 								{formatDate(customer.created_at)}
 							</TableCell>
-
 							{/* Actions: Delete | Edit | View */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
 								<div className='flex justify-center items-center gap-2'>

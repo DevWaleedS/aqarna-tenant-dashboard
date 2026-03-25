@@ -31,8 +31,6 @@ export function ProtectedPage({
 	const status = userData ? "authenticated" : "unauthenticated";
 	const router = useRouter();
 
-	console.log("userData........", userData);
-
 	useEffect(() => {
 		// Wait for session to load
 		// if (status === "loading") {

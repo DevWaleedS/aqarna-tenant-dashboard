@@ -14,7 +14,7 @@ import { Eye, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { formatDistanceToNow } from "date-fns";
 
-import Image from "next/image";
+import SafeImage from "@/components/ui/safe-image";
 import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 
 interface NotificationsTableProps {
@@ -128,7 +128,7 @@ const NotificationsTable = ({
 											backgroundColor: notification.data.color + "33",
 										}}>
 										<div style={{ color: notification.data.color }}>
-											<Image
+											<SafeImage
 												src={notification?.data?.icon}
 												alt='notification icon'
 												width={15}

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import { useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -26,20 +26,17 @@ import MultiSelect, {
 	MultiSelectOption,
 } from "@/components/shared/multi-select";
 import { Building2, Loader2 } from "lucide-react";
-
-const MOCK_CUSTOMERS = [
-	{ id: 105, first_name: "Ahmed", last_name: "Mohammed" },
-	{ id: 106, first_name: "Sara", last_name: "Ali" },
-];
-const MOCK_UNITS = [
-	{ id: 501, unit_number: "A-101", unit_price: 125000 },
-	{ id: 502, unit_number: "B-202", unit_price: 98000 },
-];
+import { useCustomersLookup } from "@/hooks/queries/useCustomers";
+import { useUnits } from "@/hooks/queries/useUnits";
+import { usePropertiesLookup } from "@/hooks/queries/usePropertiesQuery";
 
 const CreateNewContract = () => {
 	const t = useTranslations("tenant.contracts.create-new-contract-page");
 	const closeButtonRef = useRef<HTMLButtonElement>(null);
 	const { createContract, isCreating } = useContracts();
+	const { customersLookup } = useCustomersLookup();
+	const { propertiesLookup } = usePropertiesLookup();
+	const { units } = useUnits();
 
 	const {
 		control,
@@ -59,15 +56,20 @@ const CreateNewContract = () => {
 
 	const selectedBillingFrequency = watch("billing_frequency");
 	const selectedPenaltyType = watch("termination_penalty_type");
+	const selectedProperty = watch("property_id");
 
-	const unitOptions: MultiSelectOption[] = MOCK_UNITS.map((u) => ({
+	const filteredUnits = units.filter(
+		(u: any) => Number(u.id) === Number(selectedProperty),
+	);
+
+	const unitOptions: MultiSelectOption[] = filteredUnits?.map((u: any) => ({
 		value: u.id, // → stored in form, sent to API
 		label: u.unit_number, // → shown in pill + dropdown row
 		badge: new Intl.NumberFormat("en-US", {
 			notation: "compact",
 			maximumFractionDigits: 1,
-		}).format(u.unit_price), // → "125K" badge on the right
-		description: `Price: ${new Intl.NumberFormat("en-US").format(u.unit_price)}`,
+		}).format(u.monthly_rent), // → "125K" badge on the right
+		description: `Price: ${new Intl.NumberFormat("en-US").format(u.monthly_rent)}`,
 		icon: <Building2 className='w-3.5 h-3.5' />,
 	}));
 
@@ -75,6 +77,7 @@ const CreateNewContract = () => {
 		try {
 			const payload = {
 				...data,
+				// property_id: Number(data.property_id),
 				units: data.units,
 				customer_id: Number(data.customer_id),
 				security_deposit: Number(data.security_deposit),
@@ -119,11 +122,12 @@ const CreateNewContract = () => {
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue placeholder={t("customer-placeholder")} />
 								</SelectTrigger>
+
 								<SelectContent>
 									<SelectGroup>
-										{MOCK_CUSTOMERS.map((c) => (
+										{customersLookup?.map((c: any) => (
 											<SelectItem key={c.id} value={String(c.id)}>
-												{c.first_name} {c.last_name}
+												{c.name}
 											</SelectItem>
 										))}
 									</SelectGroup>
@@ -181,7 +185,7 @@ const CreateNewContract = () => {
 						<span className='text-red-600'>*</span>
 					</Label>
 					{/*
-					 * ✅ DatePicker is controlled via Controller.
+					 * DatePicker is controlled via Controller.
 					 * The form stores start_date as a "yyyy-MM-dd" string (what the API expects).
 					 * DatePicker receives a Date object for display, and calls onChange with a Date,
 					 * which we format back to a string for the form value.
@@ -417,31 +421,68 @@ const CreateNewContract = () => {
 					</div>
 				)}
 
-				{/* ── Row 7: Units Multi-Select ── */}
-				<div className='col-span-12'>
+				{/* ── Row 7: properties and units ── */}
+				<div className='md:col-span-6 col-span-12'>
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
-						{t("units-label")}
+						{t("property-label")}
 						<span className='text-red-600'>*</span>
 					</Label>
 					<Controller
-						name='units'
+						name='property_id'
 						control={control}
 						render={({ field }) => (
-							<MultiSelect
-								value={field.value ?? []}
-								onChange={field.onChange}
-								options={unitOptions}
-								isLoading={false}
-								placeholder={t("units-placeholder")}
-								searchPlaceholder='Search units...'
-								error={errors.units?.message as string | undefined}
-							/>
+							<Select value={field.value} onValueChange={field.onChange}>
+								<SelectTrigger className='h-12! px-4 w-full'>
+									<SelectValue placeholder={t("property-placeholder")} />
+								</SelectTrigger>
+
+								<SelectContent>
+									<SelectGroup>
+										{propertiesLookup?.map((p: any) => (
+											<SelectItem key={p.id} value={String(p.id)}>
+												{p.name}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
 						)}
 					/>
-					{errors.units && (
-						<p className='text-red-500 text-sm mt-1'>{errors.units.message}</p>
+					{errors.property_id && (
+						<p className='text-red-500 text-sm mt-1'>
+							{errors.property_id.message}
+						</p>
 					)}
 				</div>
+
+				{selectedProperty && (
+					<div className='md:col-span-6 col-span-12'>
+						<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
+							{t("units-label")}
+							<span className='text-red-600'>*</span>
+						</Label>
+						<Controller
+							name='units'
+							control={control}
+							render={({ field }) => (
+								<MultiSelect
+									value={field.value ?? []}
+									onChange={field.onChange}
+									options={unitOptions}
+									isLoading={false}
+									placeholder={t("units-placeholder")}
+									searchPlaceholder={t("search-units")}
+									error={errors.units?.message as string | undefined}
+								/>
+							)}
+						/>
+						{errors.units && (
+							<p className='text-red-500 text-sm mt-1'>
+								{errors.units.message}
+							</p>
+						)}
+					</div>
+				)}
 
 				{/* ── Notes ── */}
 				<div className='col-span-full'>

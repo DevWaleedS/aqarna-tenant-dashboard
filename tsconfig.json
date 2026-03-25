@@ -27,7 +27,7 @@
 		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		"types/**/*.d.ts", // ✅ REQUIRED
+		"types/**/*.d.ts", //  REQUIRED
 		".next/types/**/*.ts",
 		".next/dev/types/**/*.ts",
 		"hooks/queries/tenants/useAuth.ts"

@@ -393,7 +393,9 @@ export const getCustomerAPI = async (customerId) => {
 // Create customer
 export const createCustomerAPI = async (customerData) => {
 	try {
-		const { data } = await AxiosAuth.post(`/customers`, customerData);
+		const { data } = await AxiosAuth.post(`/customers`, customerData, {
+			headers: { "Content-Type": "multipart/form-data" },
+		});
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "createCustomerAPI", null);
@@ -406,6 +408,9 @@ export const updateCustomerAPI = async (customerId, customerData) => {
 		const { data } = await AxiosAuth.put(
 			`/customers/${customerId}`,
 			customerData,
+			{
+				headers: { "Content-Type": "multipart/form-data" },
+			},
 		);
 		return data;
 	} catch (error) {

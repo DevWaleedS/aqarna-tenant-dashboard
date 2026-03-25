@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import React from "react";
+
 import { ArrowDown } from "lucide-react";
 import TotalSubscriberChart from "@/components/charts/total-subscriber-chart";
 import { useTranslations } from "next-intl";

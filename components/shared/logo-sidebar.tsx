@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import SafeImage from "@/components/ui/safe-image";
 import { useTheme } from "next-themes";
 
 import LogoDark from "@/public/assets/images/logo.png";
@@ -37,7 +37,7 @@ function LogoSidebar() {
 				"sidebar-logo h-18 py-3.5 flex items-center justify-center border-b border-neutral-100 dark:border-slate-700",
 				isCollapsed ? "px-1" : "px-4",
 			)}>
-			<Image
+			<SafeImage
 				// src={isCollapsed ? LogoIcon : theme === "dark" ? LogoWhite : LogoDark}
 				src={logo}
 				alt={description}

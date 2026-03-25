@@ -14,7 +14,7 @@ import userImg from "@/public/assets/images/user.png";
 import { Mail, User } from "lucide-react";
 // import { useSession } from "next-auth/react"; (removed)
 import { useTranslations } from "next-intl";
-import Image from "next/image";
+import SafeImage from "@/components/ui/safe-image";
 import Link from "next/link";
 
 const ProfileDropdown = () => {
@@ -26,7 +26,7 @@ const ProfileDropdown = () => {
 	const userId = userData?.id;
 	const displayName = userData?.name || "User";
 	const displayEmail = userData?.email || "";
-	const displayAvatar = userData?.avatar || null;
+	const displayAvatar = userData?.avatar || "https://placehold.co/600x400";
 	const displayRoles = userData?.roles || [];
 	const primaryRole = displayRoles[0] || "Admin";
 
@@ -40,7 +40,7 @@ const ProfileDropdown = () => {
 						"rounded-full sm:w-10 sm:h-10 w-8 h-8 bg-gray-200/75 hover:bg-slate-200 focus-visible:ring-0 dark:bg-slate-700 dark:hover:bg-slate-600 border-0 cursor-pointer data-[state=open]:bg-gray-300 data-[state=open]:ring-4 data-[state=open]:ring-slate-300 dark:data-[state=open]:ring-slate-500 dark:data-[state=open]:bg-slate-600",
 					)}>
 					{displayAvatar ? (
-						<Image
+						<SafeImage
 							src={displayAvatar}
 							className='rounded-full object-cover'
 							width={40}
@@ -48,7 +48,7 @@ const ProfileDropdown = () => {
 							alt={displayName}
 						/>
 					) : (
-						<Image
+						<SafeImage
 							src={userImg}
 							className='rounded-full'
 							width={40}

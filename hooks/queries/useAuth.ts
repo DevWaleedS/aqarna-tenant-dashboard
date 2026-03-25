@@ -95,7 +95,7 @@ export const useLogin = () => {
 
 			// Step 3: fetch full user profile
 			const userRes = await getCurrentUserAPI();
-			const user = userRes?.user as AuthUser | undefined;
+			const user = userRes?.data as AuthUser | undefined;
 
 			if (!user?.id) {
 				throw new Error("Failed to fetch user profile");

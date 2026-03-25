@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { useProperty, useProperties } from "@/hooks/queries/usePropertiesQuery";
 import { cn } from "@/lib/utils";
+import InputPhoneCountryInput from "@/components/shared/InputPhoneCountryInput";
 
 interface EditCurrentPropertyProps {
 	propertyId: number | string;
@@ -221,11 +222,18 @@ const EditCurrentProperty = ({
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
 						{tCreate("concierge-phone-label")}
 					</Label>
-					<Input
-						type='tel'
-						className='h-12 px-4'
-						placeholder={tCreate("concierge-phone-placeholder")}
-						{...register("concierge_phone")}
+					<Controller
+						name='concierge_phone'
+						control={control}
+						render={({ field }) => (
+							<InputPhoneCountryInput
+								value={field.value}
+								placeholder={tCreate("concierge-phone-placeholder")}
+								onPhoneChange={(phone: string) => {
+									setValue("concierge_phone", phone);
+								}}
+							/>
+						)}
 					/>
 				</div>
 

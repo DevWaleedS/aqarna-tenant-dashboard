@@ -21,6 +21,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useCustomers } from "@/hooks/queries/useCustomers";
 import InputPhoneCountryInput from "@/components/shared/InputPhoneCountryInput";
+import AvatarUploader from "@/components/shared/avatar-uploader";
 
 const CreateNewCustomer = () => {
 	const t = useTranslations("tenant.customers.create-new-customer-page");
@@ -38,6 +39,7 @@ const CreateNewCustomer = () => {
 	} = useForm<createCustomerType>({
 		resolver: zodResolver(createCustomerSchema),
 		defaultValues: {
+			avatar: undefined,
 			type: undefined,
 			emergency_contact: [],
 			vehicles: [],
@@ -68,9 +70,81 @@ const CreateNewCustomer = () => {
 		remove: removePet,
 	} = useFieldArray({ control, name: "pets" });
 
+	// const onSubmit = async (data: createCustomerType) => {
+	// 	try {
+	// 		await createCustomer(data, {
+	// 			onSuccess: () => {
+	// 				reset();
+	// 				closeButtonRef.current?.click();
+	// 			},
+	// 		});
+	// 	} catch (error) {
+	// 		console.error("Error creating customer:", error);
+	// 	}
+	// };
+
 	const onSubmit = async (data: createCustomerType) => {
 		try {
-			await createCustomer(data, {
+			const formData = new FormData();
+
+			// ── Avatar ──────────────────────────────────────────
+			if (data.avatar) formData.append("avatar", data.avatar);
+
+			// ── Basic ────────────────────────────────────────────
+			formData.append("type", data.type ?? "");
+			formData.append("name", data.name ?? "");
+			formData.append("email", data.email ?? "");
+
+			// ── Identification ───────────────────────────────────
+			if (data.nid_no) formData.append("nid_no", data.nid_no);
+			if (data.cr_no) formData.append("cr_no", data.cr_no);
+			if (data.tin) formData.append("tin", data.tin);
+
+			// ── Contact ──────────────────────────────────────────
+			formData.append("phone", data.phone ?? "");
+			formData.append("dial_code", data.dial_code ?? "");
+
+			if (data.secondary_phone) {
+				formData.append("secondary_phone", data.secondary_phone);
+				formData.append("secondary_dial_code", data.secondary_dial_code ?? "");
+			}
+
+			if (data.address) formData.append("address", data.address);
+			if (data.notes) formData.append("notes", data.notes);
+
+			// ── Emergency contacts ───────────────────────────────
+			data.emergency_contact?.forEach((contact, i) => {
+				formData.append(`emergency_contact[${i}][name]`, contact.name ?? "");
+				formData.append(`emergency_contact[${i}][phone]`, contact.phone ?? "");
+				formData.append(
+					`emergency_contact[${i}][relation]`,
+					contact.relation ?? "",
+				);
+			});
+
+			// ── Vehicles ─────────────────────────────────────────
+			data.vehicles?.forEach((vehicle, i) => {
+				formData.append(`vehicles[${i}][make]`, vehicle.make ?? "");
+				formData.append(`vehicles[${i}][model]`, vehicle.model ?? "");
+				formData.append(
+					`vehicles[${i}][model_year]`,
+					String(vehicle.model_year ?? ""),
+				);
+				formData.append(`vehicles[${i}][color]`, vehicle.color ?? "");
+				formData.append(
+					`vehicles[${i}][plate_number]`,
+					vehicle.plate_number ?? "",
+				);
+			});
+
+			// ── Pets ─────────────────────────────────────────────
+			data.pets?.forEach((pet, i) => {
+				formData.append(`pets[${i}][type]`, pet.type ?? "");
+				formData.append(`pets[${i}][name]`, pet.name ?? "");
+				formData.append(`pets[${i}][breed]`, pet.breed ?? "");
+			});
+
+			await createCustomer(formData, {
 				onSuccess: () => {
 					reset();
 					closeButtonRef.current?.click();
@@ -86,6 +160,27 @@ const CreateNewCustomer = () => {
 			<DialogClose ref={closeButtonRef} className='hidden' />
 
 			<div className='grid grid-cols-12 gap-5 pb-6'>
+				{/* ════ Avatar ════ */}
+				<div className='col-span-12 flex flex-col items-center py-4'>
+					<Controller
+						name='avatar'
+						control={control}
+						render={() => (
+							<AvatarUploader
+								onChange={(file) =>
+									setValue("avatar", file ?? undefined, {
+										shouldValidate: true,
+									})
+								}
+								error={errors.avatar?.message as string | undefined}
+								uploadLabel={t("avatar-upload")}
+								changeLabel={t("avatar-change")}
+								removeLabel={t("avatar-remove")}
+								hint={t("avatar-hint")}
+							/>
+						)}
+					/>
+				</div>
 				{/* ── Type ── */}
 				<div className='col-span-12'>
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>

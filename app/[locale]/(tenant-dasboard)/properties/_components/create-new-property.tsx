@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { useProperties } from "@/hooks/queries/usePropertiesQuery";
 import { cn } from "@/lib/utils";
+import InputPhoneCountryInput from "@/components/shared/InputPhoneCountryInput";
 
 const CreateNewProperty = () => {
 	const t = useTranslations("tenant.properties.create-new-property-page");
@@ -191,11 +192,19 @@ const CreateNewProperty = () => {
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
 						{t("concierge-phone-label")}
 					</Label>
-					<Input
-						type='tel'
-						className='h-12 px-4'
-						placeholder={t("concierge-phone-placeholder")}
-						{...register("concierge_phone")}
+
+					<Controller
+						name='concierge_phone'
+						control={control}
+						render={({ field }) => (
+							<InputPhoneCountryInput
+								value={field.value}
+								placeholder={t("concierge-phone-placeholder")}
+								onPhoneChange={(phone: string) => {
+									setValue("concierge_phone", phone);
+								}}
+							/>
+						)}
 					/>
 				</div>
 
