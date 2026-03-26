@@ -57,14 +57,19 @@ const CreateNewContract = () => {
 	const selectedBillingFrequency = watch("billing_frequency");
 	const selectedPenaltyType = watch("termination_penalty_type");
 	const selectedProperty = watch("property_id");
+	const selectedUnitsIds = watch("units");
 
 	const filteredUnits = units.filter(
 		(u: any) => Number(u.id) === Number(selectedProperty),
 	);
 
+	const selectedUnits = filteredUnits.filter((unit: any) =>
+		selectedUnitsIds.includes(unit.id),
+	);
+
 	const unitOptions: MultiSelectOption[] = filteredUnits?.map((u: any) => ({
 		value: u.id, // → stored in form, sent to API
-		label: u.unit_number, // → shown in pill + dropdown row
+		label: u.name, // → shown in pill + dropdown row
 		badge: new Intl.NumberFormat("en-US", {
 			notation: "compact",
 			maximumFractionDigits: 1,
@@ -216,6 +221,12 @@ const CreateNewContract = () => {
 					<Input
 						type='number'
 						min={0}
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={t("grace-period-placeholder")}
 						{...register("grace_period_days", { valueAsNumber: true })}
@@ -351,6 +362,12 @@ const CreateNewContract = () => {
 					<Input
 						type='number'
 						min={0}
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={t("security-deposit-placeholder")}
 						{...register("security_deposit", { valueAsNumber: true })}
@@ -407,6 +424,12 @@ const CreateNewContract = () => {
 						<Input
 							type='number'
 							min={0}
+							step={1}
+							onKeyDown={(e) => {
+								if (e.key === "." || e.key === ",") {
+									e.preventDefault();
+								}
+							}}
 							className='h-12 px-4'
 							placeholder={t("termination-penalty-value-placeholder")}
 							{...register("termination_penalty_value", {
@@ -472,15 +495,31 @@ const CreateNewContract = () => {
 									isLoading={false}
 									placeholder={t("units-placeholder")}
 									searchPlaceholder={t("search-units")}
-									error={errors.units?.message as string | undefined}
+									error={
+										errors.units && Array.isArray(errors.units)
+											? (errors.units[0]?.message as string | undefined)
+											: (errors.units?.message as string | undefined)
+									}
 								/>
 							)}
 						/>
-						{errors.units && (
+
+						{errors.units && Array.isArray(errors.units) ? (
+							errors.units.map((error, index) => {
+								const unit = selectedUnits[index];
+								return (
+									<p
+										key={`${unit?.id}-${index}`}
+										className='text-red-500 text-sm mt-1'>
+										{unit?.name}: {error.message}
+									</p>
+								);
+							})
+						) : errors.units?.message ? (
 							<p className='text-red-500 text-sm mt-1'>
 								{errors.units.message}
 							</p>
-						)}
+						) : null}
 					</div>
 				)}
 

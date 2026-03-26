@@ -20,11 +20,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useUnits } from "@/hooks/queries/useUnits";
+import { usePropertiesLookup } from "@/hooks/queries/usePropertiesQuery";
 
 const CreateNewUnit = () => {
 	const t = useTranslations("tenant.units.create-new-unit-page");
 	const closeButtonRef = useRef<HTMLButtonElement>(null);
 	const { createUnit, isCreating } = useUnits();
+	const { propertiesLookup } = usePropertiesLookup();
 
 	const {
 		control,
@@ -89,12 +91,28 @@ const CreateNewUnit = () => {
 						{t("property-id-label")}
 						<span className='text-red-600'>*</span>
 					</Label>
-					<Input
-						type='number'
-						min={1}
-						className='h-12 px-4'
-						placeholder={t("property-id-placeholder")}
-						{...register("property_id", { valueAsNumber: true })}
+					<Controller
+						name='property_id'
+						control={control}
+						render={({ field }) => (
+							<Select
+								value={field.value?.toString()}
+								onValueChange={(value) => field.onChange(Number(value))}>
+								<SelectTrigger className='h-12! px-4 w-full'>
+									<SelectValue placeholder={t("property-id-placeholder")} />
+								</SelectTrigger>
+
+								<SelectContent>
+									<SelectGroup>
+										{propertiesLookup?.map((p: any) => (
+											<SelectItem key={p.id} value={p.id.toString()}>
+												{p.name}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						)}
 					/>
 					{errors.property_id && (
 						<p className='text-red-500 text-sm mt-1'>
@@ -130,6 +148,12 @@ const CreateNewUnit = () => {
 					<Input
 						type='number'
 						min={0}
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={t("floor-number-placeholder")}
 						{...register("floor_number", { valueAsNumber: true })}
@@ -199,7 +223,12 @@ const CreateNewUnit = () => {
 					<Input
 						type='number'
 						min={0}
-						step='0.01'
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={t("area-placeholder")}
 						{...register("area", { valueAsNumber: true })}
@@ -261,6 +290,12 @@ const CreateNewUnit = () => {
 						<Input
 							type='number'
 							min={0}
+							step={1}
+							onKeyDown={(e) => {
+								if (e.key === "." || e.key === ",") {
+									e.preventDefault();
+								}
+							}}
 							className='h-12 px-4'
 							placeholder={placeholder}
 							{...register(name, { valueAsNumber: true })}
@@ -409,6 +444,12 @@ const CreateNewUnit = () => {
 					<Input
 						type='number'
 						min={0}
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={t("monthly-rent-placeholder")}
 						{...register("monthly_rent", { valueAsNumber: true })}
@@ -427,6 +468,12 @@ const CreateNewUnit = () => {
 					<Input
 						type='number'
 						min={0}
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={t("security-deposit-placeholder")}
 						{...register("security_deposit", { valueAsNumber: true })}

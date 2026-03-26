@@ -325,9 +325,6 @@ const MultiSelect = ({
 					)}
 				</div>
 			)}
-
-			{/* Error */}
-			{error && <p className='mt-1.5 text-xs text-red-500'>{error}</p>}
 		</div>
 	);
 };

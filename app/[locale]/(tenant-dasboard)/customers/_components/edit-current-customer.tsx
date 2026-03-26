@@ -233,7 +233,7 @@ const EditCurrentCustomer = ({
 						control={control}
 						render={({ field }) => (
 							<Select
-								key={field.value} // ← forces remount when value changes from undefined → "business"
+								key={field.value} 
 								value={field.value}
 								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>

@@ -14,19 +14,17 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
-import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
+
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import ShowCurrentContract from "./show-current-contract";
+import { useCustomersLookup } from "@/hooks/queries/useCustomers";
+import TerminateContractDialog from "@/components/dailogs/terminate-contract-dialog";
+import { useContracts } from "@/hooks/queries/useContractsQuery";
 
 interface ContractsTableProps {
 	contracts: any[];
 	isLoading: boolean;
 	searchQuery?: string;
-	onTerminate: (id: string | number) => void;
-	selectedIds: (string | number)[];
-	onSelectAll: (checked: boolean) => void;
-	onSelectOne: (id: string | number, checked: boolean) => void;
-	isAllSelected: boolean;
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -45,20 +43,26 @@ const ContractsTable = ({
 	contracts,
 	isLoading,
 	searchQuery,
-	onTerminate,
-	selectedIds,
-	onSelectAll,
-	onSelectOne,
-	isAllSelected,
 }: ContractsTableProps) => {
 	const t = useTranslations("tenant.contracts");
-	const conformMessages = useTranslations("confirmation-dialog");
 	const showContract = useTranslations(
 		"tenant.contracts.show-current-contract-page",
 	);
+	const { customersLookup } = useCustomersLookup();
 
-	const someSelected =
-		selectedIds.length > 0 && selectedIds.length < contracts.length;
+	const { terminateContract, isTerminating } = useContracts();
+
+	// ── Terminate handler ────────────────────────────────────────────────────
+
+	const handleTerminate = async (
+		id: number | string,
+		termination_reason: string,
+	) => {
+		await terminateContract({
+			id,
+			termination_reason,
+		});
+	};
 
 	const formatDate = (dateStr?: string) => {
 		if (!dateStr) return "—";
@@ -98,18 +102,6 @@ const ContractsTable = ({
 		<Table className='table-auto border-spacing-0 border-separate'>
 			<TableHeader>
 				<TableRow className='border-0'>
-					{/* Checkbox */}
-					<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 overflow-hidden px-4 h-12 border-s rounded-tl-lg rtl:rounded-tl-none rtl:rounded-tr-lg text-center'>
-						<Checkbox
-							className='border border-neutral-500 w-4.5 h-4.5 mt-1'
-							checked={isAllSelected}
-							onCheckedChange={onSelectAll}
-							ref={(el) => {
-								if (el) (el as any).indeterminate = someSelected;
-							}}
-						/>
-					</TableHead>
-
 					<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 overflow-hidden px-4 h-12'>
 						{t("table.contract_number")}
 					</TableHead>
@@ -142,24 +134,15 @@ const ContractsTable = ({
 
 			<TableBody>
 				{contracts.map((contract: any) => {
-					const isSelected = selectedIds.includes(contract.id);
-					const customerName = contract.customer
-						? `${contract.customer.first_name} ${contract.customer.last_name}`
-						: "—";
+					const customerObj = customersLookup.find(
+						(customer: any) => customer.id === contract.customer_id,
+					);
+					// Guard: customerObj may be undefined if the lookup hasn't loaded yet
+					const customerName =
+						contract.customer_id && customerObj ? customerObj.name : "—";
 
 					return (
 						<TableRow key={contract.id}>
-							{/* Checkbox */}
-							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
-								<Checkbox
-									checked={isSelected}
-									onCheckedChange={(checked) =>
-										onSelectOne(contract.id, checked as boolean)
-									}
-									className='border border-neutral-500 w-4.5 h-4.5 mt-1'
-								/>
-							</TableCell>
-
 							{/* Contract Number */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e font-medium'>
 								{contract.contract_number ?? "—"}
@@ -208,13 +191,10 @@ const ContractsTable = ({
 							{/* Actions */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
 								<div className='flex justify-center items-center gap-2'>
-									<ConfirmationDialog
-										type='danger'
-										confirmText={conformMessages(
-											"confirm-terminate-button-text",
-										)}
-										title={conformMessages("title")}
-										icon={<CircleOff className='w-5 h-5' />}
+									{/* ── Terminate ── */}
+									<TerminateContractDialog
+										contractNumber={contract.contract_number}
+										onConfirm={(reason) => handleTerminate(contract.id, reason)}
 										trigger={
 											<Button
 												type='button'
@@ -222,10 +202,9 @@ const ContractsTable = ({
 												<CircleOff className='w-5 h-5 shrink-0' />
 											</Button>
 										}
-										onConfirm={() => onTerminate(contract.id)}>
-										{conformMessages("terminate-message")}
-									</ConfirmationDialog>
+									/>
 
+									{/* ── View ── */}
 									<PagesDialog
 										pageTitle={showContract("title")}
 										className='max-w-5xl!'

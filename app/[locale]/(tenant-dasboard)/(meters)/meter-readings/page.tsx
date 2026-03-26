@@ -23,7 +23,7 @@ const MeterReadings = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [statusFilter, setStatusFilter] = useState<string>("all");
 	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
+
 	const itemsPerPage = 10;
 
 	// ── Filter ───────────────────────────────────────────────────────────────
@@ -53,20 +53,6 @@ const MeterReadings = () => {
 	// ── Handlers ─────────────────────────────────────────────────────────────
 	const handlePageChange = (page: number) => setCurrentPage(page);
 
-	const handleSelectAll = (checked: boolean) => {
-		setSelectedIds(checked ? paginatedReadings.map((r: any) => r.id) : []);
-	};
-
-	const handleSelectOne = (id: string | number, checked: boolean) => {
-		setSelectedIds((prev) =>
-			checked ? [...prev, id] : prev.filter((sid) => sid !== id),
-		);
-	};
-
-	const isAllSelected =
-		paginatedReadings.length > 0 &&
-		selectedIds.length === paginatedReadings.length;
-
 	return (
 		<>
 			<DashboardBreadcrumb title={t("subtitle")} text={t("title")} />
@@ -94,16 +80,11 @@ const MeterReadings = () => {
 				currentPage={currentPage}
 				totalPages={totalPages}
 				onPageChange={handlePageChange}
-				totalItems={filteredReadings.length}
-				selectedCount={selectedIds.length}>
+				totalItems={filteredReadings.length}>
 				<MeterReadingsTable
 					readings={paginatedReadings}
 					isLoading={isLoading}
 					searchQuery={searchQuery}
-					selectedIds={selectedIds}
-					onSelectAll={handleSelectAll}
-					onSelectOne={handleSelectOne}
-					isAllSelected={isAllSelected}
 				/>
 			</MultiFunctionsTable>
 		</>

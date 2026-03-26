@@ -19,6 +19,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { useMeter, useMeters } from "@/hooks/queries/useMeters";
+import { useUnits } from "@/hooks/queries/useUnits";
 
 interface EditCurrentMeterProps {
 	meterId: number | string;
@@ -31,6 +32,7 @@ const EditCurrentMeter = ({ meterId, onClose }: EditCurrentMeterProps) => {
 
 	const { meter, isLoading } = useMeter(meterId);
 	const { updateMeter, isUpdating } = useMeters();
+	const { units } = useUnits();
 
 	const {
 		control,
@@ -97,14 +99,31 @@ const EditCurrentMeter = ({ meterId, onClose }: EditCurrentMeterProps) => {
 				{/* Unit ID + Type */}
 				<div className='md:col-span-6 col-span-12'>
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
-						{t("unit-id-label")}
+						{t("unit-label")}
 					</Label>
-					<Input
-						type='number'
-						min={1}
-						className='h-12 px-4'
-						placeholder={t("unit-id-placeholder")}
-						{...register("unit_id", { valueAsNumber: true })}
+					<Controller
+						name='unit_id'
+						control={control}
+						render={({ field }) => (
+							<Select
+								key={field.value}
+								value={field.value?.toString()}
+								onValueChange={(value) => field.onChange(Number(value))}>
+								<SelectTrigger className='h-12! px-4 w-full'>
+									<SelectValue placeholder={t("unit-placeholder")} />
+								</SelectTrigger>
+
+								<SelectContent>
+									<SelectGroup>
+										{units?.map((unit: any) => (
+											<SelectItem key={unit.id} value={unit.id.toString()}>
+												{unit.name}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						)}
 					/>
 					{errors.unit_id && (
 						<p className='text-red-500 text-sm mt-1'>
@@ -121,7 +140,10 @@ const EditCurrentMeter = ({ meterId, onClose }: EditCurrentMeterProps) => {
 						name='type'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value}
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue placeholder={t("type-placeholder")} />
 								</SelectTrigger>
@@ -183,7 +205,12 @@ const EditCurrentMeter = ({ meterId, onClose }: EditCurrentMeterProps) => {
 					<Input
 						type='number'
 						min={0}
-						step='0.01'
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={t("unit-price-placeholder")}
 						{...register("unit_price", { valueAsNumber: true })}
@@ -204,13 +231,16 @@ const EditCurrentMeter = ({ meterId, onClose }: EditCurrentMeterProps) => {
 						name='status'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value}
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue placeholder={t("status-placeholder")} />
 								</SelectTrigger>
 								<SelectContent>
 									<SelectGroup>
-										{(["active", "inactive", "broken"] as const).map(
+										{(["active", "replaced", "broken"] as const).map(
 											(status) => (
 												<SelectItem key={status} value={status}>
 													{t(`status-options.${status}`)}

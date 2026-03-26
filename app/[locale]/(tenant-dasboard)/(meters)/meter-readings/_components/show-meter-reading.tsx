@@ -12,6 +12,8 @@ import {
 	useMeterReading,
 	useMeterReadings,
 } from "@/hooks/queries/useMeterReadings";
+import { useMetersLookup } from "@/hooks/queries/useMeters";
+import { useContractsLookup } from "@/hooks/queries/useContractsQuery";
 
 interface ShowMeterReadingProps {
 	readingId: number | string;
@@ -24,6 +26,16 @@ const ShowMeterReading = ({ readingId, onClose }: ShowMeterReadingProps) => {
 
 	const { reading, isLoading } = useMeterReading(readingId);
 	const { generateInvoice, isGeneratingInvoice } = useMeterReadings();
+	const { metersLookup } = useMetersLookup();
+	const { contractsLookup } = useContractsLookup();
+
+	const filteredMeter =
+		metersLookup.find((item: any) => item.id === reading?.meter_id)?.name ??
+		"_";
+
+	const filteredContract =
+		contractsLookup.find((item: any) => item.id === reading.contract_id)
+			?.name ?? "_";
 
 	const handleGenerateInvoice = async () => {
 		await generateInvoice(readingId);
@@ -81,22 +93,14 @@ const ShowMeterReading = ({ readingId, onClose }: ShowMeterReadingProps) => {
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
 						{t("meter-id-label")}
 					</Label>
-					<Input
-						className='h-12 px-4'
-						value={reading.meter_id ?? "—"}
-						readOnly
-					/>
+					<Input className='h-12 px-4' value={filteredMeter} readOnly />
 				</div>
 
 				<div className='md:col-span-6 col-span-12'>
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
 						{t("contract-id-label")}
 					</Label>
-					<Input
-						className='h-12 px-4'
-						value={reading.contract_id ?? "—"}
-						readOnly
-					/>
+					<Input className='h-12 px-4' value={filteredContract} readOnly />
 				</div>
 
 				{/* Reading Date + Status */}

@@ -3,6 +3,7 @@ import {
 	deleteMeterAPI,
 	getMeterAPI,
 	getMetersAPI,
+	getMetersLookupAPI,
 	updateMeterAPI,
 } from "@/apis/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -27,6 +28,7 @@ export const useMeters = () => {
 		mutationFn: createMeterAPI,
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: ["meters"] });
+			queryClient.invalidateQueries({ queryKey: ["meters-lookup"] });
 			toast.success(res?.message || "Meter created successfully");
 		},
 		onError: (error: any) => {
@@ -41,6 +43,7 @@ export const useMeters = () => {
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: ["meters"] });
 			queryClient.invalidateQueries({ queryKey: ["meter"] });
+			queryClient.invalidateQueries({ queryKey: ["meters-lookup"] });
 			toast.success(res?.message || "Meter updated successfully");
 		},
 		onError: (error: any) => {
@@ -53,6 +56,7 @@ export const useMeters = () => {
 		mutationFn: deleteMeterAPI,
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: ["meters"] });
+			queryClient.invalidateQueries({ queryKey: ["meters-lookup"] });
 			toast.success(res?.message || "Meter deleted successfully");
 		},
 		onError: (error: any) => {
@@ -87,5 +91,18 @@ export const useMeter = (id?: number | string) => {
 		meter: data?.data,
 		isLoading,
 		error,
+	};
+};
+
+// ── Lookup — for Select / ComboBox components ────────────────────────────────
+export const useMetersLookup = () => {
+	const { data, isLoading } = useQuery({
+		queryKey: ["meters-lookup"],
+		queryFn: getMetersLookupAPI,
+	});
+
+	return {
+		metersLookup: data?.data || [],
+		isLoading,
 	};
 };

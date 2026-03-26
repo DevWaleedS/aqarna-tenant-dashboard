@@ -3,7 +3,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Separator } from "@/components/ui/separator";
 import { DialogClose } from "@/components/ui/dialog";
 import { Loader2, Star, Wifi, Wind } from "lucide-react";
@@ -28,6 +28,7 @@ const STATUS_COLORS: Record<string, string> = {
 const ShowCurrentUnit = ({ unitId, onClose }: ShowCurrentUnitProps) => {
 	const t = useTranslations("tenant.units.show-current-unit-page");
 	const { unit, isLoading } = useUnit(unitId);
+	const locale = useLocale();
 
 	const formatCurrency = (amount?: number) => {
 		if (amount === undefined || amount === null) return "—";
@@ -339,7 +340,7 @@ const ShowCurrentUnit = ({ unitId, onClose }: ShowCurrentUnitProps) => {
 							<div className='col-span-12'>
 								<img
 									src={unit.property.cover}
-									alt={unit.property.name}
+									alt={unit.property.name[locale]}
 									className='w-full h-36 object-cover rounded-xl border border-neutral-200 dark:border-slate-600'
 								/>
 							</div>
@@ -351,7 +352,7 @@ const ShowCurrentUnit = ({ unitId, onClose }: ShowCurrentUnitProps) => {
 							</Label>
 							<Input
 								className='h-12 px-4'
-								value={unit.property.name ?? "—"}
+								value={unit.property.name[locale] ?? "—"}
 								readOnly
 							/>
 						</div>

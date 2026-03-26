@@ -214,7 +214,12 @@ const EditCurrentProperty = ({
 					<Input
 						type='number'
 						min={0}
-						step='0.01'
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={tCreate("area-placeholder")}
 						{...register("area", { valueAsNumber: true })}

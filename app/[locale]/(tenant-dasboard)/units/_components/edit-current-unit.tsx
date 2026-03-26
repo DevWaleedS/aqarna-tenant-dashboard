@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useUnit, useUnits } from "@/hooks/queries/useUnits";
+import { usePropertiesLookup } from "@/hooks/queries/usePropertiesQuery";
 
 interface EditCurrentUnitProps {
 	unitId: number | string;
@@ -33,6 +34,7 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 
 	const { unit, isLoading } = useUnit(unitId);
 	const { updateUnit, isUpdating } = useUnits();
+	const { propertiesLookup } = usePropertiesLookup();
 
 	const {
 		control,
@@ -123,12 +125,31 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
 						{tCreate("property-id-label")}
 					</Label>
-					<Input
-						type='number'
-						min={1}
-						className='h-12 px-4'
-						placeholder={tCreate("property-id-placeholder")}
-						{...register("property_id", { valueAsNumber: true })}
+					<Controller
+						name='property_id'
+						control={control}
+						render={({ field }) => (
+							<Select
+								key={field.value?.toString()}
+								value={field.value?.toString()}
+								onValueChange={(value) => field.onChange(Number(value))}>
+								<SelectTrigger className='h-12! px-4 w-full'>
+									<SelectValue
+										placeholder={tCreate("property-id-placeholder")}
+									/>
+								</SelectTrigger>
+
+								<SelectContent>
+									<SelectGroup>
+										{propertiesLookup?.map((p: any) => (
+											<SelectItem key={p.id} value={p.id.toString()}>
+												{p.name}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						)}
 					/>
 				</div>
 
@@ -152,6 +173,12 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 					<Input
 						type='number'
 						min={0}
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={tCreate("floor-number-placeholder")}
 						{...register("floor_number", { valueAsNumber: true })}
@@ -182,7 +209,10 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 						name='type'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value}
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue placeholder={tCreate("type-placeholder")} />
 								</SelectTrigger>
@@ -211,7 +241,10 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 						name='status'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value}
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue placeholder={tEdit("status-placeholder")} />
 								</SelectTrigger>
@@ -239,7 +272,12 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 					<Input
 						type='number'
 						min={0}
-						step='0.01'
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={tCreate("area-placeholder")}
 						{...register("area", { valueAsNumber: true })}
@@ -286,6 +324,12 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 						<Input
 							type='number'
 							min={0}
+							step={1}
+							onKeyDown={(e) => {
+								if (e.key === "." || e.key === ",") {
+									e.preventDefault();
+								}
+							}}
 							className='h-12 px-4'
 							{...register(name, { valueAsNumber: true })}
 						/>
@@ -301,7 +345,10 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 						name='furnishing_status'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value}
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue
 										placeholder={tCreate("furnishing-placeholder")}
@@ -335,7 +382,10 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 						name='orientation'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value}
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue
 										placeholder={tCreate("orientation-placeholder")}
@@ -374,7 +424,10 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 						name='ac_type'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value}
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue placeholder={tCreate("ac-type-placeholder")} />
 								</SelectTrigger>
@@ -402,7 +455,10 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 						name='internet_status'
 						control={control}
 						render={({ field }) => (
-							<Select value={field.value} onValueChange={field.onChange}>
+							<Select
+								key={field.value}
+								value={field.value}
+								onValueChange={field.onChange}>
 								<SelectTrigger className='h-12! px-4 w-full'>
 									<SelectValue placeholder={tCreate("internet-placeholder")} />
 								</SelectTrigger>
@@ -434,7 +490,12 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 					</Label>
 					<Input
 						type='number'
-						min={0}
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						{...register("monthly_rent", { valueAsNumber: true })}
 					/>
@@ -452,6 +513,12 @@ const EditCurrentUnit = ({ unitId, onClose }: EditCurrentUnitProps) => {
 					<Input
 						type='number'
 						min={0}
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						{...register("security_deposit", { valueAsNumber: true })}
 					/>

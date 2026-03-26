@@ -332,29 +332,31 @@ export const createContractAPI = async (contractData) => {
 	}
 };
 
-// Update contract
-export const updateContractAPI = async (contractId, contractData) => {
-	try {
-		const { data } = await AxiosAuth.put(
-			`/contracts/${contractId}`,
-			contractData,
-		);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "updateContractAPI", null);
-	}
-};
-
 // Terminate contract
-export const terminateContractAPI = async (contractId, terminationData) => {
+// terminationData shape: { termination_reason: string }
+export const terminateContractAPI = async (contractId, termination_reason) => {
 	try {
+		const payload = {
+			termination_reason,
+		};
+
 		const { data } = await AxiosAuth.post(
 			`/contracts/${contractId}/terminate`,
-			terminationData ?? {},
+			payload,
 		);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "terminateContractAPI", null);
+	}
+};
+
+// Get contracts lookup list (id + name only — for dropdowns)
+export const getContractsLookupAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/contracts/lookup`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getContractsLookupAPI", null);
 	}
 };
 
@@ -405,7 +407,7 @@ export const createCustomerAPI = async (customerData) => {
 // Update customer
 export const updateCustomerAPI = async (customerId, customerData) => {
 	try {
-		const { data } = await AxiosAuth.put(
+		const { data } = await AxiosAuth.post(
 			`/customers/${customerId}`,
 			customerData,
 			{
@@ -532,6 +534,15 @@ export const deleteMeterAPI = async (meterId) => {
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "deleteMeterAPI", null);
+	}
+};
+
+export const getMetersLookupAPI = async () => {
+	try {
+		const { data } = await AxiosAuth.get(`/meters/lookup`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getMetersLookupAPI", null);
 	}
 };
 
@@ -708,7 +719,7 @@ export const getPropertiesLookupAPI = async () => {
 // 1.1 — Get subscription info (current subscription + package details)
 export const getSubscriptionInfoAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/subscriptions/info`);
+		const { data } = await AxiosAuth.get(`/subscription`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getSubscriptionInfoAPI", null);
@@ -741,7 +752,7 @@ export const upgradeSubscriptionAPI = async (upgradeData) => {
 // 1.4 — Packages lookup (lightweight id + name list for Select dropdowns)
 export const getPackagesLookupAPI = async () => {
 	try {
-		const { data } = await AxiosAuth.get(`/packages/lookup`);
+		const { data } = await AxiosAuth.get(`/packages`);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "getPackagesLookupAPI", null);

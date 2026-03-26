@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const METER_TYPES = ["electricity", "water", "gas", "internet"] as const;
-const METER_STATUSES = ["active", "inactive", "broken"] as const;
+const METER_STATUSES = ["active", "replaced", "broken"] as const;
 
 // ── Shared enum constants about units  ─────────────────────────────────────────────────────
 const UNIT_TYPES = ["residential", "commercial", "industrial"] as const;
@@ -169,7 +169,7 @@ export const createContractSchema = z
 			.min(1, "Property is required"),
 
 		units: z
-			.array(z.string(), { required_error: "At least one unit is required" })
+			.array(z.number(), { required_error: "At least one unit is required" })
 			.min(1, "At least one unit is required"),
 
 		security_deposit: z
@@ -368,11 +368,7 @@ export const updateMaintenanceTicketSchema = z.object({
 
 // ── Create schema ─────────────────────────────────────────────────────────────
 export const createMeterSchema = z.object({
-	unit_id: z
-		.number({ required_error: "Unit is required" })
-		.int()
-		.positive("Unit ID must be a positive number"),
-
+	unit_id: z.number({ required_error: "Unit is required" }),
 	type: z.enum(METER_TYPES, {
 		required_error: "Meter type is required",
 	}),
@@ -389,6 +385,7 @@ export const createMeterSchema = z.object({
 
 	unit_price: z
 		.number({ required_error: "Unit price is required" })
+		.int()
 		.min(0, "Unit price cannot be negative"),
 });
 
@@ -409,15 +406,9 @@ export const updateMeterSchema = z.object({
 // No update schema — readings are immutable once created.
 // The only post-creation action is generating an invoice.
 export const createMeterReadingSchema = z.object({
-	meter_id: z
-		.number({ required_error: "Meter is required" })
-		.int()
-		.positive("Meter ID must be a positive number"),
+	meter_id: z.number({ required_error: "Meter is required" }),
 
-	contract_id: z
-		.number({ required_error: "Contract is required" })
-		.int()
-		.positive("Contract ID must be a positive number"),
+	contract_id: z.number({ required_error: "Contract is required" }),
 
 	reading_date: z
 		.string({ required_error: "Reading date is required" })
@@ -427,7 +418,7 @@ export const createMeterReadingSchema = z.object({
 		.number({ required_error: "Reading value is required" })
 		.min(0, "Value cannot be negative"),
 
-	image: z.string().optional(),
+	// image: z.string().optional(),
 });
 
 // ==================== Units Schemas ====================

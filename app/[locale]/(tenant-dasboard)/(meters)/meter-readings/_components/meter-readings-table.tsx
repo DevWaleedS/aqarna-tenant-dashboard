@@ -21,28 +21,17 @@ interface MeterReadingsTableProps {
 	readings: any[];
 	isLoading: boolean;
 	searchQuery?: string;
-	selectedIds: (string | number)[];
-	onSelectAll: (checked: boolean) => void;
-	onSelectOne: (id: string | number, checked: boolean) => void;
-	isAllSelected: boolean;
 }
 
 const MeterReadingsTable = ({
 	readings,
 	isLoading,
 	searchQuery,
-	selectedIds,
-	onSelectAll,
-	onSelectOne,
-	isAllSelected,
 }: MeterReadingsTableProps) => {
 	const t = useTranslations("tenant.meter-readings");
 	const showT = useTranslations(
 		"tenant.meter-readings.show-meter-reading-page",
 	);
-
-	const someSelected =
-		selectedIds.length > 0 && selectedIds.length < readings.length;
 
 	const formatDate = (dateStr?: string) => {
 		if (!dateStr) return "—";
@@ -85,16 +74,6 @@ const MeterReadingsTable = ({
 		<Table className='table-auto border-spacing-0 border-separate'>
 			<TableHeader>
 				<TableRow className='border-0'>
-					<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 overflow-hidden px-4 h-12 border-s rounded-tl-lg rtl:rounded-tl-none rtl:rounded-tr-lg text-center'>
-						<Checkbox
-							className='border border-neutral-500 w-4.5 h-4.5 mt-1'
-							checked={isAllSelected}
-							onCheckedChange={onSelectAll}
-							ref={(el) => {
-								if (el) (el as any).indeterminate = someSelected;
-							}}
-						/>
-					</TableHead>
 					<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 overflow-hidden px-4 h-12 text-center'>
 						{t("table.id")}
 					</TableHead>
@@ -130,21 +109,8 @@ const MeterReadingsTable = ({
 
 			<TableBody>
 				{readings.map((reading: any) => {
-					const isSelected = selectedIds.includes(reading.id);
-
 					return (
 						<TableRow key={reading.id}>
-							{/* Checkbox */}
-							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
-								<Checkbox
-									checked={isSelected}
-									onCheckedChange={(checked) =>
-										onSelectOne(reading.id, checked as boolean)
-									}
-									className='border border-neutral-500 w-4.5 h-4.5 mt-1'
-								/>
-							</TableCell>
-
 							{/* ID */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center text-sm text-neutral-500'>
 								#{reading.id}

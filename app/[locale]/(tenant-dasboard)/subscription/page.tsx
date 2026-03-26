@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { format, differenceInDays, parseISO } from "date-fns";
 import DashboardBreadcrumb from "@/components/layout/dashboard-breadcrumb";
 import { Button } from "@/components/ui/button";
@@ -161,6 +161,7 @@ const PackageSelect = ({
 // ── Main Page ──────────────────────────────────────────────────────────────────
 const Subscription = () => {
 	const t = useTranslations("tenant.subscription");
+	const locale = useLocale();
 	const [renewDialogOpen, setRenewDialogOpen] = useState(false);
 	const [renewResult, setRenewResult] = useState<{
 		payment_token: string;
@@ -204,15 +205,13 @@ const Subscription = () => {
 	});
 
 	// Dates & days remaining
-	const endDate = subscription?.end_date
-		? parseISO(subscription.end_date)
-		: null;
+	const endDate = subscription?.ends_at ? parseISO(subscription.ends_at) : null;
 	const daysLeft = endDate ? differenceInDays(endDate, new Date()) : null;
 	const expiresSoon = daysLeft !== null && daysLeft >= 0 && daysLeft <= 7;
 	const isExpired = daysLeft !== null && daysLeft < 0;
 
 	const statusKey = subscription?.status ?? "pending";
-	const statusStyle = STATUS_STYLES[statusKey] ?? STATUS_STYLES["pending"];
+	const statusStyle = STATUS_STYLES[statusKey] ?? STATUS_STYLES["active"];
 
 	// ── Handlers ─────────────────────────────────────────────────────────────
 	const handleRenew = async (data: renewSubscriptionType) => {
@@ -251,6 +250,7 @@ const Subscription = () => {
 			</>
 		);
 	}
+	console.log("pkg", pkg);
 
 	// ── No subscription ───────────────────────────────────────────────────────
 	if (!subscription && !pkg) {
@@ -339,7 +339,7 @@ const Subscription = () => {
 										{t("info-cards.plan")}
 									</p>
 									<h2 className='text-lg font-bold text-neutral-800 dark:text-neutral-100'>
-										{pkg?.name ?? "—"}
+										{pkg?.name[locale] ?? "—"}
 									</h2>
 								</div>
 							</div>
@@ -364,8 +364,8 @@ const Subscription = () => {
 								icon={<CalendarCheck2 className='w-4 h-4' />}
 								label={t("current-plan-card.start-date-label")}
 								value={
-									subscription?.start_date
-										? format(parseISO(subscription.start_date), "dd MMM yyyy")
+									subscription?.starts_at
+										? format(parseISO(subscription.starts_at), "dd MMM yyyy")
 										: "—"
 								}
 							/>
@@ -470,11 +470,11 @@ const Subscription = () => {
 								</p>
 							</div>
 							<h3 className='text-2xl font-extrabold text-neutral-800 dark:text-neutral-100'>
-								{pkg?.name ?? "—"}
+								{pkg?.name[locale] ?? "—"}
 							</h3>
 							{pkg?.description && (
 								<p className='text-sm text-neutral-500 dark:text-neutral-400 mt-1'>
-									{pkg.description}
+									{pkg.description[locale]}
 								</p>
 							)}
 
@@ -526,7 +526,7 @@ const Subscription = () => {
 										? t("package-card.max-users", { count: pkg.max_users })
 										: t("package-card.unlimited") + " Users",
 								},
-								...(pkg?.features?.map((f: string) => ({
+								...(pkg?.features[locale]?.map((f: string) => ({
 									icon: <ShieldCheck className='w-4 h-4' />,
 									label: f,
 								})) ?? []),
@@ -650,7 +650,7 @@ const Subscription = () => {
 										{t("current-plan-card.package-label")}
 									</span>
 									<span className='font-semibold text-neutral-800 dark:text-neutral-100'>
-										{pkg?.name ?? "—"}
+										{pkg?.name[locale] ?? "—"}
 									</span>
 								</div>
 								<div className='flex items-center justify-between text-sm'>
@@ -882,7 +882,7 @@ const UpgradeDialog = ({
 						<Button
 							type='button'
 							variant='outline'
-							className='flex-1 h-11 border-red-200 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20'>
+							className='flex-1 h-11 border-red-200  text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20'>
 							{t("upgrade-section.cancel-button")}
 						</Button>
 					</DialogClose>
@@ -897,7 +897,7 @@ const UpgradeDialog = ({
 							</>
 						) : (
 							<>
-								<ChevronRight className='w-4 h-4' />
+								<Sparkles className='w-4 h-4' />
 								{t("upgrade-section.upgrade-button")}
 							</>
 						)}

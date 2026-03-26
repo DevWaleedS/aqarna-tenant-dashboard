@@ -12,6 +12,16 @@ import { DialogClose } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
 import { useMeterReadings } from "@/hooks/queries/useMeterReadings";
 import { DatePicker } from "@/components/shared/date-picker";
+import { useMetersLookup } from "@/hooks/queries/useMeters";
+import { useContractsLookup } from "@/hooks/queries/useContractsQuery";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 const CreateNewMeterReading = () => {
 	const t = useTranslations(
@@ -19,6 +29,9 @@ const CreateNewMeterReading = () => {
 	);
 	const closeButtonRef = useRef<HTMLButtonElement>(null);
 	const { createReading, isCreating } = useMeterReadings();
+
+	const { metersLookup } = useMetersLookup();
+	const { contractsLookup } = useContractsLookup();
 
 	const {
 		control,
@@ -33,13 +46,12 @@ const CreateNewMeterReading = () => {
 			contract_id: undefined,
 			reading_date: "",
 			value: undefined,
-			image: "",
 		},
 	});
 
 	const onSubmit = async (data: createMeterReadingType) => {
 		// Strip empty image string before sending
-		const payload = { ...data, image: data.image || undefined };
+		const payload = { ...data };
 		try {
 			await createReading(payload, {
 				onSuccess: () => {
@@ -63,12 +75,28 @@ const CreateNewMeterReading = () => {
 						{t("meter-id-label")}
 						<span className='text-red-600'>*</span>
 					</Label>
-					<Input
-						type='number'
-						min={1}
-						className='h-12 px-4'
-						placeholder={t("meter-id-placeholder")}
-						{...register("meter_id", { valueAsNumber: true })}
+					<Controller
+						name='meter_id'
+						control={control}
+						render={({ field }) => (
+							<Select
+								value={field.value?.toString()}
+								onValueChange={(value) => field.onChange(Number(value))}>
+								<SelectTrigger className='h-12! px-4 w-full'>
+									<SelectValue placeholder={t("meter-id-placeholder")} />
+								</SelectTrigger>
+
+								<SelectContent>
+									<SelectGroup>
+										{metersLookup?.map((item: any) => (
+											<SelectItem key={item.id} value={item.id.toString()}>
+												{item.name}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						)}
 					/>
 					{errors.meter_id && (
 						<p className='text-red-500 text-sm mt-1'>
@@ -82,12 +110,28 @@ const CreateNewMeterReading = () => {
 						{t("contract-id-label")}
 						<span className='text-red-600'>*</span>
 					</Label>
-					<Input
-						type='number'
-						min={1}
-						className='h-12 px-4'
-						placeholder={t("contract-id-placeholder")}
-						{...register("contract_id", { valueAsNumber: true })}
+					<Controller
+						name='contract_id'
+						control={control}
+						render={({ field }) => (
+							<Select
+								value={field.value?.toString()}
+								onValueChange={(value) => field.onChange(Number(value))}>
+								<SelectTrigger className='h-12! px-4 w-full'>
+									<SelectValue placeholder={t("contract-number-label")} />
+								</SelectTrigger>
+
+								<SelectContent>
+									<SelectGroup>
+										{contractsLookup?.map((item: any) => (
+											<SelectItem key={item.id} value={item.id.toString()}>
+												{item.name}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						)}
 					/>
 					{errors.contract_id && (
 						<p className='text-red-500 text-sm mt-1'>
@@ -130,7 +174,12 @@ const CreateNewMeterReading = () => {
 					<Input
 						type='number'
 						min={0}
-						step='0.01'
+						step={1}
+						onKeyDown={(e) => {
+							if (e.key === "." || e.key === ",") {
+								e.preventDefault();
+							}
+						}}
 						className='h-12 px-4'
 						placeholder={t("value-placeholder")}
 						{...register("value", { valueAsNumber: true })}

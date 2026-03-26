@@ -160,7 +160,7 @@ export default function InputPhoneCountryInput({
 
 		let valid = false;
 		if (val.length > 0) {
-			const fullNumber = `+${getCountryCallingCode(country)}${val}`;
+			const fullNumber = `${getCountryCallingCode(country)}${val}`;
 			try {
 				const parsed = parsePhoneNumber(fullNumber, country);
 				valid = parsed ? parsed.isValid() : false;
@@ -171,7 +171,7 @@ export default function InputPhoneCountryInput({
 
 		setIsValid(val.length > 0 ? valid : null);
 		// Return phone number, dial code, and validity
-		onPhoneChange?.(val, `+${getCountryCallingCode(country)}`, valid);
+		onPhoneChange?.(val, `${getCountryCallingCode(country)}`, valid);
 	};
 
 	const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -185,7 +185,7 @@ export default function InputPhoneCountryInput({
 
 		let valid = false;
 		if (phoneNumber.length > 0) {
-			const fullNumber = `+${getCountryCallingCode(code)}${phoneNumber}`;
+			const fullNumber = `${getCountryCallingCode(code)}${phoneNumber}`;
 			try {
 				const parsed = parsePhoneNumber(fullNumber, code);
 				valid = parsed ? parsed.isValid() : false;
@@ -196,7 +196,7 @@ export default function InputPhoneCountryInput({
 		}
 
 		// Return phone number, dial code, and validity
-		onPhoneChange?.(phoneNumber, `+${getCountryCallingCode(code)}`, valid);
+		onPhoneChange?.(phoneNumber, `${getCountryCallingCode(code)}`, valid);
 	};
 
 	const showError = error || (touched && isValid === false);

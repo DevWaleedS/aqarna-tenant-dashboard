@@ -2,8 +2,8 @@ import {
 	createContractAPI,
 	getContractAPI,
 	getContractsAPI,
+	getContractsLookupAPI,
 	terminateContractAPI,
-	updateContractAPI,
 } from "@/apis/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -27,6 +27,7 @@ export const useContracts = () => {
 		mutationFn: createContractAPI,
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: ["contracts"] });
+			queryClient.invalidateQueries({ queryKey: ["contracts-lookup"] });
 			toast.success(res?.message || "Contract created successfully");
 		},
 		onError: (error: any) => {
@@ -36,32 +37,18 @@ export const useContracts = () => {
 		},
 	});
 
-	// Update contract mutation
-	const updateMutation = useMutation({
-		mutationFn: ({ id, data }: { id: number | string; data: any }) =>
-			updateContractAPI(id, data),
-		onSuccess: (res) => {
-			queryClient.invalidateQueries({ queryKey: ["contracts"] });
-			toast.success(res?.message || "Contract updated successfully");
-		},
-		onError: (error: any) => {
-			toast.error(
-				error?.response?.data?.message || "Failed to update contract",
-			);
-		},
-	});
-
 	// Terminate contract mutation
 	const terminateMutation = useMutation({
 		mutationFn: ({
 			id,
-			data,
+			termination_reason,
 		}: {
 			id: number | string;
-			data?: { reason?: string };
-		}) => terminateContractAPI(id, data),
+			termination_reason: string;
+		}) => terminateContractAPI(id, termination_reason),
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: ["contracts"] });
+			queryClient.invalidateQueries({ queryKey: ["contracts-lookup"] });
 			toast.success(res?.message || "Contract terminated successfully");
 		},
 		onError: (error: any) => {
@@ -78,8 +65,7 @@ export const useContracts = () => {
 		refetch,
 		createContract: createMutation.mutateAsync,
 		isCreating: createMutation.isPending,
-		updateContract: updateMutation.mutateAsync,
-		isUpdating: updateMutation.isPending,
+
 		terminateContract: terminateMutation.mutateAsync,
 		isTerminating: terminateMutation.isPending,
 	};
@@ -97,5 +83,18 @@ export const useContract = (id?: number | string) => {
 		contract: data?.data,
 		isLoading,
 		error,
+	};
+};
+
+// ── Lookup — for Select / ComboBox components ────────────────────────────────
+export const useContractsLookup = () => {
+	const { data, isLoading } = useQuery({
+		queryKey: ["contracts-lookup"],
+		queryFn: getContractsLookupAPI,
+	});
+
+	return {
+		contractsLookup: data?.data || [],
+		isLoading,
 	};
 };

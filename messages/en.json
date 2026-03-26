@@ -197,7 +197,7 @@
 		"resolved": "Resolved",
 		"closed": "Closed",
 		"cancelled": "Cancelled",
-
+		"replaced": "Replaced",
 		"broken": "Broken",
 		"processed": "Processed",
 		"vacant": "Vacant",
@@ -843,8 +843,10 @@
 
 			"show-current-contract-page": {
 				"title": "Contract Details",
+				"loading": "Loading contract...",
 				"no_contract_available": "Contract not found",
-				"contract-number-label": "Contract Number",
+				"contract-id-label": "Contract",
+				"contract-number-label": "Select a Contract",
 				"status-label": "Status",
 				"customer-section-title": "Customer Information",
 				"customer-name-label": "Customer Name",
@@ -863,11 +865,22 @@
 				"termination-penalty-type-label": "Termination Penalty Type",
 				"termination-penalty-value-label": "Termination Penalty Value",
 				"units-section-title": "Units",
-
 				"notes-label": "Notes",
 				"terminate-button-text": "Terminate",
 				"terminating-button-text": "Terminating...",
 				"close-button-text": "Close"
+			},
+
+			"terminate-dialog": {
+				"title": "Terminate Contract",
+				"subtitle": "Contract #{contractNumber}",
+				"warning-message": "This action is permanent and cannot be undone. The contract will be immediately terminated and all associated obligations will be enforced.",
+				"reason-label": "Termination Reason",
+
+				"reason-placeholder": "e.g. Tenant relocating for work...",
+				"cancel-button": "Cancel",
+				"confirm-button": "Terminate Contract",
+				"confirming-button": "Terminating..."
 			}
 		},
 
@@ -1137,14 +1150,14 @@
 
 			"status": {
 				"active": "Active",
-				"inactive": "Inactive",
+				"replaced": "Replaced",
 				"broken": "Broken"
 			},
 
 			"create-new-meter-page": {
 				"title": "Add New Meter",
-				"unit-id-label": "Unit ID",
-				"unit-id-placeholder": "Enter unit ID",
+				"unit-label": "Unit",
+				"unit-placeholder": "Select a unit",
 				"type-label": "Meter Type",
 				"type-placeholder": "Select meter type",
 				"type-options": {
@@ -1167,8 +1180,8 @@
 			"edit-meter-page": {
 				"title": "Edit Meter",
 				"not-found": "Meter not found",
-				"unit-id-label": "Unit ID",
-				"unit-id-placeholder": "Enter unit ID",
+				"unit-label": "Unit",
+				"unit-placeholder": "Select a uint",
 				"type-label": "Meter Type",
 				"type-placeholder": "Select meter type",
 				"type-options": {
@@ -1187,7 +1200,7 @@
 				"status-placeholder": "Select status",
 				"status-options": {
 					"active": "Active",
-					"inactive": "Inactive",
+					"replaced": "Replaced",
 					"broken": "Broken"
 				},
 				"cancel-button-text": "Cancel",
@@ -1231,10 +1244,10 @@
 
 			"create-new-meter-reading-page": {
 				"title": "Add New Meter Reading",
-				"meter-id-label": "Meter ID",
-				"meter-id-placeholder": "Enter meter ID",
-				"contract-id-label": "Contract ID",
-				"contract-id-placeholder": "Enter contract ID",
+				"meter-id-label": "Meter",
+				"meter-id-placeholder": "Select a meter",
+				"contract-id-label": "Contract",
+				"contract-number-label": "Select a Contract",
 				"reading-date-label": "Reading Date",
 				"value-label": "Reading Value",
 				"value-placeholder": "e.g. 1250.5",
@@ -1249,8 +1262,8 @@
 				"title": "Meter Reading Details",
 				"not-found": "Reading not found",
 				"reading-info-section": "Reading Information",
-				"meter-id-label": "Meter ID",
-				"contract-id-label": "Contract ID",
+				"meter-id-label": "Meter",
+				"contract-id-label": "Contract",
 				"reading-date-label": "Reading Date",
 				"value-label": "Current Value",
 				"previous-value-label": "Previous Value",
@@ -1293,7 +1306,7 @@
 				"title": "Add New Unit",
 				"basic-info-section": "Basic Information",
 				"property-id-label": "Property",
-				"property-id-placeholder": "Enter property ID",
+				"property-id-placeholder": "Select a property ",
 				"name-label": "Unit Name",
 				"name-placeholder": "e.g. Luxury Apartment 101",
 				"unit-number-label": "Unit Number",
@@ -1576,7 +1589,7 @@
 				"title": "Upgrade Plan",
 				"description": "Choose a new package and billing cycle to upgrade your subscription.",
 				"package-id-label": "Select Package",
-				"package-id-placeholder": "Enter package ID",
+				"package-id-placeholder": "Select a package",
 				"billing-cycle-label": "Billing Cycle",
 				"monthly-label": "Monthly",
 				"monthly-desc": "Billed every month",

@@ -25,6 +25,7 @@ import ConfirmationDialog from "@/components/dailogs/confirmation-dialog";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import EditCurrentUnit from "./edit-current-unit";
 import ShowCurrentUnit from "./show-current-unit";
+import { usePropertiesLookup } from "@/hooks/queries/usePropertiesQuery";
 
 interface UnitsTableProps {
 	units: any[];
@@ -65,6 +66,7 @@ const UnitsTable = ({
 	onSelectOne,
 	isAllSelected,
 }: UnitsTableProps) => {
+	const { propertiesLookup } = usePropertiesLookup();
 	const t = useTranslations("tenant.units");
 	const conformMessages = useTranslations("confirmation-dialog");
 	const showT = useTranslations("tenant.units.show-current-unit-page");
@@ -133,9 +135,7 @@ const UnitsTable = ({
 					<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 overflow-hidden px-4 h-12 text-center'>
 						{t("table.monthly_rent")}
 					</TableHead>
-					<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 overflow-hidden px-4 h-12 text-center'>
-						{t("table.rating")}
-					</TableHead>
+
 					<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 overflow-hidden px-4 h-12 text-center'>
 						{t("table.status")}
 					</TableHead>
@@ -148,7 +148,9 @@ const UnitsTable = ({
 			<TableBody>
 				{units.map((unit: any) => {
 					const isSelected = selectedIds.includes(unit.id);
-
+					const propertyName =
+						propertiesLookup?.find((item: any) => item.id === unit.property_id)
+							?.name ?? "_";
 					return (
 						<TableRow key={unit.id}>
 							{/* Checkbox */}
@@ -187,7 +189,7 @@ const UnitsTable = ({
 
 							{/* Property name */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-sm'>
-								{unit.property?.name ?? "—"}
+								{propertyName}
 							</TableCell>
 
 							{/* Type badge */}
@@ -225,18 +227,6 @@ const UnitsTable = ({
 							{/* Monthly rent */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center font-semibold text-sm'>
 								{formatCurrency(unit.monthly_rent)}
-							</TableCell>
-
-							{/* Rating */}
-							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
-								{unit.rating ? (
-									<div className='flex items-center justify-center gap-1 text-yellow-500'>
-										<Star className='w-3.5 h-3.5 fill-yellow-400' />
-										<span className='text-sm font-medium'>{unit.rating}</span>
-									</div>
-								) : (
-									"—"
-								)}
 							</TableCell>
 
 							{/* Status badge */}
