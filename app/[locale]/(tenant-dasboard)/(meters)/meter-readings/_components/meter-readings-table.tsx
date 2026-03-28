@@ -13,7 +13,6 @@ import { Eye, FileText, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
-import { Checkbox } from "@/components/ui/checkbox";
 import PagesDialog from "@/components/dailogs/pages-dialog";
 import ShowMeterReading from "./show-meter-reading";
 

@@ -350,16 +350,6 @@ export const terminateContractAPI = async (contractId, termination_reason) => {
 	}
 };
 
-// Get contracts lookup list (id + name only — for dropdowns)
-export const getContractsLookupAPI = async () => {
-	try {
-		const { data } = await AxiosAuth.get(`/contracts/lookup`);
-		return data;
-	} catch (error) {
-		return handleRequestError(error, "getContractsLookupAPI", null);
-	}
-};
-
 // ==================== Customers ===================================
 
 // Get all customers
@@ -729,7 +719,7 @@ export const getSubscriptionInfoAPI = async () => {
 // 1.2 — Renew current subscription — requires { package_id }
 export const renewSubscriptionAPI = async (renewData) => {
 	try {
-		const { data } = await AxiosAuth.post(`/subscriptions/renew`, renewData);
+		const { data } = await AxiosAuth.post(`/subscription/renew`, renewData);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "renewSubscriptionAPI", null);
@@ -739,10 +729,7 @@ export const renewSubscriptionAPI = async (renewData) => {
 // 1.3 — Upgrade to a different package / billing cycle
 export const upgradeSubscriptionAPI = async (upgradeData) => {
 	try {
-		const { data } = await AxiosAuth.post(
-			`/subscriptions/upgrade`,
-			upgradeData,
-		);
+		const { data } = await AxiosAuth.post(`/subscription/upgrade`, upgradeData);
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "upgradeSubscriptionAPI", null);
@@ -872,5 +859,56 @@ export const confirmTransactionAPI = async (transactionId, payload) => {
 		return data;
 	} catch (error) {
 		return handleRequestError(error, "confirmTransactionAPI", null);
+	}
+};
+
+// ==================== Payment ===================================
+
+// Submit payment
+export const submitPaymentAPI = async (token, paymentData) => {
+	try {
+		const formData = new FormData();
+
+		// Append payment method (required)
+		formData.append("payment_method", paymentData.payment_method);
+
+		// Append cheque fields if payment method is cheque
+		if (paymentData.payment_method === "cheque") {
+			if (paymentData.cheque_number) {
+				formData.append("cheque_number", paymentData.cheque_number);
+			}
+			if (paymentData.cheque_image) {
+				formData.append("cheque_image", paymentData.cheque_image);
+			}
+		}
+
+		// Append bank transfer fields if payment method is bank_transfer
+		if (paymentData.payment_method === "bank_transfer") {
+			if (paymentData.transfer_reference) {
+				formData.append("transfer_reference", paymentData.transfer_reference);
+			}
+			if (paymentData.transfer_receipt) {
+				formData.append("transfer_receipt", paymentData.transfer_receipt);
+			}
+		}
+
+		const { data } = await AxiosAuth.post(`/payment/${token}`, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "submitPaymentAPI", null);
+	}
+};
+
+// get the payment information
+export const getPaymentAPI = async (token) => {
+	try {
+		const { data } = await AxiosAuth.get(`/payment/${token}`);
+		return data;
+	} catch (error) {
+		return handleRequestError(error, "getPaymentAPI", null);
 	}
 };

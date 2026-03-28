@@ -252,7 +252,7 @@ const UsersTable = ({
 
 									<PagesDialog
 										pageTitle={showT("title")}
-										className='max-w-lg!'
+										className='max-w-xl!'
 										button={
 											<Button
 												size='icon'

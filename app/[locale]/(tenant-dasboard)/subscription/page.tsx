@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
-import { format, differenceInDays, parseISO } from "date-fns";
+import { format, differenceInDays, parseISO, sub } from "date-fns";
 import DashboardBreadcrumb from "@/components/layout/dashboard-breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -57,6 +57,7 @@ import {
 	upgradeSubscriptionType,
 } from "@/lib/zod";
 import { cn } from "@/lib/utils";
+import PriceDisplay from "@/components/shared/price-display";
 
 // ── Status helpers ─────────────────────────────────────────────────────────────
 const STATUS_STYLES: Record<
@@ -182,15 +183,11 @@ const Subscription = () => {
 	const { packagesLookup, isLoading: packagesLoading } = usePackagesLookup();
 
 	// ── Renew form ──────────────────────────────────────────────────────────
-	const {
-		control: renewControl,
-		handleSubmit: handleRenewSubmit,
-		formState: { errors: renewErrors },
-		reset: resetRenew,
-	} = useForm<renewSubscriptionType>({
-		resolver: zodResolver(renewSubscriptionSchema),
-		defaultValues: { package_id: undefined },
-	});
+	const { handleSubmit: handleRenewSubmit, reset: resetRenew } =
+		useForm<renewSubscriptionType>({
+			resolver: zodResolver(renewSubscriptionSchema),
+			defaultValues: { package_id: subscription?.package_id },
+		});
 
 	// ── Upgrade form ────────────────────────────────────────────────────────
 	const {
@@ -239,6 +236,11 @@ const Subscription = () => {
 		}
 	};
 
+	const formatCurrency = (amount?: number) =>
+		amount !== undefined && amount !== null
+			? new Intl.NumberFormat("en-US").format(amount)
+			: "—";
+
 	// ── Loading ───────────────────────────────────────────────────────────────
 	if (isLoading) {
 		return (
@@ -250,7 +252,6 @@ const Subscription = () => {
 			</>
 		);
 	}
-	console.log("pkg", pkg);
 
 	// ── No subscription ───────────────────────────────────────────────────────
 	if (!subscription && !pkg) {
@@ -479,15 +480,19 @@ const Subscription = () => {
 							)}
 
 							{/* Price display */}
-							{(pkg?.price_monthly || pkg?.price_yearly) && (
+							{(pkg?.monthly_price || pkg?.yearly_price) && (
 								<div className='mt-3 flex items-end gap-1'>
-									<span className='text-3xl font-extrabold text-neutral-900 dark:text-white'>
-										{new Intl.NumberFormat("en-US").format(
+									<PriceDisplay
+										amountSize='text-3xl'
+										currencySize='text-xl'
+										fontWeight='font-extrabold'
+										amount={
 											subscription?.billing_cycle === "yearly"
-												? (pkg?.price_yearly ?? 0)
-												: (pkg?.price_monthly ?? 0),
-										)}
-									</span>
+												? (pkg?.yearly_price ?? 0)
+												: (pkg?.monthly_price ?? 0)
+										}
+									/>
+
 									<span className='text-sm text-neutral-500 dark:text-neutral-400 mb-1'>
 										{subscription?.billing_cycle === "yearly"
 											? t("package-card.price-yearly")
@@ -653,6 +658,24 @@ const Subscription = () => {
 										{pkg?.name[locale] ?? "—"}
 									</span>
 								</div>
+
+								<div className='flex items-center justify-between text-sm'>
+									<span className='text-neutral-500 dark:text-neutral-400'>
+										{t("current-plan-card.plan-price-label")}
+									</span>
+									<span className='font-semibold text-neutral-800 dark:text-neutral-100 '>
+										<PriceDisplay
+											amountSize='text-sm'
+											currencySize='text-sm'
+											fontWeight='font-semibold'
+											amount={
+												subscription?.billing_cycle === "yearly"
+													? (pkg?.yearly_price ?? 0)
+													: (pkg?.monthly_price ?? 0)
+											}
+										/>
+									</span>
+								</div>
 								<div className='flex items-center justify-between text-sm'>
 									<span className='text-neutral-500 dark:text-neutral-400'>
 										{t("current-plan-card.billing-cycle-label")}
@@ -670,32 +693,6 @@ const Subscription = () => {
 											{format(endDate, "dd MMM yyyy")}
 										</span>
 									</div>
-								)}
-							</div>
-
-							{/* Package selector */}
-							<div>
-								<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
-									{t("upgrade-section.package-id-label")}
-									<span className='text-red-600'>*</span>
-								</Label>
-								<Controller
-									name='package_id'
-									control={renewControl}
-									render={({ field }) => (
-										<PackageSelect
-											value={field.value ? String(field.value) : ""}
-											onChange={(val) => field.onChange(Number(val))}
-											packages={packagesLookup}
-											isLoading={packagesLoading}
-											placeholder={t("upgrade-section.package-id-placeholder")}
-										/>
-									)}
-								/>
-								{renewErrors.package_id && (
-									<p className='text-red-500 text-sm mt-1'>
-										{renewErrors.package_id.message}
-									</p>
 								)}
 							</div>
 

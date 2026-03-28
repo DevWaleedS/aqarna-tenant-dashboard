@@ -18,7 +18,7 @@ function LogoSidebar() {
 
 	const [isMounted, setIsMounted] = useState(false);
 
-	const { settings, settingsByArea, isLoadingSettings } = useSetting();
+	const { settingsByArea } = useSetting();
 
 	const logo = settingsByArea["general"]?.[5]["value"];
 	const description = settingsByArea["general"]?.[5]["description"];

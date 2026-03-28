@@ -113,14 +113,14 @@ const ShowCurrentRole = ({ roleId }: ShowCurrentRoleProps) => {
 							icon: <CalendarDays className='w-4 h-4' />,
 							label: t("created-label"),
 							value: role.created_at
-								? format(parseISO(role.created_at), "dd MMM yyyy")
+								? format(role.created_at, "dd MMM yyyy")
 								: "—",
 						},
 						{
 							icon: <RefreshCw className='w-4 h-4' />,
 							label: t("updated-label"),
 							value: role.updated_at
-								? format(parseISO(role.updated_at), "dd MMM yyyy")
+								? format(role.updated_at, "dd MMM yyyy")
 								: "—",
 						},
 					].map(({ icon, label, value, mono }) => (

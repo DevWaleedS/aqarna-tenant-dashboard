@@ -28,6 +28,7 @@ import PagesDialog from "@/components/dailogs/pages-dialog";
 import ShowCurrentTransaction from "./show-current-transaction";
 import ConfirmTransactionDialog from "./confirm-transaction-dialog";
 import type { Transaction } from "@/hooks/queries/useTransactions";
+import PriceDisplay from "@/components/shared/price-display";
 
 // ── Status config ─────────────────────────────────────────────────────────────
 const STATUS_CONFIG: Record<
@@ -86,27 +87,16 @@ interface TransactionsTableProps {
 	transactions: Transaction[];
 	isLoading: boolean;
 	searchQuery?: string;
-	selectedIds: (string | number)[];
-	onSelectAll: (checked: boolean) => void;
-	onSelectOne: (id: string | number, checked: boolean) => void;
-	isAllSelected: boolean;
 }
 
 const TransactionsTable = ({
 	transactions,
 	isLoading,
 	searchQuery,
-	selectedIds,
-	onSelectAll,
-	onSelectOne,
-	isAllSelected,
 }: TransactionsTableProps) => {
 	const t = useTranslations("tenant.transactions");
 	const showT = useTranslations("tenant.transactions.show-page");
 	const [confirmId, setConfirmId] = useState<number | string | null>(null);
-
-	const someSelected =
-		selectedIds.length > 0 && selectedIds.length < transactions.length;
 
 	if (isLoading) {
 		return (
@@ -139,17 +129,6 @@ const TransactionsTable = ({
 			<Table className='table-auto border-spacing-0 border-separate'>
 				<TableHeader>
 					<TableRow className='border-0'>
-						{/* Checkbox */}
-						<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 px-4 h-12 border-s rounded-tl-lg rtl:rounded-tl-none rtl:rounded-tr-lg text-center'>
-							<Checkbox
-								className='border border-neutral-500 w-4.5 h-4.5 mt-1'
-								checked={isAllSelected}
-								onCheckedChange={onSelectAll}
-								ref={(el) => {
-									if (el) (el as any).indeterminate = someSelected;
-								}}
-							/>
-						</TableHead>
 						<TableHead className='bg-neutral-100 dark:bg-slate-700 border-t border-neutral-200 dark:border-slate-600 px-4 h-12'>
 							{t("table.id")}
 						</TableHead>
@@ -179,22 +158,12 @@ const TransactionsTable = ({
 
 				<TableBody>
 					{transactions.map((txn) => {
-						const isSelected = selectedIds.includes(txn.id);
 						const statusCfg = getStatus(txn.status);
 						const gatewayColor =
 							GATEWAY_COLORS[txn.payment_gateway] ?? GATEWAY_COLORS["cheque"];
 
 						return (
 							<TableRow key={txn.id}>
-								{/* Checkbox */}
-								<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
-									<Checkbox
-										checked={isSelected}
-										onCheckedChange={(c) => onSelectOne(txn.id, c as boolean)}
-										className='border border-neutral-500 w-4.5 h-4.5 mt-1'
-									/>
-								</TableCell>
-
 								{/* ID */}
 								<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e'>
 									<span className='text-xs font-mono font-bold text-neutral-500 dark:text-neutral-400'>
@@ -206,6 +175,12 @@ const TransactionsTable = ({
 								<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e'>
 									<span className='text-sm font-extrabold text-neutral-800 dark:text-neutral-100 tabular-nums'>
 										{txn.formatted_price}
+										{
+											<PriceDisplay
+												amount={txn.price}
+												currency={txn.currency}
+											/>
+										}
 									</span>
 								</TableCell>
 
@@ -217,13 +192,13 @@ const TransactionsTable = ({
 											gatewayColor,
 										)}>
 										<CreditCard className='w-3 h-3' />
-										{txn.payment_gateway.replace(/_/g, " ")}
+										{txn.payment_gateway.replace(/_/g, " ") ?? "_"}
 									</span>
 								</TableCell>
 
 								{/* Method */}
 								<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-sm text-neutral-600 dark:text-neutral-300'>
-									{txn.payment_method_label}
+									{txn.payment_method_label ?? "_"}
 								</TableCell>
 
 								{/* Status */}
@@ -272,7 +247,7 @@ const TransactionsTable = ({
 
 								{/* Actions */}
 								<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
-									<div className='flex justify-center items-center gap-2'>
+									<div className='flex justify-end items-center gap-2'>
 										{/* Confirm — only for pending */}
 										{txn.status === "pending" && (
 											<Button

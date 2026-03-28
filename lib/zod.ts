@@ -408,8 +408,6 @@ export const updateMeterSchema = z.object({
 export const createMeterReadingSchema = z.object({
 	meter_id: z.number({ required_error: "Meter is required" }),
 
-	contract_id: z.number({ required_error: "Contract is required" }),
-
 	reading_date: z
 		.string({ required_error: "Reading date is required" })
 		.min(1, "Reading date is required"),
@@ -679,6 +677,69 @@ export const confirmTransactionSchema = z.object({
 		.min(3, "Notes must be at least 3 characters")
 		.max(500, "Notes must be under 500 characters"),
 });
+
+export const submitPaymentFormSchema = z
+	.object({
+		// Payment method (required)
+		payment_method: z.enum(["cash", "cheque", "bank_transfer"], {
+			required_error: "Payment method is required",
+		}),
+
+		// Cheque fields (conditional)
+		cheque_number: z.string().optional(),
+		cheque_image: z
+			.instanceof(File)
+			.refine((file) => file.size <= 2_000_000, {
+				message: "File size must be less than 2MB",
+			})
+			.optional(),
+
+		// Bank transfer fields (conditional)
+		transfer_reference: z.string().optional(),
+		transfer_receipt: z
+			.instanceof(File)
+			.refine((file) => file.size <= 2_000_000, {
+				message: "File size must be less than 2MB",
+			})
+			.optional(),
+	})
+	.superRefine((data, ctx) => {
+		// Validate cheque fields when payment method is cheque
+		if (data.payment_method === "cheque") {
+			if (!data.cheque_number || data.cheque_number.trim() === "") {
+				ctx.addIssue({
+					path: ["cheque_number"],
+					message: "Cheque number is required for cheque payment",
+					code: z.ZodIssueCode.custom,
+				});
+			}
+			if (!data.cheque_image) {
+				ctx.addIssue({
+					path: ["cheque_image"],
+					message: "Cheque image is required for cheque payment",
+					code: z.ZodIssueCode.custom,
+				});
+			}
+		}
+
+		// Validate bank transfer fields when payment method is bank_transfer
+		if (data.payment_method === "bank_transfer") {
+			if (!data.transfer_reference || data.transfer_reference.trim() === "") {
+				ctx.addIssue({
+					path: ["transfer_reference"],
+					message: "Transfer reference is required for bank transfer",
+					code: z.ZodIssueCode.custom,
+				});
+			}
+			if (!data.transfer_receipt) {
+				ctx.addIssue({
+					path: ["transfer_receipt"],
+					message: "Transfer receipt is required for bank transfer",
+					code: z.ZodIssueCode.custom,
+				});
+			}
+		}
+	});
 // ==================== start the tenant work =====================================
 export type createContractType = z.infer<typeof createContractSchema>;
 export type createMeterReadingType = z.infer<typeof createMeterReadingSchema>;
@@ -712,3 +773,4 @@ export type updateRolePermissionsType = z.infer<
 >;
 export type confirmTransactionType = z.infer<typeof confirmTransactionSchema>;
 export type verifyEmailType = z.infer<typeof verifyEmailSchema>;
+export type submitPaymentFormType = z.infer<typeof submitPaymentFormSchema>;

@@ -153,7 +153,9 @@ const ShowCurrentTransaction = ({
 	const hasAttachments =
 		transaction.cheque_image ||
 		transaction.transfer_receipt ||
-		transaction.invoice;
+		(transaction?.details?.invoice as boolean);
+
+	console.log(transaction);
 
 	return (
 		<div>
@@ -317,9 +319,9 @@ const ShowCurrentTransaction = ({
 										label={t("transfer-receipt-label")}
 									/>
 								)}
-								{transaction.invoice && (
+								{transaction?.details?.invoice && (
 									<AttachmentBtn
-										href={transaction.invoice}
+										href={transaction.details?.invoice}
 										icon={<FileText className='w-4 h-4' />}
 										label={t("invoice-label")}
 									/>

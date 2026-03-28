@@ -30,7 +30,7 @@ const Transactions = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [statusFilter, setStatusFilter] = useState("all");
 	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
+
 	const itemsPerPage = 10;
 
 	const { transactions, isLoading } = useTransactions();
@@ -56,18 +56,6 @@ const Transactions = () => {
 		(currentPage - 1) * itemsPerPage,
 		currentPage * itemsPerPage,
 	);
-
-	// ── Selection ─────────────────────────────────────────────────────────────
-	const handleSelectAll = (checked: boolean) =>
-		setSelectedIds(checked ? paginated.map((t) => t.id) : []);
-
-	const handleSelectOne = (id: string | number, checked: boolean) =>
-		setSelectedIds((prev) =>
-			checked ? [...prev, id] : prev.filter((sid) => sid !== id),
-		);
-
-	const isAllSelected =
-		paginated.length > 0 && selectedIds.length === paginated.length;
 
 	// ── Summary stats ─────────────────────────────────────────────────────────
 	const totalPaid = transactions
@@ -118,7 +106,7 @@ const Transactions = () => {
 
 			{/* ── Stats strip ─────────────────────────────────────────────── */}
 			{transactions.length > 0 && (
-				<div className='mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3'>
+				<div className='my-5 grid grid-cols-2 sm:grid-cols-4 gap-3'>
 					{statsCards.map(({ icon, label, value, color }) => (
 						<div
 							key={label}
@@ -160,16 +148,11 @@ const Transactions = () => {
 				currentPage={currentPage}
 				totalPages={totalPages}
 				onPageChange={setCurrentPage}
-				totalItems={filtered.length}
-				selectedCount={selectedIds.length}>
+				totalItems={filtered.length}>
 				<TransactionsTable
 					transactions={paginated}
 					isLoading={isLoading}
 					searchQuery={searchQuery}
-					selectedIds={selectedIds}
-					onSelectAll={handleSelectAll}
-					onSelectOne={handleSelectOne}
-					isAllSelected={isAllSelected}
 				/>
 			</MultiFunctionsTable>
 		</>

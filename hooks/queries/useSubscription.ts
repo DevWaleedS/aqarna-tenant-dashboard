@@ -26,12 +26,10 @@ export const useSubscription = () => {
 		mutationFn: (data: { package_id: number }) => renewSubscriptionAPI(data),
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: ["subscription-info"] });
-			toast.success(res?.message || "Subscription renewal initiated");
+			toast.success(res?.message);
 		},
 		onError: (error: any) => {
-			toast.error(
-				error?.response?.data?.message || "Failed to renew subscription",
-			);
+			toast.error(error?.response?.data?.message);
 		},
 	});
 
@@ -40,12 +38,10 @@ export const useSubscription = () => {
 		mutationFn: upgradeSubscriptionAPI,
 		onSuccess: (res) => {
 			queryClient.invalidateQueries({ queryKey: ["subscription-info"] });
-			toast.success(res?.message || "Subscription upgraded successfully");
+			toast.success(res?.message);
 		},
 		onError: (error: any) => {
-			toast.error(
-				error?.response?.data?.message || "Failed to upgrade subscription",
-			);
+			toast.error(error?.response?.data?.message);
 		},
 	});
 

@@ -26,6 +26,7 @@ import PagesDialog from "@/components/dailogs/pages-dialog";
 import EditCurrentUnit from "./edit-current-unit";
 import ShowCurrentUnit from "./show-current-unit";
 import { usePropertiesLookup } from "@/hooks/queries/usePropertiesQuery";
+import PriceDisplay from "@/components/shared/price-display";
 
 interface UnitsTableProps {
 	units: any[];
@@ -73,11 +74,6 @@ const UnitsTable = ({
 
 	const someSelected =
 		selectedIds.length > 0 && selectedIds.length < units.length;
-
-	const formatCurrency = (amount?: number) =>
-		amount !== undefined && amount !== null
-			? new Intl.NumberFormat("en-US").format(amount)
-			: "—";
 
 	if (isLoading) {
 		return (
@@ -226,7 +222,7 @@ const UnitsTable = ({
 
 							{/* Monthly rent */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center font-semibold text-sm'>
-								{formatCurrency(unit.monthly_rent)}
+								<PriceDisplay amount={unit.monthly_rent} />
 							</TableCell>
 
 							{/* Status badge */}

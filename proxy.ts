@@ -19,6 +19,7 @@ const publicRoutes = [
 	"/auth/forgot-password",
 	"/auth/create-password",
 	"/auth/verify-email",
+	"/payment",
 ];
 
 const authOnlyRoutes = ["/auth/login", "/auth/register"];

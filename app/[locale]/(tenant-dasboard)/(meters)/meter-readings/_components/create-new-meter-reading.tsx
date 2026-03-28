@@ -13,7 +13,7 @@ import { Loader2 } from "lucide-react";
 import { useMeterReadings } from "@/hooks/queries/useMeterReadings";
 import { DatePicker } from "@/components/shared/date-picker";
 import { useMetersLookup } from "@/hooks/queries/useMeters";
-import { useContractsLookup } from "@/hooks/queries/useContractsQuery";
+
 import {
 	Select,
 	SelectContent,
@@ -29,9 +29,7 @@ const CreateNewMeterReading = () => {
 	);
 	const closeButtonRef = useRef<HTMLButtonElement>(null);
 	const { createReading, isCreating } = useMeterReadings();
-
 	const { metersLookup } = useMetersLookup();
-	const { contractsLookup } = useContractsLookup();
 
 	const {
 		control,
@@ -43,7 +41,7 @@ const CreateNewMeterReading = () => {
 		resolver: zodResolver(createMeterReadingSchema),
 		defaultValues: {
 			meter_id: undefined,
-			contract_id: undefined,
+
 			reading_date: "",
 			value: undefined,
 		},
@@ -101,41 +99,6 @@ const CreateNewMeterReading = () => {
 					{errors.meter_id && (
 						<p className='text-red-500 text-sm mt-1'>
 							{errors.meter_id.message}
-						</p>
-					)}
-				</div>
-
-				<div className='md:col-span-6 col-span-12'>
-					<Label className='inline-block font-semibold text-neutral-600 dark:text-neutral-200 text-sm mb-2'>
-						{t("contract-id-label")}
-						<span className='text-red-600'>*</span>
-					</Label>
-					<Controller
-						name='contract_id'
-						control={control}
-						render={({ field }) => (
-							<Select
-								value={field.value?.toString()}
-								onValueChange={(value) => field.onChange(Number(value))}>
-								<SelectTrigger className='h-12! px-4 w-full'>
-									<SelectValue placeholder={t("contract-number-label")} />
-								</SelectTrigger>
-
-								<SelectContent>
-									<SelectGroup>
-										{contractsLookup?.map((item: any) => (
-											<SelectItem key={item.id} value={item.id.toString()}>
-												{item.name}
-											</SelectItem>
-										))}
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-						)}
-					/>
-					{errors.contract_id && (
-						<p className='text-red-500 text-sm mt-1'>
-							{errors.contract_id.message}
 						</p>
 					)}
 				</div>

@@ -22,6 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { useContract, useContracts } from "@/hooks/queries/useContractsQuery";
 import TerminateContractDialog from "@/components/dailogs/terminate-contract-dialog";
+import PriceDisplay from "@/components/shared/price-display";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -278,7 +279,13 @@ const ShowCurrentContract = ({
 						<InfoCell
 							icon={DollarSign}
 							label={t("rent-amount-label")}
-							value={formatCurrency(contract.rent_amount)}
+							value={
+								<PriceDisplay
+									amountSize='text-sm'
+									fontWeight='font-semibold'
+									amount={contract.rent_amount}
+								/>
+							}
 						/>
 						<InfoCell
 							icon={ShieldAlert}
@@ -317,7 +324,7 @@ const ShowCurrentContract = ({
 										<>
 											<Separator orientation='vertical' className='h-4' />
 											<span className='text-neutral-500 dark:text-neutral-400 text-xs'>
-												{formatCurrency(unit.unit_price)}
+												<PriceDisplay amount={unit.unit_price} />
 											</span>
 										</>
 									)}

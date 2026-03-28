@@ -2,7 +2,6 @@ import {
 	createContractAPI,
 	getContractAPI,
 	getContractsAPI,
-	getContractsLookupAPI,
 	terminateContractAPI,
 } from "@/apis/endpoints";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -83,18 +82,5 @@ export const useContract = (id?: number | string) => {
 		contract: data?.data,
 		isLoading,
 		error,
-	};
-};
-
-// ── Lookup — for Select / ComboBox components ────────────────────────────────
-export const useContractsLookup = () => {
-	const { data, isLoading } = useQuery({
-		queryKey: ["contracts-lookup"],
-		queryFn: getContractsLookupAPI,
-	});
-
-	return {
-		contractsLookup: data?.data || [],
-		isLoading,
 	};
 };

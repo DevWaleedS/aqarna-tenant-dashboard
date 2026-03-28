@@ -284,6 +284,38 @@
 			"cancel": "Cancel"
 		}
 	},
+
+	"payment": {
+		"title": "Payment",
+
+		"submit-payment": {
+			"title": "Submit payment",
+			"no-token-message": "No token found",
+			"no-token-help-text": "Please try logging in again or refresh the page",
+			"transaction-info": "Transaction info",
+			"loading-payment": "Loading payment...",
+
+			"payment_method": {
+				"label": "Payment Method",
+				"placeholder": "Select payment method",
+				"cash": "Cash",
+				"cheque": "Cheque",
+				"bank_transfer": "Bank Transfer"
+			},
+			"cheque_number-label": "Cheque Number",
+			"cheque_number-input-placeholder": "Enter cheque number",
+			"cheque_image-label": "Cheque Image",
+			"cheque_image-help-text": "Upload cheque image (max 2MB)",
+			"transfer_reference-label": "Transfer Reference Number",
+			"transfer_reference-input-placeholder": "Enter transfer reference number",
+			"transfer_receipt-label": "Transfer Receipt",
+			"transfer_receipt-help-text": "Upload transfer receipt (max 2MB)",
+			"cancel-button-text": "Cancel",
+			"submit-button-text": "Submit Payment",
+			"submitting-loader-text": "Submitting..."
+		}
+	},
+
 	"central": {
 		"sidebar": {
 			"home": "Home",
@@ -418,37 +450,6 @@
 				"confirm_transaction": "Confirm Transaction",
 				"confirming": "Confirming...",
 				"cancel-button-text": "Cancel"
-			}
-		},
-
-		"payment": {
-			"title": "Payment",
-
-			"submit-payment": {
-				"title": "Submit payment",
-				"no-token-message": "No token found",
-				"no-token-help-text": "Please try logging in again or refresh the page",
-				"transaction-info": "Transaction info",
-				"loading-payment": "Loading payment...",
-
-				"payment_method": {
-					"label": "Payment Method",
-					"placeholder": "Select payment method",
-					"cash": "Cash",
-					"cheque": "Cheque",
-					"bank_transfer": "Bank Transfer"
-				},
-				"cheque_number-label": "Cheque Number",
-				"cheque_number-input-placeholder": "Enter cheque number",
-				"cheque_image-label": "Cheque Image",
-				"cheque_image-help-text": "Upload cheque image (max 2MB)",
-				"transfer_reference-label": "Transfer Reference Number",
-				"transfer_reference-input-placeholder": "Enter transfer reference number",
-				"transfer_receipt-label": "Transfer Receipt",
-				"transfer_receipt-help-text": "Upload transfer receipt (max 2MB)",
-				"cancel-button-text": "Cancel",
-				"submit-button-text": "Submit Payment",
-				"submitting-loader-text": "Submitting..."
 			}
 		},
 
@@ -1562,6 +1563,7 @@
 				"title": "Current Plan",
 				"package-label": "Package",
 				"status-label": "Status",
+				"plan-price-label": "Plan Price",
 				"billing-cycle-label": "Billing Cycle",
 				"start-date-label": "Start Date",
 				"end-date-label": "Expiry Date",

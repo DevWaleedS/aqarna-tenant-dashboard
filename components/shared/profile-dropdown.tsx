@@ -16,14 +16,17 @@ import { Mail, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import SafeImage from "@/components/ui/safe-image";
 import Link from "next/link";
+import PagesDialog from "../dailogs/pages-dialog";
+import ShowCurrentUser from "@/app/[locale]/(tenant-dasboard)/users/_components/show-current-user";
 
 const ProfileDropdown = () => {
 	const { userData } = useCurrentUser();
 
 	const t = useTranslations("profile-dropdown");
+	const showT = useTranslations("tenant.users.show-current-user-page");
 
 	// No need for useEffect here anymore! Token is set globally
-	const userId = userData?.id;
+	const userId = userData?.id as number;
 	const displayName = userData?.name || "User";
 	const displayEmail = userData?.email || "";
 	const displayAvatar = userData?.avatar || "https://placehold.co/600x400";
@@ -77,11 +80,24 @@ const ProfileDropdown = () => {
 				<div className='max-h-100 overflow-y-auto scroll-sm pt-4'>
 					<ul className='w-full flex flex-col gap-3 rtl:items-end'>
 						<li>
-							<Link
-								href={`/users/${userId}/view-profile`}
-								className='text-black dark:text-white hover:text-primary dark:hover:text-primary flex items-center rtl:flex-row-reverse gap-3'>
-								<User className='w-5 h-5' /> {t("my-profile-link")}
-							</Link>
+							<PagesDialog
+								pageTitle={showT("title")}
+								className='max-w-xl!'
+								button={
+									<Link
+										href={`#`}
+										className='text-black dark:text-white hover:text-primary dark:hover:text-primary flex items-center rtl:flex-row-reverse gap-3'>
+										<User className='w-5 h-5' /> {t("my-profile-link")}
+									</Link>
+									// <Button
+									// 	size='icon'
+									// 	variant='link'
+									// 	className='rounded-[50%] text-amber-500 bg-amber-500/10 hover:bg-amber-500/20'>
+									// 	<User className='w-5 h-5' /> {t("my-profile-link")}
+									// </Button>
+								}>
+								<ShowCurrentUser userId={userId} />
+							</PagesDialog>
 						</li>
 
 						{displayEmail && (

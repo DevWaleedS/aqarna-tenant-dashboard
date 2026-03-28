@@ -20,6 +20,7 @@ import ShowCurrentContract from "./show-current-contract";
 import { useCustomersLookup } from "@/hooks/queries/useCustomers";
 import TerminateContractDialog from "@/components/dailogs/terminate-contract-dialog";
 import { useContracts } from "@/hooks/queries/useContractsQuery";
+import PriceDisplay from "@/components/shared/price-display";
 
 interface ContractsTableProps {
 	contracts: any[];
@@ -72,11 +73,6 @@ const ContractsTable = ({
 			return dateStr;
 		}
 	};
-
-	const formatCurrency = (amount?: number) =>
-		amount !== undefined && amount !== null
-			? new Intl.NumberFormat("en-US").format(amount)
-			: "—";
 
 	if (isLoading) {
 		return (
@@ -175,7 +171,7 @@ const ContractsTable = ({
 
 							{/* Rent Amount */}
 							<TableCell className='py-3 px-4 border-b border-neutral-200 dark:border-slate-600 first:border-s last:border-e text-center'>
-								{formatCurrency(contract.rent_amount)}
+								<PriceDisplay amount={contract.rent_amount} />
 							</TableCell>
 
 							{/* Status */}
